@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "0yECu3YEzmV78gkiep1UX/2+8yAP04aLLe43alRwHVFpUzBZFQ3sZry4ni6tnnjfPH4z6jhyhzF/RqN3Vyg1Fg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\tramn\\OneDrive\\Desktop\\code\\integrify\\fs15_Fullstack\\backend\\Backend.Business\\Backend.Business.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\tramn\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\tramn\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}
