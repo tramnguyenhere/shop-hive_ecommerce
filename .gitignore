@@ -7,12 +7,16 @@ backend/obj/
 backend/bin/
 backend/Backend.Domain/obj/
 backend/Backend.Domain/bin/
+backend/Backend.Domain/.vscode/
 backend/Backend.Business/obj/
 backend/Backend.Business/bin/
+backend/Backend.Business/.vscode/
 backend/Backend.Controller/obj/
 backend/Backend.Controller/bin/
+backend/Backend.Controller/.vscode/
 backend/Backend.Infrastructure/obj/
 backend/Backend.Infrastructure/bin/
+backend/Backend.Infrastructure/.vscode/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
