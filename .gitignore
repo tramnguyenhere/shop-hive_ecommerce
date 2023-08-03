@@ -17,6 +17,9 @@ backend/Backend.Controller/.vscode/
 backend/Backend.Infrastructure/obj/
 backend/Backend.Infrastructure/bin/
 backend/Backend.Infrastructure/.vscode/
+backend/Backend.Testing/obj/
+backend/Backend.Testing/bin/
+backend/Backend.Testing/.vscode/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
