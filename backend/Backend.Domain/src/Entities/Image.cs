@@ -1,7 +1,7 @@
 namespace Backend.Domain.src.Entities
 {
-    public class Image
+    public class Image : BaseEntityWithId
     {
-        public string url { get; set; }
+        public string Url { get; set; }
     }
 }

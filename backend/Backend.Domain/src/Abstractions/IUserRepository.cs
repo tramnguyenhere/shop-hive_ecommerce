@@ -5,5 +5,6 @@ namespace Backend.Domain.src.Abstractions
     public interface IUserRepository : IBaseRepository<User>
     {
         User CreateAdmin(User user);
+        User UpdatePassword(User user, string newPassword);
     }
 }

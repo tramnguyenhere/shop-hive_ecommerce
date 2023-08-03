@@ -5,8 +5,8 @@ namespace Backend.Business.src.Abstractions
     public interface IBaseService<T, TDto>
     {
         IEnumerable<TDto> GetAll(QueryOptions queryOptions);
-        T GetOneById(string id);
-        T UpdateOneById(T updatedEntity);
+        TDto GetOneById(string id);
+        TDto UpdateOneById(string id, TDto updatedEntity);
         bool DeleteOneById(string id);
     }
 }

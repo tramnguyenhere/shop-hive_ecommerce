@@ -6,7 +6,7 @@ namespace Backend.Domain.src.Abstractions
     {
         IEnumerable<T> GetAll(QueryOptions queryOptions);
         T GetOneById(string id);
-        T UpdateOneById(T updatedEntity);
+        T UpdateOneById(T originalEntity, T updatedEntity);
         bool DeleteOneById(string id);
     }
 }

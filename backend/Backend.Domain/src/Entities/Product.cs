@@ -7,5 +7,6 @@ namespace Backend.Domain.src.Entities
         public string Description { get; set; }
         public Category Category { get; set; }
         public int Inventory {get; set; }
+        public List<Image> Images { get; set; }
     }
 }
