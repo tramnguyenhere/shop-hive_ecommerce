@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Backend.Domain.src.Shared;
 
 namespace Backend.Domain.src.Abstractions
 {
-    public interface IBaseRepository<T> // repo should not work with Dto, but original entities
+    public interface IBaseRepository<T> 
     {
         IEnumerable<T> GetAll(QueryOptions queryOptions);
         T GetOneById(string id);

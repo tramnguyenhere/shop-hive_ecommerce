@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\tramn\\OneDrive\\Desktop\\code\\integrify\\fs15_Fullstack\\backend\\Backend.Domain\\Backend.Domain.csproj": {}
+    "c:\\Users\\tramn\\OneDrive\\Desktop\\code\\integrify\\fs15_Fullstack\\backend\\Backend.Domain\\Backend.Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\tramn\\OneDrive\\Desktop\\code\\integrify\\fs15_Fullstack\\backend\\Backend.Domain\\Backend.Domain.csproj": {
+    "c:\\Users\\tramn\\OneDrive\\Desktop\\code\\integrify\\fs15_Fullstack\\backend\\Backend.Domain\\Backend.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tramn\\OneDrive\\Desktop\\code\\integrify\\fs15_Fullstack\\backend\\Backend.Domain\\Backend.Domain.csproj",
+        "projectUniqueName": "c:\\Users\\tramn\\OneDrive\\Desktop\\code\\integrify\\fs15_Fullstack\\backend\\Backend.Domain\\Backend.Domain.csproj",
         "projectName": "Backend.Domain",
-        "projectPath": "C:\\Users\\tramn\\OneDrive\\Desktop\\code\\integrify\\fs15_Fullstack\\backend\\Backend.Domain\\Backend.Domain.csproj",
+        "projectPath": "c:\\Users\\tramn\\OneDrive\\Desktop\\code\\integrify\\fs15_Fullstack\\backend\\Backend.Domain\\Backend.Domain.csproj",
         "packagesPath": "C:\\Users\\tramn\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tramn\\OneDrive\\Desktop\\code\\integrify\\fs15_Fullstack\\backend\\Backend.Domain\\obj\\",
+        "outputPath": "c:\\Users\\tramn\\OneDrive\\Desktop\\code\\integrify\\fs15_Fullstack\\backend\\Backend.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
