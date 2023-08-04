@@ -1,9 +1,9 @@
-namespace Backend.Domain.src.Entities
+using Backend.Domain.src.Entities;
+
+namespace Backend.Business.src.Dtos
 {
-    public class Order : BaseEntityWithId
+    public class OrderDto
     {
-        public User User { get; set; }
-        // The reciepient and shipping address could be different from what has been stored in user database.
         public string? Recipient { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }

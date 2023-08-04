@@ -1,9 +1,9 @@
 namespace Backend.Domain.src.Entities
 {
-    public class CartProduct : BaseEntityWithId
+    public class OrderProduct : BaseEntityWithId
     {
         public Product Product { get; set; }
-        public Cart CartId { get; set; }
+        public Order OrderId { get; set; }
         public int Quantity { get; set; }
     }
 }
