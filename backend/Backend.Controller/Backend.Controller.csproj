@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Backend.Business\Backend.Business.csproj" />
+    <ProjectReference Include="..\Backend.Infrastructure\Backend.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
