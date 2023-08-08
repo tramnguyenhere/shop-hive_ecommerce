@@ -6,7 +6,7 @@ using Backend.Domain.src.Entities;
 
 namespace Backend.Business.src.Implementations
 {
-    public class UserService : BaseService<User, UserDto>, IUserService
+    public class UserService : BaseService<User,  UserReadDto, UserCreateDto, UserUpdateDto>, IUserService
     {
         private readonly IUserRepository _userRepository;
         public UserService(IUserRepository userRepo, IMapper mapper) : base(userRepo, mapper)
@@ -14,13 +14,13 @@ namespace Backend.Business.src.Implementations
             _userRepository = userRepo;
         }
 
-        public UserDto UpdatePassword(string id, string newPassword)
+        public async Task<UserReadDto> UpdatePassword(string id, string newPassword)
         {
-            var foundUser = _userRepository.GetOneById(id);
+            var foundUser = await _userRepository.GetOneById(id);
             if (foundUser == null) {
                 throw new Exception("User not found");
             }
-            return _mapper.Map<UserDto>(_userRepository.UpdatePassword(foundUser, newPassword));
+            return _mapper.Map<UserReadDto>(_userRepository.UpdatePassword(foundUser, newPassword));
         }
     }
 }

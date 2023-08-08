@@ -3,8 +3,8 @@ using Backend.Domain.src.Entities;
 
 namespace Backend.Business.src.Abstractions
 {
-    public interface IUserService : IBaseService<User, UserDto>
+    public interface IUserService : IBaseService<User, UserReadDto, UserCreateDto, UserUpdateDto>
     {
-        UserDto UpdatePassword(string id, string newPassword);
+        Task<UserReadDto> UpdatePassword(string id, string newPassword);
     }
 }

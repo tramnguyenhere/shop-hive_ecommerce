@@ -2,11 +2,21 @@ using Backend.Domain.src.Shared;
 
 namespace Backend.Business.src.Abstractions
 {
-    public interface IBaseService<T, TDto>
+    public interface IBaseService<T, TReadDto, TCreateDto, TUpdateDto>
     {
-        IEnumerable<TDto> GetAll(QueryOptions queryOptions);
-        TDto GetOneById(string id);
-        TDto UpdateOneById(string id, TDto updatedEntity);
-        bool DeleteOneById(string id);
+        Task<IEnumerable<TReadDto>> GetAll(QueryOptions queryOptions);
+        Task<TReadDto> GetOneById(string id);
+        Task<TReadDto> UpdateOneById(string id, TUpdateDto updatedEntity);
+        Task<bool> DeleteOneById(string id);
+        Task<TReadDto> CreateOne(TCreateDto entity);
     }
 }
+
+/*
+    create user: name, email, password
+    reade 1 user: names, email, password, role
+    update user profile: name, email
+    update password: password
+    read 1 product: title, price, description, images
+    create product: title, price, images, inventory
+*/
