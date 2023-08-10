@@ -11,6 +11,7 @@ namespace Backend.Business.src.Dtos
         public OrderStatus Status { get; set; }
         public List<OrderProduct> OrderProducts { get; set; }
     }
+
     public class OrderCreateDto
     {
         public string? Recipient { get; set; }
@@ -19,6 +20,7 @@ namespace Backend.Business.src.Dtos
         public Address? Address { get; set; }
         public List<OrderProduct> OrderProducts { get; set; }
     }
+    
     public class OrderUpdateDto
     {
         public string? Recipient { get; set; }

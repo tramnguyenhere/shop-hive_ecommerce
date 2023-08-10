@@ -10,6 +10,7 @@ namespace Backend.Business.src.Dtos
         public Category Category { get; set; }
         public List<Image> Images { get; set; }
     }
+
     public class ProductCreateDto
     {
         public string Title { get; set; }
@@ -19,6 +20,7 @@ namespace Backend.Business.src.Dtos
         public List<Image> Images { get; set; }
         public int Inventory { get; set; }
     }
+
     public class ProductUpdateDto
     {
         public string Title { get; set; }
