@@ -31,14 +31,14 @@ namespace Backend.Controller.src.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<TReadDto>> UpdateOneById ([FromRoute] string id, [FromForm] TUpdateDto update) {
+        public async Task<ActionResult<TReadDto>> UpdateOneById ([FromRoute] string id, [FromBody] TUpdateDto update) {
             var updatedObject = await _baseService.UpdateOneById(id, update);
             return Ok(updatedObject);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteOneById([FromRoute] string id) {
-            return Ok(await _baseService.DeleteOneById(id));
+            return StatusCode(204, await _baseService.DeleteOneById(id));
         }
     }
 }
