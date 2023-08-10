@@ -9,6 +9,7 @@ namespace Backend.Domain.src.Entities
         public string Avatar { get; set; }
         public UserRole Role { get; set; }
         public Address Address { get; set; }
-        public byte[] Password { get; set; }
+        public string Password { get; set; }
+        public byte[] Salt { get; set; }
     }
 }
