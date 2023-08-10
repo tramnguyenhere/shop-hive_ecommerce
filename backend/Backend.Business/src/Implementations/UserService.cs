@@ -1,6 +1,7 @@
 using AutoMapper;
 using Backend.Business.src.Abstractions;
 using Backend.Business.src.Dtos;
+using Backend.Business.src.Shared;
 using Backend.Domain.src.Abstractions;
 using Backend.Domain.src.Entities;
 
@@ -21,6 +22,15 @@ namespace Backend.Business.src.Implementations
                 throw new Exception("User not found");
             }
             return _mapper.Map<UserReadDto>(await _userRepository.UpdatePassword(foundUser, newPassword));
+        }
+
+        public override async Task<UserReadDto> CreateOne(UserCreateDto entity) {
+            var newEntity = _mapper.Map<User>(entity);
+            PasswordService.HashPassword(entity.Password, out var hashedPassword, out var salt);
+            newEntity.Password = hashedPassword;
+            newEntity.Salt = salt;
+            var createdEntity = await _userRepository.CreateOne(newEntity);
+            return _mapper.Map<UserReadDto>(createdEntity);
         }
     }
 }

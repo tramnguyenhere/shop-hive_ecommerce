@@ -44,7 +44,7 @@ namespace Backend.Business.src.Implementations
             }
         }
 
-        public async Task<TReadDto> CreateOne(TCreateDto entity)
+        public virtual async Task<TReadDto> CreateOne(TCreateDto entity)
         {
             var newEntity = await _baseRepository.CreateOne(_mapper.Map<T>(entity));
             return _mapper.Map<TReadDto>(newEntity);

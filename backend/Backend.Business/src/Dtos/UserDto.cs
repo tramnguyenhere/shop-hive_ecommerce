@@ -21,6 +21,7 @@ namespace Backend.Business.src.Dtos
         public string PhoneNumber { get; set; }
         public string Avatar { get; set; }
         public Address Address { get; set; }
+        public string Password { get; set; }
     }
     
     public class UserUpdateDto
@@ -30,5 +31,10 @@ namespace Backend.Business.src.Dtos
         public string PhoneNumber { get; set; }
         public string Avatar { get; set; }
         public Address Address { get; set; }
+    }
+
+    public class UserCredentialsDto {
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }
