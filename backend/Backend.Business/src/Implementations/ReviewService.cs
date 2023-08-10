@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Backend.Business.src.Abstractions;
 using Backend.Business.src.Dtos;

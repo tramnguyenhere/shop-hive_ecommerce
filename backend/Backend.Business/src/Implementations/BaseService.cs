@@ -14,11 +14,11 @@ namespace Backend.Business.src.Implementations
             _baseRepository = baseRepo;
             _mapper = mapper;
         }
-        public bool DeleteOneById(string id)
+        public async Task<bool> DeleteOneById(string id)
         {
             var foundItem = _baseRepository.GetOneById(id);
             if(foundItem != null) {
-                _baseRepository.DeleteOneById(id);
+                await _baseRepository.DeleteOneById(id);
                 return true;
             } return false;
         }
@@ -44,14 +44,10 @@ namespace Backend.Business.src.Implementations
             }
         }
 
-        Task<bool> IBaseService<T, TReadDto, TCreateDto, TUpdateDto>.DeleteOneById(string id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<TReadDto> CreateOne(TCreateDto entity)
         {
-            return _mapper.Map<TReadDto>(entity);
+            var newEntity = await _baseRepository.CreateOne(_mapper.Map<T>(entity));
+            return _mapper.Map<TReadDto>(newEntity);
         }
     }
 }

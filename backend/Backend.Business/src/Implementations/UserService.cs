@@ -20,7 +20,7 @@ namespace Backend.Business.src.Implementations
             if (foundUser == null) {
                 throw new Exception("User not found");
             }
-            return _mapper.Map<UserReadDto>(_userRepository.UpdatePassword(foundUser, newPassword));
+            return _mapper.Map<UserReadDto>(await _userRepository.UpdatePassword(foundUser, newPassword));
         }
     }
 }
