@@ -10,7 +10,7 @@ namespace Backend.Business.src.Dtos
         public string PhoneNumber { get; set; }
         public string Avatar { get; set; }
         public UserRole Role { get; set; }
-        public Address Address { get; set; }
+        public string Address { get; set; }
     }
 
     public class UserCreateDto
@@ -20,7 +20,7 @@ namespace Backend.Business.src.Dtos
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string Avatar { get; set; }
-        public Address Address { get; set; }
+        public string Address { get; set; }
         public string Password { get; set; }
     }
     
@@ -30,7 +30,7 @@ namespace Backend.Business.src.Dtos
         public string LastName { get; set;}
         public string PhoneNumber { get; set; }
         public string Avatar { get; set; }
-        public Address Address { get; set; }
+        public string Address { get; set; }
     }
 
     public class UserCredentialsDto {

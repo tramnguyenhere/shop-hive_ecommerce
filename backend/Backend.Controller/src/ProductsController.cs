@@ -71,7 +71,6 @@
 //             var orderBy = $"{queryOptions.SortBy} {(queryOptions.SortDescending ? "desc" : "asc")}";
 //             query = query.OrderBy(orderBy);
 
-// Samuel Addison 10:25
 // query = query.Skip((queryOptions.PageNumber - 1) * queryOptions.PageSize)
 //                 .Take(queryOptions.PageSize);
 

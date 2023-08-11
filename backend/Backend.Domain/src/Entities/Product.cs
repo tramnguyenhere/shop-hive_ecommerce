@@ -1,6 +1,6 @@
 namespace Backend.Domain.src.Entities
 {
-    public class Product
+    public class Product : BaseEntityWithId
     {
         public string Title { get; set; }
         public float Price { get; set; }

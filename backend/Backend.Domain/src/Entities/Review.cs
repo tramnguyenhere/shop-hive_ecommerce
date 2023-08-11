@@ -1,9 +1,9 @@
 namespace Backend.Domain.src.Entities
 {
-    public class Review
+    public class Review : BaseEntityWithId
     {
-        public Product ProductId { get; set; }
-        public User UserId { get; set; }
+        public Product Product { get; set; }
+        public User User { get; set; }
         public string Feedback { get; set; }
     }
 }

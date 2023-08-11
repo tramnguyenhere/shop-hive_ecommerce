@@ -1,6 +1,7 @@
 using System.Text;
 using Backend.Business.src.Abstractions;
 using Backend.Business.src.Implementations;
+using Backend.Business.src.Shared;
 using Backend.Domain.src.Abstractions;
 using Backend.Infrastructure.src.Database;
 using Backend.Infrastructure.src.RepoImplementations;
@@ -19,8 +20,11 @@ builder.Services.AddDbContext<DatabaseContext>();
 
 // Add service DI
 builder.Services
-    .AddScoped<IUserRepository, UserRepo>()
-    .AddScoped<IUserService, UserService>();
+    .AddScoped<IUserRepository, UserRepository>()
+    .AddScoped<IUserService, UserService>()
+    .AddScoped<IAuthService, AuthService>()
+    .AddScoped<IProductRepository, ProductRepository>()
+    .AddScoped<IProductService, ProductService>();
 
 // Add services to the container.
 
@@ -50,7 +54,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             ValidateIssuer = true,
             ValidIssuer = "ecommerce-backend",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("my-secret-key")),
+            ValidateAudience = false,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("my-secret-key-is-here-abcde111111111111111")),
             ValidateIssuerSigningKey = true
         };
     }

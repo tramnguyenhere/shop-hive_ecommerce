@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Infrastructure.src.RepoImplementations
 {
-    public class BaseRepo<T> : IBaseRepository<T> where T : class
+    public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         private readonly DbSet<T> _dbSet;
         private readonly DatabaseContext _context;
-        public BaseRepo(DatabaseContext dbContext)
+        public BaseRepository(DatabaseContext dbContext)
         {
             _dbSet = dbContext.Set<T>();
             _context = dbContext;
         }
-        public async Task<T> CreateOne(T entity)
+        public virtual async Task<T> CreateOne(T entity)
         {
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();

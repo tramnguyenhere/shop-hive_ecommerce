@@ -28,7 +28,7 @@ namespace Backend.Controller.src.Controllers
         [HttpPost]
         public virtual async Task<ActionResult<IEnumerable<TReadDto>>> CreateOne([FromBody] TCreateDto dto) {
             var createdObject = await _baseService.CreateOne(dto);
-            return CreatedAtAction("Created", createdObject);
+            return CreatedAtAction(nameof(CreateOne), createdObject);
         }
 
         [HttpPatch("{id:Guid}")]
