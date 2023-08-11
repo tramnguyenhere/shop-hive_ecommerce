@@ -15,13 +15,16 @@ namespace Backend.Business.src.Implementations
             _userRepository = userRepo;
         }
 
-        public async Task<UserReadDto> UpdatePassword(string id, string newPassword)
+        public async Task<UserReadDto> UpdatePassword(Guid id, string newPassword)
         {
             var foundUser = await _userRepository.GetOneById(id);
             if (foundUser == null) {
                 throw new Exception("User not found");
             }
-            return _mapper.Map<UserReadDto>(await _userRepository.UpdatePassword(foundUser, newPassword));
+            PasswordService.HashPassword(newPassword, out var hashedPassword, out var salt);
+            foundUser.Password = hashedPassword;
+            foundUser.Salt = salt;
+            return _mapper.Map<UserReadDto>(await _userRepository.UpdatePassword(foundUser));
         }
 
         public override async Task<UserReadDto> CreateOne(UserCreateDto entity) {

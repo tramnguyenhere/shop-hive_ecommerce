@@ -21,13 +21,13 @@ namespace Backend.Controller.src.Controllers
         }
 
         [Authorize]
-        public override async Task<ActionResult<ProductReadDto>> UpdateOneById ([FromRoute] string id, [FromBody] ProductUpdateDto update) {
+        public override async Task<ActionResult<ProductReadDto>> UpdateOneById ([FromRoute] Guid id, [FromBody] ProductUpdateDto update) {
             var updatedObject = await _productService.UpdateOneById(id, update);
             return Ok(updatedObject);
         }
 
         [Authorize]
-        public override async Task<ActionResult<bool>> DeleteOneById([FromRoute] string id) {
+        public override async Task<ActionResult<bool>> DeleteOneById([FromRoute] Guid id) {
             return StatusCode(204, await _productService.DeleteOneById(id));
         }
     }

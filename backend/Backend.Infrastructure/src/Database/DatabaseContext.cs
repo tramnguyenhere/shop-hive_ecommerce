@@ -28,7 +28,7 @@ namespace Backend.Infrastructure.src.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<OrderProduct>().HasKey("OrderId", "ProductId");
         }
     }
 }

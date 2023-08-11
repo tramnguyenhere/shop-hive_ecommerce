@@ -14,13 +14,15 @@ namespace Backend.Business.src.Implementations
             _baseRepository = baseRepo;
             _mapper = mapper;
         }
-        public async Task<bool> DeleteOneById(string id)
+        public async Task<bool> DeleteOneById(Guid id)
         {
-            var foundItem = _baseRepository.GetOneById(id);
-            if(foundItem != null) {
-                await _baseRepository.DeleteOneById(id);
+            var foundItem = await _baseRepository.GetOneById(id);
+            if (foundItem is null)
+            {
+                await _baseRepository.DeleteOneById(foundItem);
                 return true;
-            } return false;
+            }
+            return false;
         }
 
         public async Task<IEnumerable<TReadDto>> GetAll(QueryOptions queryOptions)
@@ -28,12 +30,12 @@ namespace Backend.Business.src.Implementations
             return _mapper.Map<IEnumerable<TReadDto>>(await _baseRepository.GetAll(queryOptions));
         }
 
-        public async Task<TReadDto> GetOneById(string id)
+        public async Task<TReadDto> GetOneById(Guid id)
         {
             return _mapper.Map<TReadDto>(await _baseRepository.GetOneById(id));
         }
 
-        public async Task<TReadDto> UpdateOneById(string id, TUpdateDto updatedEntity)
+        public async Task<TReadDto> UpdateOneById(Guid id, TUpdateDto updatedEntity)
         {
             var foundItem = await _baseRepository.GetOneById(id);
             if(foundItem != null) {
