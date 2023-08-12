@@ -24,7 +24,11 @@ builder.Services
     .AddScoped<IUserService, UserService>()
     .AddScoped<IAuthService, AuthService>()
     .AddScoped<IProductRepository, ProductRepository>()
-    .AddScoped<IProductService, ProductService>();
+    .AddScoped<IProductService, ProductService>()
+    .AddScoped<ICategoryRepository, CategoryRepository>()
+    .AddScoped<ICategoryService, CategoryService>()
+    .AddScoped<IReviewRepository, ReviewRepository>()
+    .AddScoped<IReviewService, ReviewService>();
 
 // Add services to the container.
 
