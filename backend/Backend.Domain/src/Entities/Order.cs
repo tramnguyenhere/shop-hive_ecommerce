@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Backend.Domain.src.Entities
 {
     public class Order : BaseEntityWithId
     {
-        public User User { get; set; }
+        [ForeignKey(nameof(User))]
+        public Guid UserId { get; set; }
         public string? Recipient { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }

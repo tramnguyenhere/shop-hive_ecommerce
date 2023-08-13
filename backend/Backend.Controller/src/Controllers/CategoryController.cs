@@ -16,19 +16,20 @@ namespace Backend.Controller.src.Controllers
             _categoryService = categoryService;
         }
 
-        [Authorize]
+        [Authorize(Policy = "AdminRole")]
+        [HttpPost]
         public override async Task<ActionResult<IEnumerable<CategoryReadDto>>> CreateOne([FromBody] CategoryCreateDto dto) {
             var createdObject = await _categoryService.CreateOne(dto);
-            return CreatedAtAction("Created", createdObject);
+            return Ok(createdObject);
         }
 
-        [Authorize]
+        [Authorize(Policy = "AdminRole")]
         public override async Task<ActionResult<CategoryReadDto>> UpdateOneById ([FromRoute] Guid id, [FromBody] CategoryUpdateDto update) {
             var updatedObject = await _categoryService.UpdateOneById(id, update);
             return Ok(updatedObject);
         }
 
-        [Authorize]
+        [Authorize(Policy = "AdminRole")]
         public override async Task<ActionResult<bool>> DeleteOneById([FromRoute] Guid id) {
             return StatusCode(204, await _categoryService.DeleteOneById(id));
         }

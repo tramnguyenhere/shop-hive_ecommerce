@@ -31,6 +31,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
 
         public virtual async Task<IEnumerable<T>> GetAll(QueryOptions queryOptions)
         {
+            
             return await _dbSet.ToArrayAsync();
         }
 

@@ -24,7 +24,33 @@ namespace Backend.Infrastructure.src.RepoImplementations
             {
                 query = query.Where(item => item.Title.ToLower().Contains(queryOptions.Search.ToLower()));
             }
-            return await _products.ToArrayAsync();
+
+            if (queryOptions.OrderByAscending && queryOptions.OrderByDescending)
+            {
+                throw new Exception("Both OrderByAscending and OrderByDescending cannot be true.");
+            }
+            else if (queryOptions.OrderByAscending)
+            {
+                query = query.OrderBy(product => product.Title);
+            }
+            else if (queryOptions.OrderByDescending)
+            {
+                query = query.OrderByDescending(product => product.Title);
+            }
+
+            if(queryOptions.Order == "Latest") {
+                query = query.OrderByDescending(product => product.UpdatedAt);
+            } else if (queryOptions.Order == "Earliest") {
+                query = query.OrderBy(product => product.UpdatedAt);
+            }
+
+            if(queryOptions.PageNumber == 0) {
+                return query;
+            } else {
+                query = query.Skip((queryOptions.PageNumber - 1) * queryOptions.ItemPerPage).Take(queryOptions.ItemPerPage);
+            }
+
+            return await query.ToArrayAsync();
         }
     }
 }

@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Backend.Domain.src.Entities
 {
     public class Product : BaseEntityWithId
@@ -5,8 +7,9 @@ namespace Backend.Domain.src.Entities
         public string Title { get; set; }
         public float Price { get; set; }
         public string Description { get; set; }
-        public Category Category { get; set; }
+        [ForeignKey(nameof(Category))]
+        public Guid CategoryId { get; set; }
         public int Inventory {get; set; }
-        public List<Image> Images { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

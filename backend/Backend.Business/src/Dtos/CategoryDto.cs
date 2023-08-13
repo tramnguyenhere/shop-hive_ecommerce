@@ -6,13 +6,15 @@ namespace Backend.Business.src.Dtos
         public string Image { get; set; }
     }
 
-    public class CategoryCreateDto : CategoryReadDto
+    public class CategoryCreateDto
     {
-
+        public string Name { get; set; }
+        public string Image { get; set; } = string.Empty;
     }
 
-    public class CategoryUpdateDto : CategoryReadDto
+    public class CategoryUpdateDto
     {
-
+        public string Name { get; set; }
+        public string Image { get; set; } = string.Empty;
     }
 }

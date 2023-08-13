@@ -8,27 +8,27 @@ namespace Backend.Controller.src.Controllers
 {
     public class ReviewController : CrudController<Review, ReviewReadDto, ReviewCreateDto, ReviewUpdateDto>
     {
-        private readonly IReviewService _ReviewService;
+        private readonly IReviewService _reviewService;
         public ReviewController(IReviewService reviewService) : base(reviewService)
         {
-            _ReviewService = reviewService;
+            _reviewService = reviewService;
         }
 
         [Authorize]
         public override async Task<ActionResult<IEnumerable<ReviewReadDto>>> CreateOne([FromBody] ReviewCreateDto dto) {
-            var createdObject = await _ReviewService.CreateOne(dto);
+            var createdObject = await _reviewService.CreateOne(dto);
             return CreatedAtAction("Created", createdObject);
         }
 
         [Authorize]
         public override async Task<ActionResult<ReviewReadDto>> UpdateOneById ([FromRoute] Guid id, [FromBody] ReviewUpdateDto update) {
-            var updatedObject = await _ReviewService.UpdateOneById(id, update);
+            var updatedObject = await _reviewService.UpdateOneById(id, update);
             return Ok(updatedObject);
         }
 
         [Authorize]
         public override async Task<ActionResult<bool>> DeleteOneById([FromRoute] Guid id) {
-            return StatusCode(204, await _ReviewService.DeleteOneById(id));
+            return StatusCode(204, await _reviewService.DeleteOneById(id));
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Backend.Business.src.Dtos
         public float Price { get; set; }
         public string Description { get; set; }
         public Category Category { get; set; }
-        public List<Image> Images { get; set; }
+        public string ImageUrl { get; set; }
     }
 
     public class ProductCreateDto
@@ -17,7 +17,7 @@ namespace Backend.Business.src.Dtos
         public float Price { get; set; }
         public string Description { get; set; }
         public Category Category { get; set; }
-        public List<Image> Images { get; set; }
+        public string ImageUrl { get; set; }
         public int Inventory { get; set; }
     }
 
@@ -28,6 +28,6 @@ namespace Backend.Business.src.Dtos
         public string Description { get; set; }
         public Category Category { get; set; }
         public int Inventory { get; set; }
-        public List<Image> Images { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

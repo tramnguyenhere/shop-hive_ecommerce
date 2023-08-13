@@ -3,7 +3,7 @@ namespace Backend.Domain.src.Shared
     public class QueryOptions
     {
         public string Search { get; set; } = string.Empty;
-        public string Order { get; set; } = "UpdatedAt";
+        public string Order { get; set; } = "Latest";
         public bool OrderByDescending { get; set; } = false;
         public bool OrderByAscending { get; set; } = false;
         public int PageNumber { get; set; } = 1;
