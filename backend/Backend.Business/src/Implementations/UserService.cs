@@ -35,5 +35,15 @@ namespace Backend.Business.src.Implementations
             var createdEntity = await _userRepository.CreateOne(newEntity);
             return _mapper.Map<UserReadDto>(createdEntity);
         }
+
+        public async Task<UserReadDto> CreateAdmin(UserCreateDto entity)
+        {
+            var newEntity = _mapper.Map<User>(entity);
+            PasswordService.HashPassword(entity.Password, out var hashedPassword, out var salt);
+            newEntity.Password = hashedPassword;
+            newEntity.Salt = salt;
+            var createdEntity = await _userRepository.CreateAdmin(newEntity);
+            return _mapper.Map<UserReadDto>(createdEntity);
+        }
     }
 }

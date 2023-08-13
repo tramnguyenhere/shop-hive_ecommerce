@@ -20,6 +20,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
         {
             user.Role = UserRole.Admin;
             await _users.AddAsync(user);
+            await _context.SaveChangesAsync();
             return user;
         }
 

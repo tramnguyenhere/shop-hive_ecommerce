@@ -33,7 +33,7 @@ namespace Backend.Business.src.Shared
             return GenerateToken(foundUserByEmail);
         }
 
-        private string GenerateToken(User user)
+        private static string GenerateToken(User user)
         {
             var claims = new List<Claim> {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),

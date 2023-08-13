@@ -9,6 +9,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
     {
         private readonly DbSet<T> _dbSet;
         private readonly DatabaseContext _context;
+
         public BaseRepository(DatabaseContext dbContext)
         {
             _dbSet = dbContext.Set<T>();
@@ -28,7 +29,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
             return true;
         }
 
-        public async Task<IEnumerable<T>> GetAll(QueryOptions queryOptions)
+        public virtual async Task<IEnumerable<T>> GetAll(QueryOptions queryOptions)
         {
             return await _dbSet.ToArrayAsync();
         }
