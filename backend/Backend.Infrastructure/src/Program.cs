@@ -76,7 +76,7 @@ builder.Services
             ValidIssuer = "ecommerce-backend",
             ValidateAudience = false,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes("my-secret-key-is-here-abcde111111111111111")
+                Encoding.UTF8.GetBytes(builder.Configuration["ConnectionStrings:SecretKey"])
             ),
             ValidateIssuerSigningKey = true
         };
@@ -90,11 +90,10 @@ builder.Services.AddAuthorization(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 

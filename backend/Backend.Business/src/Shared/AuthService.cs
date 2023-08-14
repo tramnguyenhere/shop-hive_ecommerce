@@ -6,16 +6,19 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace Backend.Business.src.Shared
 {
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IConfiguration _configuration;
 
-        public AuthService(IUserRepository userRepository)
+        public AuthService(IUserRepository userRepository, IConfiguration configuration)
         {
             _userRepository = userRepository;
+            _configuration = configuration;
         }
 
         public async Task<string> VerifyCredentials(UserCredentialsDto credentials)
@@ -33,13 +36,14 @@ namespace Backend.Business.src.Shared
             return GenerateToken(foundUserByEmail);
         }
 
-        private static string GenerateToken(User user)
+        private string GenerateToken(User user)
         {
             var claims = new List<Claim> {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             };
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("my-secret-key-is-here-abcde111111111111111"));
+            var secretKey = _configuration["AppSettings:SecretKey"];
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
             var securityTokenDescriptor = new SecurityTokenDescriptor {
                 Issuer = "ecommerce-backend",

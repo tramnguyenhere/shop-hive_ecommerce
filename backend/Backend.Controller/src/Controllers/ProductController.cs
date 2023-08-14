@@ -14,19 +14,19 @@ namespace Backend.Controller.src.Controllers
             _productService = productService;
         }
 
-        [Authorize]
+        [Authorize(Policy = "AdminRole")]
         public override async Task<ActionResult<ProductReadDto>> CreateOne([FromBody] ProductCreateDto dto) {
             var createdObject = await _productService.CreateOne(dto);
             return Ok(createdObject);
         }
 
-        [Authorize]
+        [Authorize(Policy = "AdminRole")]
         public override async Task<ActionResult<ProductReadDto>> UpdateOneById ([FromRoute] Guid id, [FromBody] ProductUpdateDto update) {
             var updatedObject = await _productService.UpdateOneById(id, update);
             return Ok(updatedObject);
         }
 
-        [Authorize]
+        [Authorize(Policy = "AdminRole")]
         public override async Task<ActionResult<bool>> DeleteOneById([FromRoute] Guid id) {
             return StatusCode(204, await _productService.DeleteOneById(id));
         }
