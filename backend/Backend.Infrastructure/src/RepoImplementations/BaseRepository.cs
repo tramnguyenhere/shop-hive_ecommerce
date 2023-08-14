@@ -41,7 +41,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
            
         }
 
-        public async Task<T> UpdateOneById(T originalEntity, T updatedEntity)
+        public async Task<T> UpdateOneById(T updatedEntity)
         {
             _dbSet.Update(updatedEntity);
             await _context.SaveChangesAsync();
