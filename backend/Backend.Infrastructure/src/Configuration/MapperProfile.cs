@@ -12,6 +12,7 @@ namespace Backend.Infrastructure.src.Configuration
             CreateMap<UserCreateDto, User>();
 
             CreateMap<Product, ProductReadDto>();
+            CreateMap<ProductReadDto, Product>();
             CreateMap<ProductUpdateDto, Product>();
             CreateMap<ProductCreateDto, Product>();
 

@@ -32,7 +32,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
         public virtual async Task<IEnumerable<T>> GetAll(QueryOptions queryOptions)
         {
             
-            return await _dbSet.ToArrayAsync();
+            return await _dbSet.AsNoTracking().ToArrayAsync();
         }
 
         public async Task<T> GetOneById(Guid id)

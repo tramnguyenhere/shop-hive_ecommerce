@@ -22,7 +22,7 @@ namespace Backend.Controller.src.Controllers
 
         [Authorize(Policy = "AdminRole")]
         [HttpPost("admin")]
-        public async Task<ActionResult<IEnumerable<UserReadDto>>> CreateAdmin([FromBody] UserCreateDto dto) {
+        public async Task<ActionResult<UserReadDto>> CreateAdmin([FromBody] UserCreateDto dto) {
             var createdObject = await _userService.CreateAdmin(dto);
             return CreatedAtAction(nameof(CreateAdmin), createdObject);
         }

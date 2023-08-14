@@ -1,5 +1,6 @@
 using AutoMapper;
 using Backend.Business.src.Abstractions;
+using Backend.Business.src.Shared;
 using Backend.Domain.src.Abstractions;
 using Backend.Domain.src.Shared;
 
@@ -42,7 +43,7 @@ namespace Backend.Business.src.Implementations
                 var toBeUpdatedEntity =_baseRepository.UpdateOneById(foundItem, _mapper.Map<T>(updatedEntity));
                 return _mapper.Map<TReadDto>(toBeUpdatedEntity);
             } else {
-                throw new Exception("Item not found!");
+                throw CustomException.NotFoundException();
             }
         }
 

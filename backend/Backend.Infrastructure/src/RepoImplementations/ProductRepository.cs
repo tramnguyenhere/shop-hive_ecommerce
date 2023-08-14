@@ -52,5 +52,12 @@ namespace Backend.Infrastructure.src.RepoImplementations
 
             return await query.ToArrayAsync();
         }
+
+        public override async Task<Product> CreateOne(Product entity)
+        {
+            await _products.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
     }
 }

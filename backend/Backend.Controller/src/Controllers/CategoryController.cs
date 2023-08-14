@@ -18,7 +18,7 @@ namespace Backend.Controller.src.Controllers
 
         [Authorize(Policy = "AdminRole")]
         [HttpPost]
-        public override async Task<ActionResult<IEnumerable<CategoryReadDto>>> CreateOne([FromBody] CategoryCreateDto dto) {
+        public override async Task<ActionResult<CategoryReadDto>> CreateOne([FromBody] CategoryCreateDto dto) {
             var createdObject = await _categoryService.CreateOne(dto);
             return Ok(createdObject);
         }

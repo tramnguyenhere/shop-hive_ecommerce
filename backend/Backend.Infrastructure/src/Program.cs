@@ -5,6 +5,7 @@ using Backend.Business.src.Implementations;
 using Backend.Business.src.Shared;
 using Backend.Domain.src.Abstractions;
 using Backend.Infrastructure.src.Database;
+using Backend.Infrastructure.src.Middleware;
 using Backend.Infrastructure.src.RepoImplementations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,6 +20,9 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 //Add DBContext
 builder.Services.AddDbContext<DatabaseContext>();
+
+// Add policy to handle service
+builder.Services.AddSingleton<ErrorHandlerMiddleware>();
 
 // Add service DI
 builder.Services
@@ -93,6 +97,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseAuthentication();
 

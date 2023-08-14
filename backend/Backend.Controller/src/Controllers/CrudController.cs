@@ -26,7 +26,7 @@ namespace Backend.Controller.src.Controllers
         }
 
         [HttpPost]
-        public virtual async Task<ActionResult<IEnumerable<TReadDto>>> CreateOne([FromBody] TCreateDto dto) {
+        public virtual async Task<ActionResult<TReadDto>> CreateOne([FromBody] TCreateDto dto) {
             var createdObject = await _baseService.CreateOne(dto);
             return CreatedAtAction(nameof(CreateOne), createdObject);
         }

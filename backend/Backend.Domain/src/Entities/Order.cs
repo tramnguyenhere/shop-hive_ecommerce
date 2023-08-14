@@ -4,8 +4,7 @@ namespace Backend.Domain.src.Entities
 {
     public class Order : BaseEntityWithId
     {
-        [ForeignKey(nameof(User))]
-        public Guid UserId { get; set; }
+        public User User { get; set; }
         public string? Recipient { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }

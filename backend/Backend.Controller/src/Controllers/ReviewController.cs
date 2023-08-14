@@ -15,7 +15,7 @@ namespace Backend.Controller.src.Controllers
         }
 
         [Authorize]
-        public override async Task<ActionResult<IEnumerable<ReviewReadDto>>> CreateOne([FromBody] ReviewCreateDto dto) {
+        public override async Task<ActionResult<ReviewReadDto>> CreateOne([FromBody] ReviewCreateDto dto) {
             var createdObject = await _reviewService.CreateOne(dto);
             return CreatedAtAction("Created", createdObject);
         }

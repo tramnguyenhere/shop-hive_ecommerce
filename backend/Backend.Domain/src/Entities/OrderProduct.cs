@@ -4,10 +4,8 @@ namespace Backend.Domain.src.Entities
 {
     public class OrderProduct : BaseEntity
     {
-        [ForeignKey(nameof(Product))]
-        public Guid ProductId { get; set; }
-        [ForeignKey(nameof(Order))]
-        public Guid OrderId { get; set; }
+        public Product Product { get; set; }
+        public Order Order { get; set; }
         public int Quantity { get; set; }
     }
 }

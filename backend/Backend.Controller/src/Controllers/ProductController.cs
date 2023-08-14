@@ -15,9 +15,9 @@ namespace Backend.Controller.src.Controllers
         }
 
         [Authorize]
-        public override async Task<ActionResult<IEnumerable<ProductReadDto>>> CreateOne([FromBody] ProductCreateDto dto) {
+        public override async Task<ActionResult<ProductReadDto>> CreateOne([FromBody] ProductCreateDto dto) {
             var createdObject = await _productService.CreateOne(dto);
-            return CreatedAtAction("Created", createdObject);
+            return Ok(createdObject);
         }
 
         [Authorize]
