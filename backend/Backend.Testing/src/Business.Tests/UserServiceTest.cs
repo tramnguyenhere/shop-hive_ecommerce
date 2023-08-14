@@ -3,10 +3,8 @@ using AutoMapper;
 using Backend.Business.src.Abstractions;
 using Backend.Business.src.Dtos;
 using Backend.Business.src.Implementations;
-using Backend.Business.src.Shared;
 using Backend.Domain.src.Abstractions;
 using Backend.Domain.src.Entities;
-using Microsoft.AspNetCore.Identity;
 using Moq;
 
 namespace src.Business.Tests
@@ -33,7 +31,6 @@ namespace src.Business.Tests
         [Fact]
         public async Task CreateOne_ValidUser_ReturnsUserReadDto()
         {
-            // Arrange
             UserCreateDto createdUser = new()
             {
                 FirstName = "Anna",
@@ -55,18 +52,15 @@ namespace src.Business.Tests
                 Password = "abc123",
                 Role = UserRole.Customer,
                 Salt = Encoding.UTF8.GetBytes("salt")
-            }; // Initialize a mocked User instance
+            }; 
 
             _userRepositoryMock.Setup(repo => repo.CreateOne(It.IsAny<User>()))
                 .ReturnsAsync(mappedUser);
 
-            // Act
             var result = await _userService.CreateOne(createdUser);
 
-            // Assert
             Assert.NotNull(result);
             Assert.IsType<UserReadDto>(result);
-            // Add more assertions based on your specific requirements
 
             _userRepositoryMock.Verify(
                 repo => repo.CreateOne(It.IsAny<User>()),
