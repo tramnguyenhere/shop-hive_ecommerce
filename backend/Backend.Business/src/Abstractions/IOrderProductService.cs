@@ -5,6 +5,5 @@ namespace Backend.Business.src.Abstractions
 {
     public interface IOrderProductService: IBaseService<OrderProduct,OrderProductDto, OrderProductDto, OrderProductDto>
     {
-        Task<IEnumerable<OrderProduct>> CreateOrderProduct(IEnumerable<OrderProductDto> orderProductDto);
     }
 }

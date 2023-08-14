@@ -37,6 +37,7 @@ namespace Backend.Infrastructure.src.Database
             modelBuilder.HasPostgresEnum<UserRole>();
             modelBuilder.Entity<OrderProduct>().HasKey("OrderId", "ProductId");
             modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
+            modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
         }
     }
 }

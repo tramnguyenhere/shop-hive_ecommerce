@@ -15,12 +15,5 @@ namespace Backend.Business.src.Implementations
             _mapper = mapper;
             _orderProductRepository = orderProductRepo;
         }
-
-        public Task<IEnumerable<OrderProduct>> CreateOrderProduct(IEnumerable<OrderProductDto> orderProductDto)
-        {
-            var orderProducts = _mapper.Map<IEnumerable<OrderProduct>>(orderProductDto);
-            _orderProductRepository.CreateOrderProduct(orderProducts.ToArray());
-            return (Task<IEnumerable<OrderProduct>>)orderProducts;
-        }
     }
 }

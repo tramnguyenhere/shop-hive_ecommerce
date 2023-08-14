@@ -18,7 +18,6 @@ namespace Backend.Infrastructure.src.RepoImplementations
 
         public async Task<User> CreateAdmin(User user)
         {
-            user.Role = UserRole.Admin;
             await _users.AddAsync(user);
             await _context.SaveChangesAsync();
             return user;
@@ -38,7 +37,6 @@ namespace Backend.Infrastructure.src.RepoImplementations
 
         public override Task<User> CreateOne(User entity)
         {
-            entity.Role = UserRole.Customer;
             return base.CreateOne(entity);
         }
     }

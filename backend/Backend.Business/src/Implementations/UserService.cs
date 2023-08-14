@@ -19,7 +19,7 @@ namespace Backend.Business.src.Implementations
         {
             var foundUser = await _userRepository.GetOneById(id);
             if (foundUser == null) {
-                throw new Exception("User not found");
+                throw CustomException.NotFoundException("User not found.");
             }
             PasswordService.HashPassword(newPassword, out var hashedPassword, out var salt);
             foundUser.Password = hashedPassword;
@@ -29,9 +29,13 @@ namespace Backend.Business.src.Implementations
 
         public override async Task<UserReadDto> CreateOne(UserCreateDto entity) {
             var newEntity = _mapper.Map<User>(entity);
+            if(!EmailService.IsEmailValid(newEntity.Email)) {
+                throw CustomException.NotValidFormat("Email's format is wrong.");
+            }
             PasswordService.HashPassword(entity.Password, out var hashedPassword, out var salt);
             newEntity.Password = hashedPassword;
             newEntity.Salt = salt;
+            newEntity.Role = UserRole.Customer;
             var createdEntity = await _userRepository.CreateOne(newEntity);
             return _mapper.Map<UserReadDto>(createdEntity);
         }
@@ -39,11 +43,24 @@ namespace Backend.Business.src.Implementations
         public async Task<UserReadDto> CreateAdmin(UserCreateDto entity)
         {
             var newEntity = _mapper.Map<User>(entity);
+            if(!EmailService.IsEmailValid(newEntity.Email)) {
+                throw CustomException.NotValidFormat("Email's format is wrong.");
+            }
             PasswordService.HashPassword(entity.Password, out var hashedPassword, out var salt);
             newEntity.Password = hashedPassword;
             newEntity.Salt = salt;
+            newEntity.Role = UserRole.Admin;
             var createdEntity = await _userRepository.CreateAdmin(newEntity);
             return _mapper.Map<UserReadDto>(createdEntity);
+        }
+
+        public async Task<UserReadDto> FindOneByEmail(string email)
+        {
+            var foundUser = await _userRepository.FindOneByEmail(email);
+            if(foundUser == null) {
+                throw CustomException.NotFoundException("Email has not been registered.");
+            }
+            return _mapper.Map<UserReadDto>(await _userRepository.FindOneByEmail(email));
         }
     }
 }

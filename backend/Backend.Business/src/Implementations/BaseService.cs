@@ -18,7 +18,7 @@ namespace Backend.Business.src.Implementations
         public async Task<bool> DeleteOneById(Guid id)
         {
             var foundItem = await _baseRepository.GetOneById(id);
-            if (foundItem is null)
+            if (foundItem == null)
             {
                 await _baseRepository.DeleteOneById(foundItem);
                 return true;
@@ -36,7 +36,7 @@ namespace Backend.Business.src.Implementations
             return _mapper.Map<TReadDto>(await _baseRepository.GetOneById(id));
         }
 
-        public async Task<TReadDto> UpdateOneById(Guid id, TUpdateDto updatedEntity)
+        public virtual async Task<TReadDto> UpdateOneById(Guid id, TUpdateDto updatedEntity)
         {
             var foundItem = await _baseRepository.GetOneById(id);
             if(foundItem != null) {

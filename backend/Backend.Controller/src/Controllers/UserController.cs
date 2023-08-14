@@ -33,5 +33,12 @@ namespace Backend.Controller.src.Controllers
             var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return Ok(await _userService.GetOneById(new Guid(id)));
         }
+
+        [Authorize(Policy = "AdminRole")]
+        [HttpGet("{email}")]
+        public async Task<ActionResult<UserReadDto>> GetUserByEmail(string email)
+        { 
+            return Ok(await _userService.FindOneByEmail(email));
+        }
     }
 }

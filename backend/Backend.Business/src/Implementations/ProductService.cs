@@ -1,6 +1,7 @@
 using AutoMapper;
 using Backend.Business.src.Abstractions;
 using Backend.Business.src.Dtos;
+using Backend.Business.src.Shared;
 using Backend.Domain.src.Abstractions;
 using Backend.Domain.src.Entities;
 
@@ -21,7 +22,7 @@ namespace Backend.Business.src.Implementations
             var category = await _categoryRepository.GetOneById(entity.CategoryId);
             if (category == null)
             {
-                throw new Exception("Category not found");
+                throw CustomException.NotFoundException("Category not found.");
             }
             var product = new Product
             {

@@ -18,12 +18,5 @@ namespace Backend.Infrastructure.src.RepoImplementations
             _dbContext = dbContext;
             _orderProducts = dbContext.OrderProducts;
         }
-
-        public async Task<IEnumerable<OrderProduct>> CreateOrderproduct(params OrderProduct[] orderProducts)
-        {
-            await _orderProducts.AddRangeAsync(orderProducts);
-            await _dbContext.SaveChangesAsync();
-            return orderProducts;
-        }
     }
 }

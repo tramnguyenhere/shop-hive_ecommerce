@@ -13,10 +13,5 @@ namespace Backend.Business.src.Implementations
         {
             _orderRepository = orderRepo;
         }
-
-        public Task<OrderReadDto> PlaceOrder(Guid userId, IEnumerable<OrderProductDto> orderProductDtos)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

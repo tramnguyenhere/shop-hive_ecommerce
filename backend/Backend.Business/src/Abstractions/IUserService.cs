@@ -7,5 +7,6 @@ namespace Backend.Business.src.Abstractions
     {
         Task<UserReadDto> UpdatePassword(Guid id, string newPassword);
         Task<UserReadDto> CreateAdmin(UserCreateDto entity);
+        Task<UserReadDto> FindOneByEmail(string email);
     }
 }
