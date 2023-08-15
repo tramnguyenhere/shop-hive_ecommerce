@@ -14,11 +14,13 @@ namespace Backend.Business.src.Implementations
         private readonly IOrderRepository _orderRepository;
         private readonly IOrderProductRepository _orderProductRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IOrderProductService _orderProductService;
 
         public OrderService(
             IOrderRepository orderRepo,
             IUserRepository userRepository,
             IOrderProductRepository orderProductRepository,
+            IOrderProductService orderProductService,
             IMapper mapper
         )
             : base(orderRepo, mapper)
@@ -26,46 +28,41 @@ namespace Backend.Business.src.Implementations
             _orderRepository = orderRepo;
             _userRepository = userRepository;
             _orderProductRepository = orderProductRepository;
+            _orderProductService = orderProductService;
         }
 
         public override async Task<OrderReadDto> CreateOne(OrderCreateDto order)
         {
-            var foundUser = await _userRepository.GetOneById(order.UserId);
+            var newOrder = _mapper.Map<Order>(order);
+            var user = await _userRepository.GetOneById(order.UserId);
 
-            if (foundUser == null)
+            if (user == null)
             {
                 throw CustomException.NotFoundException("User not found");
             }
+            
+            newOrder.Recipient = string.IsNullOrEmpty(order.Recipient)
+                ? $"{user.FirstName} {user.LastName}"
+                : order.Recipient;
+            newOrder.Email = string.IsNullOrEmpty(order.Email) ? user.Email : order.Email;
+            newOrder.Address = string.IsNullOrEmpty(order.Address) ? user.Address : order.Address;
+            newOrder.PhoneNumber = string.IsNullOrEmpty(order.PhoneNumber)
+                ? user.PhoneNumber
+                : order.PhoneNumber;
+            newOrder.Status = OrderStatus.Pending;
 
-            if (string.IsNullOrEmpty(order.Recipient))
+            newOrder.User = await _userRepository.GetOneById(order.UserId);
+
+            var createdOrder = await _orderRepository.CreateOne(newOrder);
+
+            foreach (var orderProduct in order.OrderProducts)
             {
-                order.Recipient = foundUser.FirstName + foundUser.LastName;
+                var newOrderProduct = await _orderProductService.CreateOrderProduct(orderProduct, createdOrder);
+
+                await _orderProductRepository.CreateOne(newOrderProduct);
             }
 
-            if (string.IsNullOrEmpty(order.PhoneNumber))
-            {
-                order.PhoneNumber = foundUser.PhoneNumber;
-            }
 
-            if (string.IsNullOrEmpty(order.Email))
-            {
-                order.Email = foundUser.Email;
-            }
-
-            if (string.IsNullOrEmpty(order.Address))
-            {
-                order.Address = foundUser.Address;
-            }
-            order.Status = OrderStatus.Pending;
-            var orderProducts = new List<OrderProductCreateDto>();
-
-            var createdOrder = await _orderRepository.CreateOne(_mapper.Map<Order>(order));
-
-            foreach(var product in orderProducts) {
-                product.OrderId = createdOrder.Id;
-            }
-
-            createdOrder.OrderProducts = _mapper.Map<List<OrderProduct>>(orderProducts);
             return _mapper.Map<OrderReadDto>(createdOrder);
         }
     }

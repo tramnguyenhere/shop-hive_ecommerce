@@ -1,3 +1,4 @@
+using System.Net;
 using System.Security.Claims;
 using Backend.Business.src.Abstractions;
 using Backend.Business.src.Dtos;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controller.src.Controllers
 {
-    [Authorize]
+    // [Authorize]
     public class OrderController : CrudController<Order, OrderReadDto, OrderCreateDto, OrderUpdateDto>
     {
         private readonly IOrderService _orderService;

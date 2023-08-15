@@ -36,7 +36,9 @@ builder.Services
     .AddScoped<IReviewRepository, ReviewRepository>()
     .AddScoped<IReviewService, ReviewService>()
     .AddScoped<IOrderRepository, OrderRepository>()
-    .AddScoped<IOrderService, OrderService>();
+    .AddScoped<IOrderService, OrderService>()
+    .AddScoped<IOrderProductRepository, OrderProductRepository>()
+    .AddScoped<IOrderProductService, OrderProductService>();
 
 // Add services to the container.
 

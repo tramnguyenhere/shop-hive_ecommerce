@@ -16,13 +16,11 @@ namespace src.Business.Tests
     {
         private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly IUserService _userService;
-        private readonly ITestOutputHelper _output;
 
 
-        public UserServiceTest(ITestOutputHelper output)
+        public UserServiceTest()
         {
             _userRepositoryMock = new Mock<IUserRepository>();
-            _output = output;
 
             var config = new MapperConfiguration(cfg =>
             {

@@ -18,7 +18,7 @@ namespace Backend.Business.src.Implementations
             _mapper = mapper;
         }
 
-        public async Task<bool> DeleteOneById(Guid id)
+        public virtual async Task<bool> DeleteOneById(Guid id)
         {
             var foundItem = await _baseRepository.GetOneById(id);
             if (foundItem != null)

@@ -5,5 +5,6 @@ namespace Backend.Business.src.Abstractions
 {
     public interface IOrderService : IBaseService<Order, OrderReadDto, OrderCreateDto, OrderUpdateDto>
     {
+          
     }
 }
