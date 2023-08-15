@@ -20,7 +20,7 @@ namespace Backend.Controller.src.Controllers
             return Ok(await _userService.GetAll(queryOptions));
         }
 
-        [Authorize(Policy = "AdminRole")]
+        // [Authorize(Policy = "AdminRole")]
         [HttpPost("admin")]
         public async Task<ActionResult<UserReadDto>> CreateAdmin([FromBody] UserCreateDto dto) {
             var createdObject = await _userService.CreateAdmin(dto);

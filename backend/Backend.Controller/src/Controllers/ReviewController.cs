@@ -15,18 +15,21 @@ namespace Backend.Controller.src.Controllers
         }
 
         [Authorize]
+        [HttpPost]
         public override async Task<ActionResult<ReviewReadDto>> CreateOne([FromBody] ReviewCreateDto dto) {
             var createdObject = await _reviewService.CreateOne(dto);
-            return CreatedAtAction("Created", createdObject);
+            return Ok(createdObject);
         }
 
         [Authorize]
+        [HttpPatch("{id:Guid}")]
         public override async Task<ActionResult<ReviewReadDto>> UpdateOneById ([FromRoute] Guid id, [FromBody] ReviewUpdateDto update) {
             var updatedObject = await _reviewService.UpdateOneById(id, update);
             return Ok(updatedObject);
         }
 
         [Authorize]
+        [HttpDelete("{id:Guid}")]
         public override async Task<ActionResult<bool>> DeleteOneById([FromRoute] Guid id) {
             return StatusCode(204, await _reviewService.DeleteOneById(id));
         }

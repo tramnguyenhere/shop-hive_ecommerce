@@ -11,15 +11,9 @@ namespace Backend.Controller.src.Controllers
     public class OrderController : CrudController<Order, OrderReadDto, OrderCreateDto, OrderUpdateDto>
     {
         private readonly IOrderService _orderService;
-        private readonly IAuthorizationService _authorizationService;
         public OrderController(IOrderService orderService) : base(orderService)
         {
             _orderService = orderService;
-        }
-        public override async Task<ActionResult<OrderReadDto>> UpdateOneById([FromRoute] Guid id, [FromBody] OrderUpdateDto update){
-            var user = HttpContext.User;
-            var order = await base.GetOneById(id);
-            return await _orderService.UpdateOneById(id, update);
         }
     }
 }

@@ -6,7 +6,7 @@ using Backend.Domain.src.Entities;
 
 namespace Backend.Business.src.Implementations
 {
-    public class OrderProductService : BaseService<OrderProduct, OrderProductDto, OrderProductDto, OrderProductDto>, IOrderProductService
+    public class OrderProductService : BaseService<OrderProduct, OrderProductReadDto, OrderProductCreateDto, OrderProductUpdateDto>, IOrderProductService
     {
         private readonly IMapper _mapper;
         private readonly IOrderProductRepository _orderProductRepository;
@@ -14,6 +14,12 @@ namespace Backend.Business.src.Implementations
         {
             _mapper = mapper;
             _orderProductRepository = orderProductRepo;
+        }
+
+        public async Task<IEnumerable<OrderProduct>> CreateListOfOrderProducts(params OrderProductCreateDto[] orderProductCreateDtos)
+        {
+            var orderProducts = _mapper.Map<IEnumerable<OrderProduct>>(orderProductCreateDtos);
+            return await _orderProductRepository.CreateListOfOrderProducts(orderProducts.ToArray());
         }
     }
 }

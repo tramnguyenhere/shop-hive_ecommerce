@@ -28,6 +28,7 @@ namespace Backend.Infrastructure.src.Database
         {
             var builder = new NpgsqlDataSourceBuilder(_configuration.GetConnectionString("Default"));
             builder.MapEnum<UserRole>();
+            builder.MapEnum<OrderStatus>();
             optionsBuilder.AddInterceptors(new TimeStampInterceptor());
             optionsBuilder.UseNpgsql(builder.Build()).UseSnakeCaseNamingConvention();
         }
@@ -35,6 +36,7 @@ namespace Backend.Infrastructure.src.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasPostgresEnum<UserRole>();
+            modelBuilder.HasPostgresEnum<OrderStatus>();
             modelBuilder.Entity<OrderProduct>().HasKey("OrderId", "ProductId");
             modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
             modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
