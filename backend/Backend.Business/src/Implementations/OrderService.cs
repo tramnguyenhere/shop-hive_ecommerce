@@ -21,6 +21,7 @@ namespace Backend.Business.src.Implementations
             IUserRepository userRepository,
             IOrderProductRepository orderProductRepository,
             IOrderProductService orderProductService,
+            IProductRepository productRepository,
             IMapper mapper
         )
             : base(orderRepo, mapper)
@@ -35,6 +36,7 @@ namespace Backend.Business.src.Implementations
         {
             var newOrder = _mapper.Map<Order>(order);
             var user = await _userRepository.GetOneById(order.UserId);
+            
 
             if (user == null)
             {
@@ -51,17 +53,24 @@ namespace Backend.Business.src.Implementations
                 : order.PhoneNumber;
             newOrder.Status = OrderStatus.Pending;
 
-            newOrder.User = await _userRepository.GetOneById(order.UserId);
+            newOrder.User = user;
+            newOrder.OrderProducts = new List<OrderProduct>();
 
             var createdOrder = await _orderRepository.CreateOne(newOrder);
 
-            foreach (var orderProduct in order.OrderProducts)
+            foreach (var orderProductDto in order.OrderProducts)
             {
-                var newOrderProduct = await _orderProductService.CreateOrderProduct(orderProduct, createdOrder);
-
-                await _orderProductRepository.CreateOne(newOrderProduct);
+                var orderProduct = new OrderProductCreateDto
+                {
+                    ProductId = orderProductDto.ProductId,
+                    Quantity = orderProductDto.Quantity,
+                
+                };
+                var createdOrderProduct = await _orderProductService.CreateOrderProduct(orderProduct, createdOrder);
+                createdOrder.OrderProducts.Add(createdOrderProduct);
+                await _orderProductRepository.CreateOne(createdOrderProduct);
             }
-
+                createdOrder = await _orderRepository.UpdateOneById(createdOrder);
 
             return _mapper.Map<OrderReadDto>(createdOrder);
         }
