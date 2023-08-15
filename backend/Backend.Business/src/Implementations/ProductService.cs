@@ -7,11 +7,19 @@ using Backend.Domain.src.Entities;
 
 namespace Backend.Business.src.Implementations
 {
-    public class ProductService : BaseService<Product, ProductReadDto, ProductCreateDto, ProductUpdateDto>, IProductService
+    public class ProductService
+        : BaseService<Product, ProductReadDto, ProductCreateDto, ProductUpdateDto>,
+            IProductService
     {
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
-        public ProductService(IProductRepository productRepo, ICategoryRepository categoryRepository, IMapper mapper) : base(productRepo, mapper)
+
+        public ProductService(
+            IProductRepository productRepo,
+            ICategoryRepository categoryRepository,
+            IMapper mapper
+        )
+            : base(productRepo, mapper)
         {
             _productRepository = productRepo;
             _categoryRepository = categoryRepository;
@@ -24,18 +32,41 @@ namespace Backend.Business.src.Implementations
             {
                 throw CustomException.NotFoundException("Category not found.");
             }
-            var product = new Product
-            {
-                Title = entity.Title,
-                Price = entity.Price,
-                Description = entity.Description,
-                Category = category,
-                ImageUrl = entity.ImageUrl,
-                Inventory = entity.Inventory
-            };
+            var product = _mapper.Map<Product>(entity);
+            product.Category = category;
             var createdProduct = await _productRepository.CreateOne(product);
             return _mapper.Map<ProductReadDto>(createdProduct);
         }
 
+        public override async Task<ProductReadDto> UpdateOneById(
+            Guid id,
+            ProductUpdateDto updatedDto
+        )
+        {
+            var foundItem = await _productRepository.GetOneById(id);
+            var category = await _categoryRepository.GetOneById(updatedDto.CategoryId);
+
+            if (category == null)
+            {
+                throw CustomException.NotFoundException("Category not found.");
+            }
+
+            if (foundItem != null)
+            {
+                foundItem.Inventory = updatedDto.Inventory;
+                foundItem.Price = updatedDto.Price;
+                foundItem.Category = category;
+                foundItem.Description = updatedDto.Description;
+                foundItem.ImageUrl = updatedDto.ImageUrl;
+                foundItem.Title = updatedDto.Title;
+
+                return _mapper.Map<ProductReadDto>(await _productRepository.UpdateOneById(foundItem));
+            }
+            else
+            {
+                await _productRepository.DeleteOneById(foundItem);
+                throw CustomException.NotFoundException("Item not found.");
+            }
+        }
     }
 }

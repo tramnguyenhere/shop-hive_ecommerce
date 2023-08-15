@@ -6,7 +6,7 @@ namespace Backend.Business.src.Abstractions
     {
         Task<IEnumerable<TReadDto>> GetAll(QueryOptions queryOptions);
         Task<TReadDto> GetOneById(Guid id);
-        Task<TReadDto> UpdateOneById(Guid id, TUpdateDto updatedEntity);
+        Task<TReadDto> UpdateOneById(Guid id, TUpdateDto updatedDto);
         Task<bool> DeleteOneById(Guid id);
         Task<TReadDto> CreateOne(TCreateDto entity);
     }

@@ -55,9 +55,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
 
         public override async Task<Product> CreateOne(Product entity)
         {
-            await _products.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
-            return entity;
+            return await base.CreateOne(entity);
         }
     }
 }

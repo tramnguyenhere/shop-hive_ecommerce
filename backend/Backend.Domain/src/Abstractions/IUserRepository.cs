@@ -6,6 +6,6 @@ namespace Backend.Domain.src.Abstractions
     {
         Task<User> CreateAdmin(User user);
         Task<User> UpdatePassword(User user);
-        Task<User> FindOneByEmail(string email);
+        Task<User?> FindOneByEmail(string email);
     }
 }

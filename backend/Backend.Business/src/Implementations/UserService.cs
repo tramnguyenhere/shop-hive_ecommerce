@@ -60,7 +60,24 @@ namespace Backend.Business.src.Implementations
             if(foundUser == null) {
                 throw CustomException.NotFoundException("Email has not been registered.");
             }
-            return _mapper.Map<UserReadDto>(await _userRepository.FindOneByEmail(email));
+            return _mapper.Map<UserReadDto>(foundUser);
+        }
+
+        public override async Task<UserReadDto> UpdateOneById(Guid id, UserUpdateDto updatedDto)
+        {
+            var foundItem = await _userRepository.GetOneById(id);
+            if(foundItem != null) {
+                foundItem.FirstName = updatedDto.FirstName;
+                foundItem.LastName = updatedDto.LastName;
+                foundItem.Avatar = updatedDto.Avatar;
+                foundItem.Address = updatedDto.Address;
+                foundItem.PhoneNumber = updatedDto.PhoneNumber;
+
+                return _mapper.Map<UserReadDto>(await _userRepository.UpdateOneById(foundItem));
+            } else {
+                await _userRepository.DeleteOneById(foundItem);
+                throw CustomException.NotFoundException("Item not found.");
+            }
         }
     }
 }

@@ -6,19 +6,22 @@ using Backend.Domain.src.Shared;
 
 namespace Backend.Business.src.Implementations
 {
-    public class BaseService<T, TReadDto, TCreateDto, TUpdateDto> : IBaseService<T, TReadDto, TCreateDto, TUpdateDto>
+    public class BaseService<T, TReadDto, TCreateDto, TUpdateDto>
+        : IBaseService<T, TReadDto, TCreateDto, TUpdateDto>
     {
         private readonly IBaseRepository<T> _baseRepository;
         protected readonly IMapper _mapper;
 
-        public BaseService(IBaseRepository<T> baseRepo, IMapper mapper) {
+        public BaseService(IBaseRepository<T> baseRepo, IMapper mapper)
+        {
             _baseRepository = baseRepo;
             _mapper = mapper;
         }
+
         public async Task<bool> DeleteOneById(Guid id)
         {
             var foundItem = await _baseRepository.GetOneById(id);
-            if (foundItem == null)
+            if (foundItem != null)
             {
                 await _baseRepository.DeleteOneById(foundItem);
                 return true;
@@ -36,14 +39,18 @@ namespace Backend.Business.src.Implementations
             return _mapper.Map<TReadDto>(await _baseRepository.GetOneById(id));
         }
 
-        public virtual async Task<TReadDto> UpdateOneById(Guid id, TUpdateDto updatedEntity)
+        public virtual async Task<TReadDto> UpdateOneById(Guid id, TUpdateDto updatedDto)
         {
             var foundItem = await _baseRepository.GetOneById(id);
-            if(foundItem != null) {
-                var toBeUpdatedEntity =_baseRepository.UpdateOneById(foundItem, _mapper.Map<T>(updatedEntity));
-                return _mapper.Map<TReadDto>(toBeUpdatedEntity);
-            } else {
-                throw CustomException.NotFoundException();
+            if (foundItem != null)
+            {
+                var updatedEntity = _baseRepository.UpdateOneById(_mapper.Map<T>(updatedDto));
+                return _mapper.Map<TReadDto>(updatedEntity);
+            }
+            else
+            {
+                await _baseRepository.DeleteOneById(foundItem);
+                throw CustomException.NotFoundException("Item not found.");
             }
         }
 

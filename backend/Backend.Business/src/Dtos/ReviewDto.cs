@@ -4,6 +4,7 @@ namespace Backend.Business.src.Dtos
 {
     public class ReviewReadDto
     {
+        public Guid Id { get; set; }
         public Product ProductId { get; set; }
         public User User { get; set; }
         public string Feedback { get; set; }

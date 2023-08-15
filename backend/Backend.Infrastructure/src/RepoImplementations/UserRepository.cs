@@ -35,9 +35,9 @@ namespace Backend.Infrastructure.src.RepoImplementations
             return user;
         }
 
-        public override Task<User> CreateOne(User entity)
+        public override async Task<User> CreateOne(User entity)
         {
-            return base.CreateOne(entity);
+            return await base.CreateOne(entity);
         }
     }
 }
