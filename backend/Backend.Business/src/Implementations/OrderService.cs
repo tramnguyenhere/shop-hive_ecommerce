@@ -15,6 +15,7 @@ namespace Backend.Business.src.Implementations
         private readonly IOrderProductRepository _orderProductRepository;
         private readonly IUserRepository _userRepository;
         private readonly IOrderProductService _orderProductService;
+        private readonly IProductRepository _productRepository;
 
         public OrderService(
             IOrderRepository orderRepo,
@@ -30,49 +31,65 @@ namespace Backend.Business.src.Implementations
             _userRepository = userRepository;
             _orderProductRepository = orderProductRepository;
             _orderProductService = orderProductService;
+            _productRepository = productRepository;
         }
 
-        public override async Task<OrderReadDto> CreateOne(OrderCreateDto order)
+        public override async Task<OrderReadDto> CreateOne(OrderCreateDto entity)
         {
-            var newOrder = _mapper.Map<Order>(order);
-            var user = await _userRepository.GetOneById(order.UserId);
-            
-
+            var user = await _userRepository.GetOneById(entity.UserId);
             if (user == null)
             {
                 throw CustomException.NotFoundException("User not found");
             }
-            
-            newOrder.Recipient = string.IsNullOrEmpty(order.Recipient)
-                ? $"{user.FirstName} {user.LastName}"
-                : order.Recipient;
-            newOrder.Email = string.IsNullOrEmpty(order.Email) ? user.Email : order.Email;
-            newOrder.Address = string.IsNullOrEmpty(order.Address) ? user.Address : order.Address;
-            newOrder.PhoneNumber = string.IsNullOrEmpty(order.PhoneNumber)
-                ? user.PhoneNumber
-                : order.PhoneNumber;
-            newOrder.Status = OrderStatus.Pending;
 
-            newOrder.User = user;
-            newOrder.OrderProducts = new List<OrderProduct>();
-
-            var createdOrder = await _orderRepository.CreateOne(newOrder);
-
-            foreach (var orderProductDto in order.OrderProducts)
+            var order = new Order
             {
-                var orderProduct = new OrderProductCreateDto
-                {
-                    ProductId = orderProductDto.ProductId,
-                    Quantity = orderProductDto.Quantity,
-                
-                };
-                var createdOrderProduct = await _orderProductService.CreateOrderProduct(orderProduct, createdOrder);
-                createdOrder.OrderProducts.Add(createdOrderProduct);
-                await _orderProductRepository.CreateOne(createdOrderProduct);
-            }
-                createdOrder = await _orderRepository.UpdateOneById(createdOrder);
+                User = user,
+                Recipient = string.IsNullOrEmpty(entity.Recipient)
+                    ? $"{user.FirstName} {user.LastName}"
+                    : entity.Recipient,
+                Email = string.IsNullOrEmpty(entity.Email) ? user.Email : entity.Email,
+                Address = string.IsNullOrEmpty(entity.Address) ? user.Address : entity.Address,
+                PhoneNumber = string.IsNullOrEmpty(entity.PhoneNumber)
+                    ? user.PhoneNumber
+                    : entity.PhoneNumber,
+                Status = OrderStatus.Pending,
+                OrderProducts = new List<OrderProduct>()
+            };
 
-            return _mapper.Map<OrderReadDto>(createdOrder);
+            var createdOrder = await _orderRepository.CreateOne(order);
+            var createdOrderReadDto = new OrderReadDto();
+
+            if (entity.OrderProducts != null && entity.OrderProducts.Any())
+            {
+                var orderProducts = _mapper.Map<IEnumerable<OrderProduct>>(entity.OrderProducts);
+
+                for (int i = 0; i < orderProducts.Count(); i++)
+                {
+                    var orderProductAtCurrentIndex = orderProducts.ElementAt(i);
+                    orderProductAtCurrentIndex.Order = createdOrder;
+                    orderProductAtCurrentIndex.Product = await _productRepository.GetOneById(
+                        entity.OrderProducts.ElementAt(i).ProductId
+                    );
+
+                    var createdOrderProduct = await _orderProductRepository.CreateOne(
+                        orderProductAtCurrentIndex
+                    );
+
+                    createdOrder.OrderProducts.Add(createdOrderProduct);
+                }
+                createdOrderReadDto = new OrderReadDto
+                {
+                    UserId = user.Id,
+                    Recipient = createdOrder.Recipient,
+                    Email = createdOrder.Email,
+                    PhoneNumber = createdOrder.PhoneNumber,
+                    Address = createdOrder.Address,
+                    Status = createdOrder.Status,
+                    OrderProducts = createdOrder.OrderProducts
+                };
+            }
+            return createdOrderReadDto;
         }
     }
 }

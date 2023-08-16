@@ -20,28 +20,43 @@ namespace Backend.Business.src.Implementations
             _orderRepository = orderRepository;
         }
 
-        public async Task<OrderProduct> CreateOrderProduct(OrderProductCreateDto dto, Order order)
-        {
-            bool productExists = order.OrderProducts.Any(p => p.Product.Id == dto.ProductId);
+        // public async Task<OrderProduct> CreateOrderProduct(OrderProductCreateDto dto, Order order)
+        // {
+        //     bool productExists = order.OrderProducts.Any(p => p.Product.Id == dto.ProductId);
 
-            if (productExists) {
-                throw new CustomException(409, "The product is already in the order. Update instead of create new order product.");
+        //     if (productExists) {
+        //         throw new CustomException(409, "The product is already in the order. Update instead of create new order product.");
+        //     }
+
+        //     var product = await _productRepository.GetOneById(dto.ProductId);
+            
+        //     product.Inventory -= dto.Quantity;
+        //     await _productRepository.UpdateOneById(product);
+
+        //     var newOrderProduct = _mapper.Map<OrderProduct>(dto);
+
+        //     newOrderProduct.Product = product;
+        //     newOrderProduct.Order = order;
+        //     newOrderProduct.Quantity = dto.Quantity;
+
+        //     var createdOrderProduct = await _orderProductRepository.CreateOne(newOrderProduct);
+            
+        //     return createdOrderProduct;
+        // }
+
+        public override async Task<OrderProductReadDto> CreateOne(OrderProductCreateDto dto)
+        {
+            var orderProduct = _mapper.Map<OrderProduct>(dto);
+            var product = await _productRepository.GetOneById(dto.ProductId);
+
+            if (product == null || product.Inventory < dto.Quantity) {
+                throw CustomException.NotFoundException("Product not found or not enough for your order");
             }
 
-            var product = await _productRepository.GetOneById(dto.ProductId);
-            
             product.Inventory -= dto.Quantity;
             await _productRepository.UpdateOneById(product);
 
-            var newOrderProduct = _mapper.Map<OrderProduct>(dto);
-
-            newOrderProduct.Product = product;
-            newOrderProduct.Order = order;
-            newOrderProduct.Quantity = dto.Quantity;
-
-            var createdOrderProduct = await _orderProductRepository.CreateOne(newOrderProduct);
-            
-            return createdOrderProduct;
+            return _mapper.Map<OrderProductReadDto>(await _orderProductRepository.CreateOne(orderProduct));   
         }
 
         public async Task<bool> DeleteOrderProduct(Guid orderId, Guid productId)
@@ -75,25 +90,25 @@ namespace Backend.Business.src.Implementations
             }
         }
 
-        public async Task<OrderProductReadDto> UpdateOrderProduct(OrderProductUpdateDto dto)
-        {
-            var product = await _productRepository.GetOneById(dto.ProductId);
-            var order = await _orderRepository.GetOneById(dto.OrderId);
+        // public async Task<OrderProductReadDto> UpdateOrderProduct(OrderProductUpdateDto dto)
+        // {
+        //     var product = await _productRepository.GetOneById(dto.ProductId);
+        //     var order = await _orderRepository.GetOneById(dto.OrderId);
 
-            product.Inventory -= dto.Quantity;
-            await _productRepository.UpdateOneById(product);
+        //     product.Inventory -= dto.Quantity;
+        //     await _productRepository.UpdateOneById(product);
             
-            foreach(var item in order.OrderProducts) {
-                if(item.Product.Id == dto.ProductId) {
-                    item.Quantity = dto.Quantity;
-                }
-            }
+        //     foreach(var item in order.OrderProducts) {
+        //         if(item.Product.Id == dto.ProductId) {
+        //             item.Quantity = dto.Quantity;
+        //         }
+        //     }
 
-            await _orderRepository.UpdateOneById(order);
+        //     await _orderRepository.UpdateOneById(order);
 
-            var updatedOrderProduct = await _orderProductRepository.UpdateOneById(_mapper.Map<OrderProduct>(dto));
-            return _mapper.Map<OrderProductReadDto>(updatedOrderProduct);
-        }
+        //     var updatedOrderProduct = await _orderProductRepository.UpdateOneById(_mapper.Map<OrderProduct>(dto));
+        //     return _mapper.Map<OrderProductReadDto>(updatedOrderProduct);
+        // }
 
     }
 }
