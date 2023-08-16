@@ -34,8 +34,12 @@ namespace Backend.Business.src.Implementations
             return _mapper.Map<IEnumerable<TReadDto>>(await _baseRepository.GetAll(queryOptions));
         }
 
-        public async Task<TReadDto> GetOneById(Guid id)
+        public virtual async Task<TReadDto> GetOneById(Guid id)
         {
+            var foundItem = await _baseRepository.GetOneById(id);
+            if(foundItem == null) {
+                throw CustomException.NotFoundException("Item not found.");
+            }
             return _mapper.Map<TReadDto>(await _baseRepository.GetOneById(id));
         }
 
@@ -49,7 +53,6 @@ namespace Backend.Business.src.Implementations
             }
             else
             {
-                await _baseRepository.DeleteOneById(foundItem);
                 throw CustomException.NotFoundException("Item not found.");
             }
         }

@@ -3,6 +3,7 @@ using Backend.Business.src.Dtos;
 using Backend.Domain.src.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Backend.Controller.src.Controllers
 {
@@ -27,49 +28,37 @@ namespace Backend.Controller.src.Controllers
             [FromBody] ReviewCreateDto dto
         )
         {
-            var userId = dto.UserId.ToString();
-            var user = HttpContext.User;
 
-            var authorizeOwner = await _authorizationService.AuthorizeAsync(
-                user,
-                userId,
-                "OwnerOnly"
-            );
-            if (authorizeOwner.Succeeded)
-            {
-                var createdObject = await _reviewService.CreateOne(dto);
+                var userId = new Guid(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+                var createdObject = await _reviewService.CreateOneReview(userId, dto);
                 return Ok(createdObject);
-            }
-            else
-            {
-                return new ForbidResult();
-            }
+
         }
 
-        [Authorize]
+        // [Authorize]
         public override async Task<ActionResult<ReviewReadDto>> UpdateOneById(
             [FromRoute] Guid id,
             [FromBody] ReviewUpdateDto dto
         )
         {
-            var review = await _reviewService.GetOneById(id);
-            var userId = review.UserId.ToString();
-            var user = HttpContext.User;
+            // var review = await _reviewService.GetOneById(id);
+            // var userId = review.UserId.ToString();
+            // var user = HttpContext.User;
 
-            var authorizeOwner = await _authorizationService.AuthorizeAsync(
-                user,
-                userId,
-                "OwnerOnly"
-            );
-            if (authorizeOwner.Succeeded)
-            {
+            // var authorizeOwner = await _authorizationService.AuthorizeAsync(
+            //     user,
+            //     userId,
+            //     "OwnerOnly"
+            // );
+            // if (authorizeOwner.Succeeded)
+            // {
                 var updatedObject = await _reviewService.UpdateOneById(id, dto);
                 return Ok(updatedObject);
-            }
-            else
-            {
-                return new ForbidResult();
-            }
+            // }
+            // else
+            // {
+            //     return new ForbidResult();
+            // }
         }
 
         [Authorize]

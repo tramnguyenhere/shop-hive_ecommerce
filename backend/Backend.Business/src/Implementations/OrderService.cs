@@ -32,9 +32,7 @@ namespace Backend.Business.src.Implementations
             _orderProductService = orderProductService;
             _productRepository = productRepository;
             _orderProductRepository = orderProductRepository;
-        }
-
-        
+        } 
 
         public override async Task<OrderReadDto> CreateOne(OrderCreateDto entity)
         {
@@ -87,6 +85,32 @@ namespace Backend.Business.src.Implementations
             };
 
             return orderReadDto;
+        }
+
+        // Only status of order is allowed to be updated.
+        public override async Task<OrderReadDto> UpdateOneById(Guid id, OrderUpdateDto orderUpdateDto) {
+            var foundOrder = await _orderRepository.GetOneById(id);
+
+            if (foundOrder == null) {
+                throw CustomException.NotFoundException("Order not found");
+            }
+            var user = foundOrder.User;
+
+            var updatedOrder = _mapper.Map<Order>(orderUpdateDto);
+
+            updatedOrder.Status = orderUpdateDto.Status;
+            updatedOrder.Recipient = string.IsNullOrEmpty(orderUpdateDto.Recipient)
+                    ? $"{user.FirstName} {user.LastName}"
+                    : orderUpdateDto.Recipient;
+            updatedOrder.PhoneNumber = string.IsNullOrEmpty(orderUpdateDto.PhoneNumber)
+                    ? user.PhoneNumber
+                    : orderUpdateDto.PhoneNumber;
+            updatedOrder.Email = string.IsNullOrEmpty(orderUpdateDto.Email) ? user.Email : orderUpdateDto.Email;
+            updatedOrder.Address = string.IsNullOrEmpty(orderUpdateDto.Address) ? user.Address : orderUpdateDto.Address;
+            updatedOrder.OrderProducts = foundOrder.OrderProducts;
+            updatedOrder.User = user;
+
+            return _mapper.Map<OrderReadDto>(await _orderRepository.UpdateOneById(updatedOrder));
         }
     }
 }

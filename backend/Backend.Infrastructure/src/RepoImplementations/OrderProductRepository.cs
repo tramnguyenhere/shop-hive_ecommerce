@@ -19,13 +19,6 @@ namespace Backend.Infrastructure.src.RepoImplementations
             _orderProducts = dbContext.OrderProducts;
         }
 
-        // public async Task<OrderProduct> CreateOrderProduct(OrderProduct orderProduct)
-        // {
-        //     await _orderProducts.AddAsync(orderProduct);
-        //     await _dbContext.SaveChangesAsync();
-        //     return orderProduct;
-        // }
-
         public override async Task<OrderProduct> CreateOne(OrderProduct entity)
         {
             return await base.CreateOne(entity);
@@ -34,6 +27,16 @@ namespace Backend.Infrastructure.src.RepoImplementations
         public async Task<IEnumerable<OrderProduct>> GetAllOrderProduct()
         {
             return await _orderProducts.AsNoTracking().ToArrayAsync();
+        }
+
+        public async Task<IEnumerable<OrderProduct>> GetAllOrderProductForAnOrder(Guid orderId)
+        {
+            return await _orderProducts.Where(orderProduct => orderProduct.Order.Id == orderId).ToArrayAsync();
+        }
+
+        public async Task<OrderProduct> GetOneByCompositionId(Guid orderId, Guid productId)
+        {
+            return await _orderProducts.FirstOrDefaultAsync(product => product.Product.Id == productId && product.Order.Id == orderId);
         }
     }
 }

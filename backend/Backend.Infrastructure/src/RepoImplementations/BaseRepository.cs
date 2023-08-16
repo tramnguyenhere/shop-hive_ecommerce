@@ -35,10 +35,9 @@ namespace Backend.Infrastructure.src.RepoImplementations
             return await _dbSet.AsNoTracking().ToArrayAsync();
         }
 
-        public async Task<T> GetOneById(Guid id)
+        public virtual async Task<T> GetOneById(Guid id)
         {
-            return await _dbSet.FindAsync(id);
-           
+            return await _dbSet.FindAsync(id); 
         }
 
         public async Task<T> UpdateOneById(T updatedEntity)

@@ -1,6 +1,6 @@
+using System.Collections.Immutable;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Json.Serialization;
 using Backend.Business.src.Abstractions;
 using Backend.Business.src.Implementations;
 using Backend.Business.src.Shared;
@@ -23,8 +23,8 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddDbContext<DatabaseContext>();
 
 // Add policy to handle service
-builder.Services.AddSingleton<ErrorHandlerMiddleware>()
-.AddSingleton<OwnerOnlyRequirementHandler>();
+builder.Services.AddSingleton<OwnerOnlyRequirementHandler>();
+builder.Services.AddSingleton<ErrorHandlerMiddleware>();
 
 // Add service DI
 builder.Services

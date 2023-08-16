@@ -23,80 +23,78 @@ namespace Backend.Business.src.Implementations
         {
             var product = await _productRepository.GetOneById(entity.Product.Id);
 
-            if (product == null || product.Inventory < entity.Quantity) {
-                throw CustomException.NotFoundException($"Product not found or not enough for your order.");
+            if (product == null) {
+                throw CustomException.NotFoundException($"Product not found.");
             }
+
+            if (product.Inventory < entity.Quantity) {
+                throw new CustomException(409,"The quantity of the product is not enough for your order.");
+            }
+
+            product.Inventory -= entity.Quantity;
+
+            await _productRepository.UpdateOneById(product);
 
             var createdOrderProduct = await _orderProductRepository.CreateOne(entity);
             
             return createdOrderProduct;
         }
 
-        public override async Task<OrderProductReadDto> CreateOne(OrderProductCreateDto dto)
-        {
-            var orderProduct = _mapper.Map<OrderProduct>(dto);
-            var product = await _productRepository.GetOneById(dto.ProductId);
-
-            if (product == null || product.Inventory < dto.Quantity) {
-                throw CustomException.NotFoundException("Product not found or not enough for your order");
-            }
-
-            // product.Inventory -= dto.Quantity;
-            // await _productRepository.UpdateOneById(product);
-
-            return _mapper.Map<OrderProductReadDto>(await _orderProductRepository.CreateOne(orderProduct));   
-        }
-
         public async Task<bool> DeleteOrderProduct(Guid orderId, Guid productId)
         {
-            Guid id = CombineIdService.CombineIds(orderId, productId);
+           var foundOrderProduct = await _orderProductRepository.GetOneByCompositionId(orderId, productId);
 
-            var toBeDeletedProduct = await _orderProductRepository.GetOneById(id);
-
-            if(toBeDeletedProduct != null) {
-                await _orderProductRepository.DeleteOneById(toBeDeletedProduct);
-                return true;
+            if (foundOrderProduct == null) {
+                throw CustomException.NotFoundException("Order Product not found");
             }
-            return false;
-            throw CustomException.NotFoundException("Item not found"); 
 
+            return await _orderProductRepository.DeleteOneById(foundOrderProduct); 
         }
 
-        public async Task<IEnumerable<OrderProductReadDto>> GetAllOrderProduct()
+        public async Task<IEnumerable<OrderProduct>> GetAllOrderProductForAnOrder(Guid orderId)
         {
-            return (IEnumerable<OrderProductReadDto>)_mapper.Map<OrderProductReadDto>(await _orderProductRepository.GetAllOrderProduct());
-        }
+            var order = await _orderRepository.GetOneById(orderId);
 
-        public async Task<OrderProductReadDto> GetOrderProductByIdComposition(Guid orderId, Guid productId)
-        {
-            Guid id = CombineIdService.CombineIds(orderId, productId);
-            var foundItem =  await _orderProductRepository.GetOneById(id);
-            if(foundItem != null) {
-                return _mapper.Map<OrderProductReadDto>(foundItem);
-            } else {
-                throw CustomException.NotFoundException("Item not found");
+            if (order == null) {
+                throw CustomException.NotFoundException("Order not found");
             }
+
+            // await _orderProductRepository.GetAllOrderProductForAnOrder(order); // should add logic
+            return order.OrderProducts;
         }
 
-        // public async Task<OrderProductReadDto> UpdateOrderProduct(OrderProductUpdateDto dto)
-        // {
-        //     var product = await _productRepository.GetOneById(dto.ProductId);
-        //     var order = await _orderRepository.GetOneById(dto.OrderId);
+        public async Task<OrderProduct> GetOrderProductByIdComposition(Guid orderId, Guid productId)
+        {
+                   
+            var order = await _orderRepository.GetOneById(orderId);
 
-        //     product.Inventory -= dto.Quantity;
-        //     await _productRepository.UpdateOneById(product);
+            if (order == null) {
+                throw CustomException.NotFoundException("Order not found");
+            }
+
+            var orderProduct = order.OrderProducts.FirstOrDefault(product => product.Product.Id == productId && product.Order.Id == orderId);
             
-        //     foreach(var item in order.OrderProducts) {
-        //         if(item.Product.Id == dto.ProductId) {
-        //             item.Quantity = dto.Quantity;
-        //         }
-        //     }
+            if(orderProduct == null) {
+                throw CustomException.NotFoundException("OrderProduct not found");
+            }
 
-        //     await _orderRepository.UpdateOneById(order);
+            return await _orderProductRepository.GetOneByCompositionId(orderId, productId);
+        }
 
-        //     var updatedOrderProduct = await _orderProductRepository.UpdateOneById(_mapper.Map<OrderProduct>(dto));
-        //     return _mapper.Map<OrderProductReadDto>(updatedOrderProduct);
-        // }
+        public async Task<OrderProduct> UpdateOrderProduct(Guid orderId, Guid productId, OrderProductUpdateDto entityDto)
+        {
+            var foundOrderProduct = await _orderProductRepository.GetOneByCompositionId(orderId, productId);
 
+            if (foundOrderProduct == null) {
+                throw CustomException.NotFoundException("Order Product not found");
+            } 
+
+            var updatedOrderProduct = _mapper.Map<OrderProduct>(entityDto);
+            updatedOrderProduct.Product = await _productRepository.GetOneById(productId);
+            updatedOrderProduct.Order = await _orderRepository.GetOneById(orderId);
+            updatedOrderProduct.Quantity = entityDto.Quantity;
+
+            return await _orderProductRepository.UpdateOneById(updatedOrderProduct);
+        }
     }
 }
