@@ -10,7 +10,7 @@ namespace Backend.Business.src.Dtos
         public string Email { get; set; }
         public string Address { get; set; }
         public OrderStatus Status { get; set; }
-        public List<OrderProduct> OrderProducts { get; set; }
+        public List<OrderProductReadDto> OrderProducts { get; set; }
     }
 
     public class OrderCreateDto
@@ -22,6 +22,7 @@ namespace Backend.Business.src.Dtos
         public string? Address { get; set; } = string.Empty;
         public OrderStatus? Status { get; set; } = OrderStatus.Pending;
         public List<OrderProductCreateDto> OrderProducts { get; set; } = new List<OrderProductCreateDto>();
+        // public List<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
     }
     
     public class OrderUpdateDto

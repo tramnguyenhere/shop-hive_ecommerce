@@ -4,7 +4,6 @@ using Backend.Business.src.Dtos;
 using Backend.Business.src.Shared;
 using Backend.Domain.src.Abstractions;
 using Backend.Domain.src.Entities;
-using Backend.Domain.src.Shared;
 
 namespace Backend.Business.src.Implementations
 {
@@ -25,7 +24,7 @@ namespace Backend.Business.src.Implementations
             var product = await _productRepository.GetOneById(entity.Product.Id);
 
             if (product == null || product.Inventory < entity.Quantity) {
-                throw new CustomException(409, "The product is already in the order. Update instead of create new order product.");
+                throw CustomException.NotFoundException($"Product not found or not enough for your order.");
             }
 
             var createdOrderProduct = await _orderProductRepository.CreateOne(entity);

@@ -22,7 +22,7 @@ namespace Backend.Infrastructure.src.Middleware
             catch (Exception e) 
             {
                 context.Response.StatusCode = 500;
-                await context.Response.WriteAsJsonAsync("Internal server error");
+                await context.Response.WriteAsJsonAsync(e.Message);
             }
         }
     }

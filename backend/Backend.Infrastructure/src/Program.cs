@@ -1,13 +1,14 @@
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 using Backend.Business.src.Abstractions;
 using Backend.Business.src.Implementations;
 using Backend.Business.src.Shared;
 using Backend.Domain.src.Abstractions;
+using Backend.Infrastructure.src;
 using Backend.Infrastructure.src.Database;
 using Backend.Infrastructure.src.Middleware;
 using Backend.Infrastructure.src.RepoImplementations;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -22,7 +23,8 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddDbContext<DatabaseContext>();
 
 // Add policy to handle service
-builder.Services.AddSingleton<ErrorHandlerMiddleware>();
+builder.Services.AddSingleton<ErrorHandlerMiddleware>()
+.AddSingleton<OwnerOnlyRequirementHandler>();
 
 // Add service DI
 builder.Services
@@ -87,6 +89,7 @@ builder.Services
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminRole", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+    options.AddPolicy("OwnerOnly", policy => policy.Requirements.Add(new OwnerOnlyRequirement()));
 });
 
 var app = builder.Build();

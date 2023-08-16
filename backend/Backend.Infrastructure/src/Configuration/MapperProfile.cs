@@ -23,7 +23,6 @@ namespace Backend.Infrastructure.src.Configuration
             CreateMap<OrderProductCreateDto, OrderProduct>();
             CreateMap<OrderProductUpdateDto, OrderProduct>();
             CreateMap<OrderProduct, OrderProductReadDto>();
-            CreateMap<OrderProductReadDto, OrderProduct>();
 
             CreateMap<Review, ReviewReadDto>();
             CreateMap<ReviewUpdateDto, Review>();
