@@ -20,29 +20,18 @@ namespace Backend.Business.src.Implementations
             _orderRepository = orderRepository;
         }
 
-        // public async Task<OrderProduct> CreateOrderProduct(OrderProductCreateDto dto, Order order)
-        // {
-        //     bool productExists = order.OrderProducts.Any(p => p.Product.Id == dto.ProductId);
+        public async Task<OrderProduct> CreateOrderProduct(OrderProduct entity)
+        {
+            var product = await _productRepository.GetOneById(entity.Product.Id);
 
-        //     if (productExists) {
-        //         throw new CustomException(409, "The product is already in the order. Update instead of create new order product.");
-        //     }
+            if (product == null || product.Inventory < entity.Quantity) {
+                throw new CustomException(409, "The product is already in the order. Update instead of create new order product.");
+            }
 
-        //     var product = await _productRepository.GetOneById(dto.ProductId);
+            var createdOrderProduct = await _orderProductRepository.CreateOne(entity);
             
-        //     product.Inventory -= dto.Quantity;
-        //     await _productRepository.UpdateOneById(product);
-
-        //     var newOrderProduct = _mapper.Map<OrderProduct>(dto);
-
-        //     newOrderProduct.Product = product;
-        //     newOrderProduct.Order = order;
-        //     newOrderProduct.Quantity = dto.Quantity;
-
-        //     var createdOrderProduct = await _orderProductRepository.CreateOne(newOrderProduct);
-            
-        //     return createdOrderProduct;
-        // }
+            return createdOrderProduct;
+        }
 
         public override async Task<OrderProductReadDto> CreateOne(OrderProductCreateDto dto)
         {
@@ -53,8 +42,8 @@ namespace Backend.Business.src.Implementations
                 throw CustomException.NotFoundException("Product not found or not enough for your order");
             }
 
-            product.Inventory -= dto.Quantity;
-            await _productRepository.UpdateOneById(product);
+            // product.Inventory -= dto.Quantity;
+            // await _productRepository.UpdateOneById(product);
 
             return _mapper.Map<OrderProductReadDto>(await _orderProductRepository.CreateOne(orderProduct));   
         }

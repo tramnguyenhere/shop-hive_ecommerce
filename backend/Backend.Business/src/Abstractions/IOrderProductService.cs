@@ -6,7 +6,7 @@ namespace Backend.Business.src.Abstractions
 {
     public interface IOrderProductService: IBaseService<OrderProduct,OrderProductReadDto, OrderProductCreateDto, OrderProductUpdateDto>
     {
-        // Task<OrderProduct> CreateOrderProduct(OrderProductCreateDto dto, Order order);
+        Task<OrderProduct> CreateOrderProduct(OrderProduct entity);
         // Task<OrderProductReadDto> UpdateOrderProduct(OrderProductUpdateDto dto);
         // Task<bool> DeleteOrderProduct(Guid orderId, Guid productId);
         // Task<IEnumerable<OrderProductReadDto>> GetAllOrderProduct();

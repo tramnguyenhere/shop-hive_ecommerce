@@ -58,37 +58,28 @@ namespace Backend.Business.src.Implementations
             };
 
             var createdOrder = await _orderRepository.CreateOne(order);
-            var createdOrderReadDto = new OrderReadDto();
+            var orderProducts = _mapper.Map<IEnumerable<OrderProduct>>(entity.OrderProducts);
 
-            if (entity.OrderProducts != null && entity.OrderProducts.Any())
-            {
-                var orderProducts = _mapper.Map<IEnumerable<OrderProduct>>(entity.OrderProducts);
-
-                for (int i = 0; i < orderProducts.Count(); i++)
-                {
-                    var orderProductAtCurrentIndex = orderProducts.ElementAt(i);
-                    orderProductAtCurrentIndex.Order = createdOrder;
-                    orderProductAtCurrentIndex.Product = await _productRepository.GetOneById(
-                        entity.OrderProducts.ElementAt(i).ProductId
-                    );
-
-                    var createdOrderProduct = await _orderProductRepository.CreateOne(
-                        orderProductAtCurrentIndex
-                    );
-
-                    createdOrder.OrderProducts.Add(createdOrderProduct);
-                }
-                createdOrderReadDto = new OrderReadDto
-                {
-                    UserId = user.Id,
-                    Recipient = createdOrder.Recipient,
-                    Email = createdOrder.Email,
-                    PhoneNumber = createdOrder.PhoneNumber,
-                    Address = createdOrder.Address,
-                    Status = createdOrder.Status,
-                    OrderProducts = createdOrder.OrderProducts
-                };
+            for(int i = 0; i <orderProducts.Count(); i++ ) {
+                var orderProductAtCurrentIndex = orderProducts.ElementAt(i);
+                orderProductAtCurrentIndex.Order = createdOrder;
+                orderProductAtCurrentIndex.Product = await _productRepository.GetOneById(entity.OrderProducts.ElementAt(i).ProductId);
+                 
+                var createdOrderProduct = await _orderProductService.CreateOrderProduct(orderProductAtCurrentIndex);  
+                
+                createdOrder.OrderProducts.Add(createdOrderProduct);
             }
+
+            var createdOrderReadDto = new OrderReadDto{
+                UserId = user.Id,
+                Recipient = createdOrder.Recipient,
+                Email = createdOrder.Email,
+                PhoneNumber = createdOrder.PhoneNumber,
+                Address = createdOrder.Address,
+                Status = createdOrder.Status,
+                OrderProducts = createdOrder.OrderProducts
+            };
+
             return createdOrderReadDto;
         }
     }
