@@ -12,7 +12,7 @@ const ProductList = ({ products }: { products: Product[] }) => {
           description={product.description}
           title={product.title}
           price={product.price}
-          images={product.images}
+          imageUrl={product.imageUrl}
         />
       ))}
     </div>

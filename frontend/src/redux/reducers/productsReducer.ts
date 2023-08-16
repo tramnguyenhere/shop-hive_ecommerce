@@ -5,7 +5,7 @@ import { Product } from "../../types/Product";
 import { ProductUpdate } from "../../types/ProductUpdate";
 import { NewProduct } from "../../types/NewProduct";
 
-const baseUrl = "https://api.escuelajs.co/api/v1/products";
+const baseUrl = "/api/v1/products";
 
 const initialState: {
   products: Product[];
@@ -75,7 +75,7 @@ export const updateSingleProduct = createAsyncThunk(
 
 export const deleteSingleProduct = createAsyncThunk(
   "deleteSingleProduct",
-  async (productId: number) => {
+  async (productId: string) => {
     try {
       const result = await axios.delete(`${baseUrl}/${productId}`);
       return { response: result.data, id: productId };

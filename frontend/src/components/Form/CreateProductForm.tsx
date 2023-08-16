@@ -27,8 +27,8 @@ const CreateProductForm = ({
       title: data.title,
       price: Number(data.price),
       description: data.description,
-      categoryId: Number(data.categoryId),
-      images: [`${data.images}`],
+      categoryId: data.categoryId,
+      imageUrl: `${data.imageUrl}`,
     };
 
     dispatch(createNewProduct(newProduct));
@@ -77,7 +77,7 @@ const CreateProductForm = ({
           </option>
           {categories.map(
             (category) =>
-              category.id !== 0 && (
+              category.id !== "0" && (
                 <option key={category.id} value={category.id}>
                   {category.name}
                 </option>
@@ -92,9 +92,9 @@ const CreateProductForm = ({
         <input
           type="url"
           placeholder="Image URL"
-          {...register("images", { required: true })}
+          {...register("imageUrl", { required: true })}
         />
-        {errors.images && (
+        {errors.imageUrl && (
           <span className="form--error">This field is required!</span>
         )}
       </div>

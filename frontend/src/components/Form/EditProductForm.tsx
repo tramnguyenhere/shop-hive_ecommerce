@@ -17,7 +17,7 @@ const EditProductForm = () => {
   const { id } = useParams();
 
   const toBeEditedProduct = products.filter(
-    (product) => product.id === Number(id)
+    (product) => product.id === id
   )[0];
 
   const [newTitle, setNewTitle] = useState(toBeEditedProduct?.title);
@@ -28,18 +28,18 @@ const EditProductForm = () => {
   const [newCategory, setNewCategory] = useState(
     toBeEditedProduct?.category!.id
   );
-  const [newImage, setNewImage] = useState(toBeEditedProduct?.images);
+  const [newImage, setNewImage] = useState(toBeEditedProduct?.imageUrl);
 
   const editFormHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     if (toBeEditedProduct) {
       const updatedProduct: ProductUpdate = {
-        id: Number(id),
+        id: id ?? "",
         update: {
           title: newTitle,
           price: newPrice,
           category: categories.find((category) => category.id === newCategory),
-          images: newImage,
+          imageUrl: newImage,
           description: newDescription,
         },
       };
@@ -50,7 +50,7 @@ const EditProductForm = () => {
 
   const deleteProductHandler = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    dispatch(deleteSingleProduct(Number(id)));
+    dispatch(deleteSingleProduct(id ?? ""));
     navigate("/products");
   };
 
@@ -84,11 +84,11 @@ const EditProductForm = () => {
         <h3 className="user-profile--edit__section__header">Category</h3>
         <select
           value={newCategory}
-          onChange={(e) => setNewCategory(Number(e.target.value))}
+          onChange={(e) => setNewCategory(e.target.value)}
         >
           {categories.map(
             (category) =>
-              category.id !== 0 && (
+              category.id !== "0" && (
                 <option key={category.id} value={category.id}>
                   {category.name}
                 </option>
@@ -101,7 +101,7 @@ const EditProductForm = () => {
         <input
           placeholder="Change image"
           value={newImage[0]}
-          onChange={(e) => setNewImage([e.target.value])}
+          onChange={(e) => setNewImage(e.target.value)}
         />
       </div>
       <button className="full-width-button__primary" type="submit">

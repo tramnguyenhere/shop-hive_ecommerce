@@ -15,7 +15,7 @@ const Category = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (selectedCategoryId === 0) {
+    if (selectedCategoryId === "0") {
       dispatch(setFilteredProducts(products));
     } else {
       const productsByCategory = products.filter(
@@ -42,7 +42,7 @@ const Category = () => {
     <div className="categories">
       {categories.map((category) => (
         <button
-          onClick={() => dispatch(setCategory(category.id))}
+          onClick={() => dispatch(setCategory(category.id ?? ""))}
           className={`${
             selectedCategoryId === category.id
               ? "fit-button__primary"

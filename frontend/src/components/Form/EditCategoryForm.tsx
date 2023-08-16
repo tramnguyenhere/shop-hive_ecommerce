@@ -10,9 +10,8 @@ const EditCategoryForm = ({ category }: { category: Category }) => {
 
   const editFormHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log({id: category.id, update: {name}});
 
-    dispatch(updateSingleCategory({ id: category.id, update: { name } }));
+    dispatch(updateSingleCategory({ id: category.id ?? "", update: { name } }));
   };
   return (
     <form onSubmit={editFormHandler} className="form__group">

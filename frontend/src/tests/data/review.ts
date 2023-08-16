@@ -5,7 +5,7 @@ export const review1: Review = {
   name: "Tram Nguyen",
   email: "tram@gmail.com",
   feedback: "Very good",
-  productId: 1,
+  productId: "1",
 };
 
 export const review2: Review = {
@@ -13,7 +13,7 @@ export const review2: Review = {
   name: "John Doe",
   email: "johndoe@gmail.com",
   feedback: "Good",
-  productId: 2,
+  productId: "2",
 };
 
 export const review3: Review = {
@@ -21,5 +21,5 @@ export const review3: Review = {
   name: "John Dooooe",
   email: "johndsdasdasoe@gmail.com",
   feedback: "bad",
-  productId: 2,
+  productId: "2",
 };

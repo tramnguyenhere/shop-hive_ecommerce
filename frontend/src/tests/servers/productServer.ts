@@ -24,23 +24,17 @@ const productServer = setupServer(
     if (!(newProduct.price > 0)) {
       error.push('price must be a positive number');
     }
-    if (!Array.isArray(newProduct.images)) {
-      error.push('images must be an array');
-    } else if (newProduct.images.length < 1) {
-      error.push('images must contain at least 1 image');
-    } else if (newProduct.images.some((item) => typeof item !== 'string')) {
-      error.push('images must be an array of string');
-    }
+
     if (!category) {
       error.push('category does not exist');
     } else {
       product = {
-        id: products.length + 1,
+       
         title: newProduct.title,
         price: newProduct.price,
         category: category,
         description: newProduct.description,
-        images: newProduct.images,
+        imageUrl: newProduct.imageUrl,
       };
     }
     if (error.length > 0) {
@@ -57,7 +51,7 @@ const productServer = setupServer(
   }),
 
   rest.delete(baseUrl + '/:id', async (req, res, ctx) => {
-    const id = Number(req.params.id);
+    const id =req.params.id;
     let products = store.getState().productsReducer.products;
     products = products.filter((item) => item.id !== id);
 

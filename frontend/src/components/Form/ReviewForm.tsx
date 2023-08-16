@@ -5,7 +5,7 @@ import { Review } from "../../types/Review";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { appendReview } from "../../redux/reducers/reviewReducer";
 
-const ReviewForm = ({ productId }: { productId?: number }) => {
+const ReviewForm = ({ productId }: { productId?: string }) => {
   const {
     register,
     handleSubmit,

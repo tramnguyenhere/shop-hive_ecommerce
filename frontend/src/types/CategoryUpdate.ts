@@ -1,5 +1,5 @@
 export interface CategoryUpdate {
-  id: number;
+  id: string;
   update: {
     name: string;
   };

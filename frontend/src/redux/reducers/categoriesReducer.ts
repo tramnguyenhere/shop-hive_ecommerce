@@ -8,13 +8,13 @@ const baseUrl = "https://api.escuelajs.co/api/v1/categories";
 
 const initialState: {
   categories: Category[];
-  selectedCategoryId: number;
+  selectedCategoryId: string;
   loading: boolean;
   error: string;
   isCreateCategoryVisible: boolean;
 } = {
   categories: [],
-  selectedCategoryId: 0,
+  selectedCategoryId: "0",
   loading: false,
   error: "",
   isCreateCategoryVisible: false,
@@ -64,7 +64,7 @@ export const updateSingleCategory = createAsyncThunk(
 
 export const deleteSingleCategory = createAsyncThunk(
   "deleteSingleCategory",
-  async (categoryId: number) => {
+  async (categoryId: string) => {
     try {
       const result = await axios.delete(`${baseUrl}/${categoryId}`);
       return { response: result.data, id: categoryId };
@@ -79,7 +79,7 @@ const categoriesSlice = createSlice({
   name: "categories",
   initialState,
   reducers: {
-    setCategory: (state, action: PayloadAction<number>) => {
+    setCategory: (state, action: PayloadAction<string>) => {
       state.selectedCategoryId = action.payload;
     },
     emptyCategoriesReducer: (state) => {
@@ -94,7 +94,7 @@ const categoriesSlice = createSlice({
         } else {
           state.categories = [
             {
-              id: 0,
+              id: "0",
               name: "All",
               image: "",
             },

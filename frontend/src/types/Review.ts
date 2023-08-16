@@ -3,5 +3,5 @@ export interface Review {
   name: string;
   email: string;
   feedback: string;
-  productId: number | undefined;
+  productId: string | undefined;
 }

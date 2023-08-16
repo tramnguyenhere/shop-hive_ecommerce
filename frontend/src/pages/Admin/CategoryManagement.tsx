@@ -32,7 +32,7 @@ const CategoryManagement = () => {
             <p>{category.name}</p>
             <div className="category-management__buttons">
               <EditCategoryForm category={category} />
-              <button className="category-management__button fit-button__primary" onClick={()=>dispatch(deleteSingleCategory(category.id))}>
+              <button className="category-management__button fit-button__primary" onClick={()=>dispatch(deleteSingleCategory(category.id ?? ""))}>
                 Delete
               </button>
             </div>

@@ -29,7 +29,7 @@ const categoryServer = setupServer(
     } else if (typeof newCategory.image !== "string") {
       error.push("category's image url must be a string");
     } else {
-      category = { id: categories.length, ...newCategory };
+      category = newCategory;
     }
 
     if (error.length > 0) {

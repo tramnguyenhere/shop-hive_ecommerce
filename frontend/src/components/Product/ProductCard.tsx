@@ -10,15 +10,17 @@ import {
 import useAppSelector from "../../hooks/useAppSelector";
 import { userRoleEnum } from "../../types/User";
 
-const ProductCard = ({ title, price, images, description, id }: Product) => {
+const ProductCard = ({ title, price, imageUrl, description, id }: Product) => {
   const { currentUser } = useAppSelector((state) => state.users);
 
   const dispatch = useAppDispatch();
 
   const cartHandler = () => {
-    dispatch(addItemToCart({ title, price, images, description, id }));
+    dispatch(addItemToCart({ title, price, imageUrl, description, id }));
     dispatch(manageSideCartVisible(true));
   };
+
+  console.log(title)
 
   return (
     <article className="product-card">
@@ -29,7 +31,7 @@ const ProductCard = ({ title, price, images, description, id }: Product) => {
             : `/products/${id}`
         }
       >
-        <img className="product-card__image" alt={title} src={images[0]} />
+        <img className="product-card__image" alt={title} src={imageUrl} />
       </Link>
       <section className="product-card__information">
         <h3 className="product-card__information__title">{title}</h3>

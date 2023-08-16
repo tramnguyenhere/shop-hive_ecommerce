@@ -7,7 +7,7 @@ import { NewProduct } from "../../types/NewProduct";
 import productServer from "../servers/productServer";
 import store from "../shared/store";
 
-const deletedProductId = 1;
+const deletedProductId = "1";
 
 beforeAll(() => {
   productServer.listen();
@@ -37,8 +37,8 @@ describe("Test productsReducer", () => {
       title: "new product",
       price: 300,
       description: "new pro",
-      images: ["image.jpg"],
-      categoryId: 2,
+      imageUrl: "image.jpg",
+      categoryId: "2",
     };
 
     await store.dispatch(fetchAllProducts());

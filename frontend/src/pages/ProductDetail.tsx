@@ -56,7 +56,7 @@ const ProductDetail = () => {
                 key={product.id}
                 title={product.title}
                 price={product.price}
-                images={product.images}
+                imageUrl={product.imageUrl}
                 description={product.description}
                 id={product.id}
               />

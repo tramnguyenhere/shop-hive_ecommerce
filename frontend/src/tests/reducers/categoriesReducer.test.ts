@@ -26,14 +26,14 @@ beforeEach(() => {
 describe("Test categoriesReducer", () => {
   const initialState = {
     categories: [],
-    selectedCategoryId: 0,
+    selectedCategoryId: "0",
     loading: false,
     error: "",
     isCreateCategoryVisible: false,
   };
 
   test("Check setCategory", () => {
-    const action = setCategory(1);
+    const action = setCategory("1");
     const newState = categoriesReducer(initialState, action);
 
     expect(newState.selectedCategoryId).toEqual(1);
@@ -60,7 +60,7 @@ describe("Test categoriesReducer", () => {
 
   // Update does not works
   test("Check updateSingleCategory", async () => {
-    const updateCategory = { id: 0, update: { name: "updated" } };
+    const updateCategory = { id: "0", update: { name: "updated" } };
 
     // Add the category
     await store.dispatch(
@@ -72,7 +72,7 @@ describe("Test categoriesReducer", () => {
   });
 
   test("Delete single category", async () => {
-    await store.dispatch(deleteSingleCategory(1));
+    await store.dispatch(deleteSingleCategory("1"));
     // console.log(store.getState().categoriesReducer);
   });
 

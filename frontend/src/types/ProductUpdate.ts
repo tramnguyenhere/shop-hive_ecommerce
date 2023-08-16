@@ -1,6 +1,6 @@
 import { Product } from "./Product";
 
 export interface ProductUpdate {
-  id: number;
+  id: string;
   update: Omit<Product, "id">;
 }

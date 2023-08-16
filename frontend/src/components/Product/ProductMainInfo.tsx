@@ -15,11 +15,11 @@ const ProductMainInfo = ({
   selectedProduct?: Product;
 }) => {
   const { currentUser } = useAppSelector((state) => state.users);
-  const [mainImage, setMainImage] = useState(selectedProduct?.images[0]);
+  const mainImage = selectedProduct?.imageUrl;
 
-  useEffect(() => {
-    setMainImage(selectedProduct?.images[0]);
-  }, [selectedProduct]);
+  // useEffect(() => {
+  //   setMainImage(selectedProduct?.images[0]);
+  // }, [selectedProduct]);
 
   const dispatch = useAppDispatch();
 
@@ -33,15 +33,14 @@ const ProductMainInfo = ({
   return (
     <section className="product-details">
       <div className="product-details__images">
-        {selectedProduct?.images.map((image, index) => (
-          <div key={`image--${index}`} className="product-details__image">
+       
+          <div className="product-details__image">
             <img
-              src={image}
+              src={selectedProduct?.imageUrl}
               alt="product"
-              onClick={() => setMainImage(image)}
             />
           </div>
-        ))}
+        
       </div>
       <div className="product-details__image--main">
         <img src={mainImage} alt="product-highlight" />
