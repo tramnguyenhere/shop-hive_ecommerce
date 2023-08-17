@@ -16,6 +16,12 @@ namespace Backend.Infrastructure.src.RepoImplementations
             _dbContext = dbContext;
             _reviews = dbContext.Reviews;
         }
+
+        public override async Task<Review> GetOneById(Guid id)
+        {
+            return await _reviews.Include(r=>r.User).Include(r=>r.Product).FirstOrDefaultAsync(r=>r.Id==id); 
+        }
+
         public override async Task<IEnumerable<Review>> GetAll(QueryOptions queryOptions)
         {
             IQueryable<Review> query = _reviews;

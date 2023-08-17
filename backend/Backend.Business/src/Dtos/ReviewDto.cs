@@ -9,12 +9,13 @@ namespace Backend.Business.src.Dtos
         public Guid UserId { get; set; }
         public string Feedback { get; set; }
     }
+
     public class ReviewCreateDto
     {
         public Guid ProductId { get; set; }
-        // public Guid UserId { get; set; }
         public string Feedback { get; set; }
     }
+
     public class ReviewUpdateDto
     {
         public string Feedback { get; set; }

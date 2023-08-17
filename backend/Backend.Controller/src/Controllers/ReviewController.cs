@@ -56,7 +56,8 @@ namespace Backend.Controller.src.Controllers
             }
             else
             {
-                return new ForbidResult();
+                // return new ForbidResult();
+                throw new Exception($"{userId} is not authorized");
             }
         }
 

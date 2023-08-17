@@ -25,7 +25,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
 
             if (!string.IsNullOrWhiteSpace(queryOptions.Search))
             {
-                query = query.Where(
+                query = query.Include(q=>q.OrderProducts).Where(
                     order =>
                         order.OrderProducts.Any(
                             orderProduct =>
@@ -73,6 +73,11 @@ namespace Backend.Infrastructure.src.RepoImplementations
             }
 
             return await query.ToArrayAsync();
+        }
+
+        public override async Task<Order> GetOneById(Guid id)
+        {
+            return await _orders.Include(r=>r.User).Include(r=>r.OrderProducts).FirstOrDefaultAsync(r=>r.Id==id); 
         }
     }
 }

@@ -1,5 +1,6 @@
 using Backend.Domain.src.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Npgsql;
 
 namespace Backend.Infrastructure.src.Database
@@ -7,12 +8,15 @@ namespace Backend.Infrastructure.src.Database
     public class DatabaseContext : DbContext
     {
         private readonly IConfiguration _configuration;
-        public DatabaseContext(DbContextOptions options,IConfiguration configuration) : base(options)
+
+        public DatabaseContext(DbContextOptions options, IConfiguration configuration)
+            : base(options)
         {
             _configuration = configuration;
         }
 
-        static DatabaseContext() {
+        static DatabaseContext()
+        {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
         }
@@ -26,7 +30,9 @@ namespace Backend.Infrastructure.src.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var builder = new NpgsqlDataSourceBuilder(_configuration.GetConnectionString("Default"));
+            var builder = new NpgsqlDataSourceBuilder(
+                _configuration.GetConnectionString("Default")
+            );
             builder.MapEnum<UserRole>();
             builder.MapEnum<OrderStatus>();
             optionsBuilder.AddInterceptors(new TimeStampInterceptor());

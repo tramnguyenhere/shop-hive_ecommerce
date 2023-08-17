@@ -36,7 +36,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
 
         public async Task<OrderProduct> GetOneByCompositionId(Guid orderId, Guid productId)
         {
-            return await _orderProducts.FirstOrDefaultAsync(product => product.Product.Id == productId && product.Order.Id == orderId);
+            return await _orderProducts.Include(p=>p.Order).Include(p=>p.Product).FirstOrDefaultAsync(product => product.Product.Id == productId && product.Order.Id == orderId);
         }
     }
 }
