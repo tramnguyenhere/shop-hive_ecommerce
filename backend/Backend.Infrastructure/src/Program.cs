@@ -10,6 +10,7 @@ using Backend.Infrastructure.src.Database;
 using Backend.Infrastructure.src.Middleware;
 using Backend.Infrastructure.src.RepoImplementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -23,8 +24,8 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddDbContext<DatabaseContext>();
 
 // Add policy to handle service
-builder.Services.AddSingleton<OwnerOnlyRequirementHandler>();
 builder.Services.AddSingleton<ErrorHandlerMiddleware>();
+builder.Services.AddSingleton<IAuthorizationHandler, OwnerOnlyRequirementHandler>();
 
 // Add service DI
 builder.Services

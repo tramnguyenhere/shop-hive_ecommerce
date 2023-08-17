@@ -13,6 +13,7 @@ namespace Backend.Infrastructure.src
         {
             var authenticatedUser = context.User;
             var userId = authenticatedUser.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            Console.WriteLine($"userId: {userId}, resource: {resource}");
             if (userId == resource)
             {
                 context.Succeed(requirement);
