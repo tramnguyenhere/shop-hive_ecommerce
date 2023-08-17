@@ -64,16 +64,16 @@ describe("usersReducer", () => {
 
   test("create new user ok", async () => {
     const createUser = {
-      name: "111111",
-      email: "admin11@mail.com",
-      password: "123456",
-      avatar:
-        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FGitHub&psig=AOvVaw1y5Ey0pb7i_cnnd6qlfEWF&ust=1684862933277000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCPDNode5if8CFQAAAAAdAAAAABAE",
-    };
+      firstName: "string",
+        lastName: "string",
+        email: "string",
+        phoneNumber: "string",
+        role: userRoleEnum.Admin,
+        avatar: "string"};
     await store.dispatch(createNewUser(createUser as User));
 
     expect(store.getState().usersReducer.users.length).toBe(4);
-    expect(store.getState().usersReducer.users[3].name).toBe("111111");
+    expect(store.getState().usersReducer.users[3].firstName).toBe("111111");
     // expect(store.getState().usersReducer.error).toBe("Request failed with status code 400")
   });
 
@@ -96,11 +96,13 @@ describe("usersReducer", () => {
     const userUpdate: UserUpdate = {
       id: 1,
       update: {
-        email: "johnnn@mail.com",
-        name: "john updated",
-        password: "john",
-        avatar: "",
+        firstName: "string",
+        lastName: "string",
+        email: "string",
+        phoneNumber: "string",
         role: userRoleEnum.Admin,
+        avatar: "string",
+        address: ""
       },
     };
     //only can check the final result

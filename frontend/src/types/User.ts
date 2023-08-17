@@ -1,13 +1,16 @@
 export enum userRoleEnum {
-  Customer = "customer",
-  Admin = "admin",
+  Customer = "Customer",
+  Admin = "Admin",
 }
 
 export interface User {
-  id: number | string;
+  id: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  password: string;
+  phoneNumber: string;
   role: userRoleEnum;
-  name: string;
   avatar: string;
+  address: string;
+  password?: string;
 }

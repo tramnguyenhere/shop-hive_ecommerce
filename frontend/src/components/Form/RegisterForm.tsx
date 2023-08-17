@@ -33,10 +33,20 @@ const RegisterForm = () => {
       <div className="form__group">
         <input
           type="text"
-          placeholder="Enter your name"
-          {...register("name", { required: true })}
+          placeholder="Enter your first name"
+          {...register("firstName", { required: true })}
         />
-        {errors.name && (
+        {errors.firstName && (
+          <span className="form--error">This field is required!</span>
+        )}
+      </div>
+      <div className="form__group">
+        <input
+          type="text"
+          placeholder="Enter your last name"
+          {...register("lastName", { required: true })}
+        />
+        {errors.lastName && (
           <span className="form--error">This field is required!</span>
         )}
       </div>
@@ -45,6 +55,30 @@ const RegisterForm = () => {
           type="email"
           placeholder="Enter your email"
           {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
+        />
+        {errors.email && (
+          <span className="form--error">
+            This field is required to put a valid email!
+          </span>
+        )}
+      </div>
+      <div className="form__group">
+        <input
+          type="text"
+          placeholder="Enter your phone number"
+          {...register("phoneNumber")}
+        />
+        {errors.email && (
+          <span className="form--error">
+            This field is required to put a valid email!
+          </span>
+        )}
+      </div>
+      <div className="form__group">
+        <input
+          type="text"
+          placeholder="Enter your address"
+          {...register("address")}
         />
         {errors.email && (
           <span className="form--error">

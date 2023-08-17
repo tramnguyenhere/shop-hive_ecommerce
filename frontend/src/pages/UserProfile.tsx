@@ -27,7 +27,7 @@ const UserProfile = () => {
             </div>
             <div className="user-profile__section">
               <h3>Name: </h3>
-              <p>{currentUser?.name}</p>
+              <p>{`${currentUser?.firstName} ${currentUser?.lastName}`}</p>
             </div>
             <div className="user-profile__section">
               <h3>Email: </h3>

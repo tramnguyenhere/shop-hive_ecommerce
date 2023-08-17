@@ -11,7 +11,6 @@ namespace Backend.Domain.src.Entities
         public string Email { get; set; }
         public string Address { get; set; }
         public OrderStatus Status { get; set; }
-        // [JsonIgnore]
-        // public List<OrderProduct> OrderProducts { get; set; }
+        public List<OrderProduct> OrderProducts { get; set; }
     }
 }

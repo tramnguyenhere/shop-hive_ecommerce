@@ -11,7 +11,7 @@ namespace Backend.Business.src.Dtos
         public string Email { get; set; }
         public string Address { get; set; }
         public OrderStatus Status { get; set; }
-        public List<OrderProductReadDto> OrderProducts { get; set; }
+        // public List<OrderProductReadDto> OrderProducts { get; set; }
     }
 
     public class OrderCreateDto

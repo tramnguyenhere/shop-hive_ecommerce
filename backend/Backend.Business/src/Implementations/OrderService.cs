@@ -73,7 +73,7 @@ namespace Backend.Business.src.Implementations
             var orderProductDtos = _mapper.Map<List<OrderProductReadDto>>(order.OrderProducts);
 
             var orderReadDto = _mapper.Map<OrderReadDto>(createdOrder);
-            orderReadDto.OrderProducts = orderProductDtos;
+            // orderReadDto.OrderProducts = orderProductDtos;
 
             return orderReadDto;
         }
@@ -102,7 +102,7 @@ namespace Backend.Business.src.Implementations
             var updatedOrderDto = _mapper.Map<OrderReadDto>(await _orderRepository.UpdateOneById(updatedOrder));
             
             var orderProductDtos = _mapper.Map<List<OrderProductReadDto>>(foundOrder.OrderProducts);
-            updatedOrderDto.OrderProducts = orderProductDtos;
+            // updatedOrderDto.OrderProducts = orderProductDtos;
 
             return _mapper.Map<OrderReadDto>(await _orderRepository.UpdateOneById(updatedOrder));
         }

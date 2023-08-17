@@ -53,7 +53,7 @@ const Header = () => {
             {item.display}
           </Link>
         ))}
-        {currentUser?.role === "admin" && (
+        {currentUser?.role === "Admin" && (
           <Link to="/dashboard" className="navigation__item">
             Dashboard
           </Link>
@@ -71,7 +71,7 @@ const Header = () => {
         <div id="user">
           {currentUser ? (
             <Link to="/user" className="fit-button__primary">
-              Hi, {currentUser.name}!
+              Hi, {currentUser.firstName}!
             </Link>
           ) : (
             <Link to="/login">

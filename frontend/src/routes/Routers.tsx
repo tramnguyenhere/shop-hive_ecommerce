@@ -36,7 +36,7 @@ const Routers = () => {
       <Route
         path="/dashboard"
         element={
-          currentUser?.role === "admin" ? (
+          currentUser?.role === "Admin" ? (
             <Dashboard />
           ) : (
             <Navigate to="/login" />
@@ -46,7 +46,7 @@ const Routers = () => {
       <Route
         path="/dashboard/product-management"
         element={
-          currentUser?.role === "admin" ? (
+          currentUser?.role === "Admin" ? (
             <Products />
           ) : (
             <Navigate to="/login" />
@@ -56,7 +56,7 @@ const Routers = () => {
       <Route
         path="/dashboard/category-management"
         element={
-          currentUser?.role === "admin" ? (
+          currentUser?.role === "Admin" ? (
             <CategoryManagement />
           ) : (
             <Navigate to="/login" />
@@ -66,7 +66,7 @@ const Routers = () => {
       <Route
         path="/dashboard/product-management/:id"
         element={
-          currentUser?.role === "admin" ? (
+          currentUser?.role === "Admin" ? (
             <EditProductForm />
           ) : (
             <Navigate to="/login" />

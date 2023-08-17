@@ -10,6 +10,9 @@ import { User } from "../../types/User";
 import { UserUpdate } from "../../types/UserUpdate";
 import { UserCredential } from "../../types/UserCredential";
 
+const baseAuthUrl = "/api/v1/auth";
+const baseUserUrl = "/api/v1/users";
+
 interface UserReducer {
   users: User[];
   currentUser?: User;
@@ -26,7 +29,7 @@ const initialState: UserReducer = {
 export const fetchAllUsers = createAsyncThunk("fetchAllUsers", async () => {
   try {
     const result = await axios.get<User[]>(
-      `https://api.escuelajs.co/api/v1/users`
+      baseUserUrl
     );
 
     return result.data;
@@ -41,7 +44,7 @@ export const authenticate = createAsyncThunk(
   async (access_token: string) => {
     try {
       const authentication = await axios.get<User>(
-        "https://api.escuelajs.co/api/v1/auth/profile",
+        `${baseUserUrl}/profile`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -60,18 +63,18 @@ export const login = createAsyncThunk(
   "login",
   async ({ email, password }: UserCredential, { dispatch }) => {
     try {
-      const result = await axios.post<{ access_token: string }>(
-        "https://api.escuelajs.co/api/v1/auth/login",
+      const result = await axios.post(
+        baseAuthUrl,
         { email, password }
       );
-      localStorage.setItem("token", result.data.access_token);
+      localStorage.setItem("token", result.data);
       localStorage.setItem(
         "userCredential",
         JSON.stringify({ email: email, password: password })
       );
 
       const authentication = await dispatch(
-        authenticate(result.data.access_token)
+        authenticate(result.data)
       );
       return authentication.payload as User;
     } catch (e) {

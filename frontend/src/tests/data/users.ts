@@ -1,39 +1,47 @@
 import { User, userRoleEnum } from "../../types/User";
 
 const user1: User = {
-  id: 1,
-  email: "john@mail.com",
-  name: "john",
-  password: "john",
-  avatar: "",
+  id: "1",
+  firstName: "string",
+  lastName: "string",
+  email: "string",
+  phoneNumber: "string",
   role: userRoleEnum.Admin,
+  avatar: "string",
+  address: ""
 };
 
 const user2: User = {
-  id: 2,
-  email: "sabrina@mail.com",
-  name: "sabrina",
-  password: "sabrina",
-  avatar: "",
-  role: userRoleEnum.Customer,
+  id: "2",
+  firstName: "string",
+  lastName: "string",
+  email: "string",
+  phoneNumber: "string",
+  role: userRoleEnum.Admin,
+  avatar: "string",
+  address: ""
 };
 
 const user3: User = {
-  id: 3,
-  email: "cina@mail.com",
-  name: "cina",
-  password: "cina",
-  avatar: "",
+  id: "3",
+  firstName: "string",
+  lastName: "string",
+  email: "string",
+  phoneNumber: "string",
   role: userRoleEnum.Admin,
+  avatar: "string",
+  address: ""
 };
 
 const user4: User = {
-  id: 4,
-  email: "alina@mail.com",
-  name: "alina",
-  password: "alina",
-  avatar: "",
-  role: userRoleEnum.Customer,
+  id: "4",
+  firstName: "string",
+  lastName: "string",
+  email: "string",
+  phoneNumber: "string",
+  role: userRoleEnum.Admin,
+  avatar: "string",
+  address: ""
 };
 
 export { user1, user2, user3, user4 };
