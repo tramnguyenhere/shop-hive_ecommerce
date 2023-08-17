@@ -20,8 +20,6 @@ const ProductCard = ({ title, price, imageUrl, description, id }: Product) => {
     dispatch(manageSideCartVisible(true));
   };
 
-  console.log(title)
-
   return (
     <article className="product-card">
       <Link

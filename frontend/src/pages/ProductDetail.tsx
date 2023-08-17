@@ -21,7 +21,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(fetchSingleProductById(Number(id)));
+    dispatch(fetchSingleProductById(id ?? ""));
   }, [dispatch, id]);
 
   const selectedProduct: Product = filteredProducts && filteredProducts[0];

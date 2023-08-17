@@ -33,7 +33,7 @@ export const fetchAllProducts = createAsyncThunk(
 );
 export const fetchSingleProductById = createAsyncThunk(
   "fetchSingleProductById",
-  async (productId: number) => {
+  async (productId: string) => {
     try {
       const result = await axios.get<Product>(`${baseUrl}/${productId}`);
       return result.data;

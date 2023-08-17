@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 import { Category } from "../../types/Category";
 import { CategoryUpdate } from "../../types/CategoryUpdate";
 
-const baseUrl = "https://api.escuelajs.co/api/v1/categories";
+const baseUrl = "/api/v1/categories";
 
 const initialState: {
   categories: Category[];

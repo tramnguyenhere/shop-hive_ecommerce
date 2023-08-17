@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import Routes from "./routes/Routers";
 import "./assets/styles/styles.scss";
 import Cart from "./components/Cart/Cart";
+import { fetchAllReviews } from "./redux/reducers/reviewReducer";
 
 const App = () => {
   const isSideCartVisible = useAppSelector(
@@ -21,6 +22,7 @@ const App = () => {
     dispatch(fetchAllProducts());
     dispatch(fetchAllUsers());
     dispatch(fetchAllCategories());
+    // dispatch(fetchAllReviews());
 
     const isAuthenticated = localStorage.getItem("token");
     const storedCredentials =

@@ -8,7 +8,7 @@ const SingleReview = ({
   email,
   feedback,
 }: Omit<Review, "id" | "productId">) => {
-  const hiddenEmail = hideEmail(email);
+  const hiddenEmail = hideEmail(email ?? "");
   return (
     <div className="single-review">
       <p className="single-review__name">{name}</p>
