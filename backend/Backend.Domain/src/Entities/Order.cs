@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Backend.Domain.src.Entities
 {
@@ -10,6 +11,7 @@ namespace Backend.Domain.src.Entities
         public string Email { get; set; }
         public string Address { get; set; }
         public OrderStatus Status { get; set; }
-        public List<OrderProduct> OrderProducts { get; set; }
+        // [JsonIgnore]
+        // public List<OrderProduct> OrderProducts { get; set; }
     }
 }

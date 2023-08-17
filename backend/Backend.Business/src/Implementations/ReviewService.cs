@@ -86,15 +86,15 @@ namespace Backend.Business.src.Implementations
                 var updatedReview = _mapper.Map<ReviewReadDto>(
                     await _reviewRepository.UpdateOneById(foundReview)
                 );
-                if (foundReview.Product != null)
-                {
-                    updatedReview.ProductId = foundReview.Product.Id;
-                }
+            //     if (foundReview.Product != null)
+            //     {
+            //         updatedReview.ProductId = foundReview.Product.Id;
+            //     }
 
-                if (foundReview.User != null)
-                {
-                    updatedReview.UserId = foundReview.User.Id;
-                }
+            //     if (foundReview.User != null)
+            //     {
+            //         updatedReview.UserId = foundReview.User.Id;
+            //     }
                 return updatedReview;
             }
             else

@@ -30,13 +30,13 @@ namespace Backend.Infrastructure.src.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var builder = new NpgsqlDataSourceBuilder(
-                _configuration.GetConnectionString("Default")
-            );
-            builder.MapEnum<UserRole>();
-            builder.MapEnum<OrderStatus>();
-            optionsBuilder.AddInterceptors(new TimeStampInterceptor());
-            optionsBuilder.UseNpgsql(builder.Build()).UseSnakeCaseNamingConvention();
+            // var builder = new NpgsqlDataSourceBuilder(
+            //     _configuration.GetConnectionString("Default")
+            // );
+            // builder.MapEnum<UserRole>();
+            // builder.MapEnum<OrderStatus>();
+            // optionsBuilder.AddInterceptors(new TimeStampInterceptor());
+            // optionsBuilder.UseNpgsql(builder.Build()).UseSnakeCaseNamingConvention();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

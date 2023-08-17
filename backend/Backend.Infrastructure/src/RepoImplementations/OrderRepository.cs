@@ -19,6 +19,20 @@ namespace Backend.Infrastructure.src.RepoImplementations
             _orders = dbContext.Orders;
         }
 
+        public override async Task<Order> CreateOne(Order entity)
+        {
+            await _orders.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
+
+        public override async Task<Order> UpdateOneById(Order updatedEntity)
+        {
+            _orders.Update(updatedEntity);
+            await _dbContext.SaveChangesAsync();
+            return updatedEntity;
+        }
+
         public override async Task<IEnumerable<Order>> GetAll(QueryOptions queryOptions)
         {
             IQueryable<Order> query = _orders;
@@ -72,7 +86,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
                     .Take(queryOptions.ItemPerPage);
             }
 
-            return await query.ToArrayAsync();
+            return await query.Include(r=>r.User).Include(r=>r.OrderProducts).ToArrayAsync();
         }
 
         public override async Task<Order> GetOneById(Guid id)

@@ -54,7 +54,6 @@ namespace Backend.Business.src.Implementations
             order.Email = string.IsNullOrEmpty(entity.Email) ? user.Email : entity.Email;
             order.OrderProducts = new List<OrderProduct>();
             order.User = user;
-            order.Status = OrderStatus.Pending;
 
             // Insert Order into database
             var createdOrder = await _orderRepository.CreateOne(order);
@@ -79,7 +78,6 @@ namespace Backend.Business.src.Implementations
             return orderReadDto;
         }
 
-        // Only status of order is allowed to be updated.
         public override async Task<OrderReadDto> UpdateOneById(Guid id, OrderUpdateDto orderUpdateDto) {
             var foundOrder = await _orderRepository.GetOneById(id);
 
@@ -99,28 +97,27 @@ namespace Backend.Business.src.Implementations
                     : orderUpdateDto.PhoneNumber;
             updatedOrder.Email = string.IsNullOrEmpty(orderUpdateDto.Email) ? user.Email : orderUpdateDto.Email;
             updatedOrder.Address = string.IsNullOrEmpty(orderUpdateDto.Address) ? user.Address : orderUpdateDto.Address;
-            updatedOrder.OrderProducts = foundOrder.OrderProducts;
-            updatedOrder.User = user;
+            updatedOrder.User = foundOrder.User;
+
+            var updatedOrderDto = _mapper.Map<OrderReadDto>(await _orderRepository.UpdateOneById(updatedOrder));
+            
+            var orderProductDtos = _mapper.Map<List<OrderProductReadDto>>(foundOrder.OrderProducts);
+            updatedOrderDto.OrderProducts = orderProductDtos;
 
             return _mapper.Map<OrderReadDto>(await _orderRepository.UpdateOneById(updatedOrder));
         }
 
         public override async Task<OrderReadDto> GetOneById(Guid id)
         {
-            var foundItem = await _orderRepository.GetOneById(id);
+            var order = await _orderRepository.GetOneById(id);
             
-            if(foundItem == null) {
+            if(order == null) {
                 throw CustomException.NotFoundException("Item not found.");
             }
 
-            var foundItemDto = _mapper.Map<OrderReadDto>(foundItem);
-            foundItemDto.UserId = foundItem.User.Id;
+            var orderDto = _mapper.Map<OrderReadDto>(order);
 
-            // var orderProducts = await _orderProductService.GetAllOrderProductForAnOrder(id);
-            // var orderProductDtos = _mapper.Map<List<OrderProductReadDto>>(orderProducts);
-            // foundItemDto.OrderProducts = orderProductDtos;
-
-            return foundItemDto;
+            return orderDto;
         }
 
         public async Task<OrderReadDto> UpdateOrderAwaitingForFulfillment(Guid id, OrderUpdateDto orderUpdateDto)
@@ -134,7 +131,7 @@ namespace Backend.Business.src.Implementations
 
             var updatedOrder = _mapper.Map<Order>(orderUpdateDto);
 
-            updatedOrder.Status = orderUpdateDto.Status;
+            updatedOrder.Status = OrderStatus.AwaitingFulfillment;
             updatedOrder.Recipient = string.IsNullOrEmpty(orderUpdateDto.Recipient)
                     ? $"{user.FirstName} {user.LastName}"
                     : orderUpdateDto.Recipient;

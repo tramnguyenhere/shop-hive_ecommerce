@@ -70,7 +70,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
                     .Take(queryOptions.ItemPerPage);
             }
 
-            return await query.ToArrayAsync();
+            return await query.Include(r=>r.User).Include(r=>r.Product).ToArrayAsync();
         }
 
         public override async Task<Review> CreateOne(Review entity)

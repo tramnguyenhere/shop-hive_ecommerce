@@ -5,17 +5,34 @@ using Backend.Business.src.Abstractions;
 using Backend.Business.src.Implementations;
 using Backend.Business.src.Shared;
 using Backend.Domain.src.Abstractions;
+using Backend.Domain.src.Entities;
 using Backend.Infrastructure.src;
 using Backend.Infrastructure.src.Database;
 using Backend.Infrastructure.src.Middleware;
 using Backend.Infrastructure.src.RepoImplementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Npgsql;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("Default");
+
+var npgsqlBuilder = new NpgsqlDataSourceBuilder(connectionString);
+npgsqlBuilder.MapEnum<UserRole>();
+npgsqlBuilder.MapEnum<OrderStatus>();
+var modifiedConnectionString = npgsqlBuilder.Build();
+
+builder.Services.AddDbContext<DatabaseContext>(options =>
+{
+    options.AddInterceptors(new TimeStampInterceptor());
+    options.UseNpgsql(modifiedConnectionString)
+           .UseSnakeCaseNamingConvention();
+});
 
 // Add Automapper DI
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -45,7 +62,10 @@ builder.Services
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+.AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);;
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

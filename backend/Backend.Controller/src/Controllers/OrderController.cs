@@ -96,8 +96,8 @@ namespace Backend.Controller.src.Controllers
             // var authorizeOwner = await _authorizationService.AuthorizeAsync(user, order, "OwnerOnly");
             // if(authorizeOwner.Succeeded)
             // {
-            update.Status = OrderStatus.AwaitingFulfillment;
-            return await base.UpdateOneById(id, update);
+            // update.Status = OrderStatus.AwaitingFulfillment;
+            return await _orderService.UpdateOrderAwaitingForFulfillment(id, update);
             // }
             // else
             // {

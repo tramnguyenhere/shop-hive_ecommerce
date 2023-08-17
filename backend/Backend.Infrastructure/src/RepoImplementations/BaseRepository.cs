@@ -40,7 +40,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
             return await _dbSet.FindAsync(id); 
         }
 
-        public async Task<T> UpdateOneById(T updatedEntity)
+        public virtual async Task<T> UpdateOneById(T updatedEntity)
         {
             _dbSet.Update(updatedEntity);
             await _context.SaveChangesAsync();

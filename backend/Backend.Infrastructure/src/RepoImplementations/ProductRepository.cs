@@ -50,7 +50,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
                 query = query.Skip((queryOptions.PageNumber - 1) * queryOptions.ItemPerPage).Take(queryOptions.ItemPerPage);
             }
 
-            return await query.Include(q=>q.Category).ToArrayAsync();
+            return await query.Include(r=>r.Category).Include(q=>q.Category).ToArrayAsync();
         }
 
         public override async Task<Product> GetOneById(Guid id)

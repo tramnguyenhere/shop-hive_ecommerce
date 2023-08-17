@@ -59,7 +59,7 @@ namespace Backend.Business.src.Implementations
                 throw CustomException.NotFoundException("Order not found");
             }
 
-            var orderProducts = order.OrderProducts.Where(product => product.Order.Id == orderId).ToArray();
+            var orderProducts = await _orderProductRepository.GetAllOrderProductForAnOrder(orderId);
 
             return orderProducts;
         }
@@ -80,7 +80,7 @@ namespace Backend.Business.src.Implementations
             }
 
             var orderProductReadDto = _mapper.Map<OrderProductReadDto>(orderProduct);
-            orderProductReadDto.ProductId = orderProduct.Product.Id;
+            // orderProductReadDto.ProductId = orderProduct.Product.Id;
 
             return orderProductReadDto;
         }
