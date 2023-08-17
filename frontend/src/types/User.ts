@@ -14,3 +14,13 @@ export interface User {
   address: string;
   password?: string;
 }
+
+export interface NewUser {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  avatar: string;
+  address: string;
+  password?: string;
+}

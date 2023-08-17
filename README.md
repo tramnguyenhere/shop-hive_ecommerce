@@ -1,95 +1,72 @@
-# Fullstack Project
+# Ecommerce website - Shop Hive
 
-![TypeScript](https://img.shields.io/badge/TypeScript-v.4-green)
-![SASS](https://img.shields.io/badge/SASS-v.4-hotpink)
-![React](https://img.shields.io/badge/React-v.18-blue)
-![Redux toolkit](https://img.shields.io/badge/Redux-v.1.9-brown)
-![.NET Core](https://img.shields.io/badge/.NET%20Core-v.7-purple)
-![EF Core](https://img.shields.io/badge/EF%20Core-v.7-cyan)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-v.14-drakblue)
+Shop Hive is a straightforward ecommerce site, featuring essential frontend, backend, and a basic database. Customers can explore products, leave reviews, manage orders, while admins oversee basic changes. It's a modest platform focused on functional online shopping. Even thought it is under development progress, some basic features could be played around &#128722;
 
-This project involves creating a Fullstack project with React and Redux on the frontend and ASP.NET Core 7 on the backend. The goal is to provide a seamless experience for users, along with robust management system for administrators.
+***
+<span style="color: #3498DB; font-weight: bold; font-style: italic;">Image: Screenshot of the homepage</span>
+![Homepage](/screenshot_website_homepage.PNG)
 
-- Frontend: SASS, TypeScript, React, Redux Toolkit
-- Backend: ASP .NET Core, Entity Framework Core, PostgreSQL
+***
+## Link to the demo
+***Finished inhome frontend with Fake API can be explored here:***
+[https://integrify-frontend-project-ecommerce.vercel.app](https://integrify-frontend-project-ecommerce.vercel.app)
 
-You can follow the same topics as your backend project or choose the alternative one, between E-commerce and Library. You can reuse the previous frontend project, with necessary modification, or make a new layout to fit your backend server.
+***Finished inhome fullstack can be explored here:***
 
-## Table of Contents
+***
 
-1. [Features](#features)
-   - [Mandatory features](#mandatory-features)
-   - [Extra features](#extra-features)
-2. [Requirements](#requirements)
-3. [Getting Started](#getting-started)
-4. [Testing](#testing)
+## Table of content
 
-## Features
+- [Ecommerce website - Shop Hive](#ecommerce-website---shop-hive)
+  - [Link to the demo](#link-to-the-demo)
+  - [Table of content](#table-of-content)
+  - [Technologies](#technologies)
+  - [Project structures and architectures](#project-structures-and-architectures)
+  - [Getting started](#getting-started)
 
-### Mandatory features
+<a name="technologies"></a>
+***
 
-#### User Functionalities
+## Technologies
+<span style="color: #3498DB; font-weight: bold; font-style: italic;">Frontend:</span>
+- TypeScript
+- React.js
+- Redux Toolkits
+- SASS
+- Axios
+  
+<span style="color: #3498DB; font-weight: bold; font-style: italic;">Backend:</span>
+- ASP .NET Core
+- Entity Framework Core
+- PostgreSQL
+- RESTful APIs
+***
 
-1. User Management: Users should be able to register for an account and log in. Users cannot register themselves as admin.
-2. Browse Products: Users should be able to view all available products and single product, search and sort products.
-3. Add to Cart: Users should be able to add products to a shopping cart, and manage cart.
-4. Checkout: Users should be able to place order.
+<a name="project-structure"></a>
 
-#### Admin Functionalities
+## Project structures and architectures
+<span style="color: #3498DB; font-weight: bold; font-style: italic;">Frontend:</span>
+**- Brief figure of main folders in client server**
+![Frontend](/frontend-structure.png)
+***
+<span style="color: #3498DB; font-weight: bold; font-style: italic;">Backend:</span>
 
-1. User Management: Admins should be able to view and delete users.
-2. Product Management: Admins should be able to view, edit, delete and add new products.
-3. Order Management: Admins should be able to view all orders
+**- Backend architecture following CLEAN architecture**
+![Backend](/backend-structure.png)
 
-### Extra features
+**- ERD diagram: Relationship of entities in database**
+![Backend](/erd.png)
 
-#### User Functionalities
+**- Diagram of HTTP methods**
+![Backend](/shophive-application.drawio.png)
 
-1. User Management: Users should be able to view and edit only certain properties in their accounts. They also can unregister their own accounts.
-2. Authentication and account registration with Google Oauth.
-3. Order Management: Users should be able to view their order history, track the status of their orders, and potentially cancel orders within a certain timeframe.
+***
+<a name="getting-started"></a>
 
-#### Admin Functionalities
+## Getting started
 
-1. User Management: Admins should be able to edit users' role and create new users.
-2. Order Management: Admins should be able to update order status, view order details, handle returns/refunds, and cancel orders.
+Clone the repository from github:
 
-And any other extra features that you want to implement ...
-
-## Requirements
-
-1. Apply CLEAN architecture in your backend. In README file, explain the architecture of your project as well.
-2. Implement Error Handling Middleware: This will ensure any exceptions thrown in your application are handled appropriately and helpful error messages are returned.
-3. Document with Swagger: Make sure to annotate your API endpoints and generate a Swagger UI for easier testing and documentation.
-4. Project should have proper file structure, naming convention, and comply with Rest API.
-5. `README` file should sufficiently describe the project, as well as the deployment.
-
-## Getting Started
-
-1. Your full stack project should have one git repo to manage both frontend and backend. The shared .git in the root directory is used to push commits to the remote repo. In case you need to deploy frontend and backend to different server, you can inittiate another `.git` folder in each repository. Syntax: `cd frontend` -> `git init` (similar to backend folder). Remember to add `.gitignore` for each folder when you intiate `git` repo.
-2. `frontend` folder is for the react frontend. Start with `backend` first before moving to `frontend`.
-3. In the `backend`, here is the recommended order:
-
-   - Plan Your Database Schema before start coding
-
-   - Set Up the Project Structure
-
-   - Build the models
-
-   - Create the Repositories
-
-   - Build the Services
-
-   - Set Up Authentication & Authorization
-
-   - Build the Controllers
-
-   - Implement Error Handling Middleware
-
-4. You should focus on the mandatory features first. Make sure you have minimal working project before opting for advanced functionalities.
-
-Testing should be done along the development circle, early and regularly.
-
-## Testing
-
-Unit testing, and optionally integration testing, must be included for both frontend and backend code. Aim for high test coverage and ensure all major functionalities are covered.
+```
+git clone https://github.com/tramnguyenhere/shop-hive_ecommerce.git
+```

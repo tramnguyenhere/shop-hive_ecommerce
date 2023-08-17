@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { User } from "../../types/User";
+import { NewUser, User } from "../../types/User";
 import useAppSelector from "../../hooks/useAppSelector";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { createNewUser } from "../../redux/reducers/usersReducer";
@@ -18,7 +18,7 @@ const RegisterForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const onSubmit = (data: User) => {
+  const onSubmit = (data: NewUser) => {
     if (users.find((user) => user.email === data.email)) {
       alert("The registered email has been existed!");
       return;

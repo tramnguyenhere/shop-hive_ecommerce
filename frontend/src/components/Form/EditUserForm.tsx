@@ -83,7 +83,7 @@ const EditUserForm = ({
           onChange={(e) => setAvatar(e.target.value)}
         />
       </div>
-      <div className=''>
+      <div>
         <button className='full-width-button__primary' type='submit'>
           Save
         </button>

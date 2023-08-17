@@ -11,8 +11,10 @@ namespace Backend.Controller.src.Controllers
     public class UserController : CrudController<User, UserReadDto, UserCreateDto, UserUpdateDto>
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService) : base(userService) {
+        private readonly IAuthorizationService _authorizationService;
+        public UserController(IUserService userService, IAuthorizationService authorizationService) : base(userService) {
             _userService = userService;
+            _authorizationService = authorizationService;
         }
 
         [Authorize(Policy = "AdminRole")]
@@ -32,6 +34,33 @@ namespace Backend.Controller.src.Controllers
         public async Task<ActionResult<IEnumerable<UserReadDto>>> GetProfile() {
             var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return Ok(await _userService.GetOneById(new Guid(id)));
+        }
+
+        [Authorize]
+        [HttpPatch("{id:Guid}/change-password")]
+        public async Task<ActionResult<UserReadDto>> UpdatePassword(
+            [FromRoute] Guid id,
+            [FromBody] string newPassword
+        )
+        {
+            var user = HttpContext.User;
+            var userId = id.ToString();
+
+            var authorizeOwner = await _authorizationService.AuthorizeAsync(
+                user,
+                userId,
+                "OwnerOnly"
+            );
+            if (authorizeOwner.Succeeded)
+            {
+                var updatedObject = await _userService.UpdatePassword(id, newPassword);
+                return Ok(updatedObject);
+            }
+            else
+            {
+                return new ForbidResult();
+                // throw new Exception($"{id}, {HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value}");
+            }
         }
 
         [Authorize(Policy = "AdminRole")]

@@ -6,9 +6,9 @@ import {
 } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 
-import { User } from "../../types/User";
+import { NewUser, User } from "../../types/User";
 import { UserUpdate } from "../../types/UserUpdate";
-import { UserCredential } from "../../types/UserCredential";
+import { IUpdatePassword, UserCredential } from "../../types/UserCredential";
 
 const baseAuthUrl = "/api/v1/auth";
 const baseUserUrl = "/api/v1/users";
@@ -89,10 +89,10 @@ export const logout = createAction("logout");
 
 export const createNewUser = createAsyncThunk(
   "createNewUser",
-  async (user: User) => {
+  async (user: NewUser) => {
     try {
       const createUserResponse = await axios.post(
-        "https://api.escuelajs.co/api/v1/users/",
+        baseUserUrl,
         user
       );
       return createUserResponse.data;
@@ -108,8 +108,24 @@ export const updateUser = createAsyncThunk(
   async (updatedUser: UserUpdate) => {
     try {
       const updateUserResponse = await axios.put(
-        `https://api.escuelajs.co/api/v1/users/${updatedUser.id}`,
+        `${baseUserUrl}/${updatedUser.id}`,
         updatedUser.update
+      );
+      return updateUserResponse.data;
+    } catch (e) {
+      const error = e as AxiosError;
+      return error;
+    }
+  }
+);
+
+export const updatePassword = createAsyncThunk(
+  "updatePassword",
+  async (updatedPassword : IUpdatePassword) => {
+    try {
+      const updateUserResponse = await axios.put(
+        `${baseUserUrl}/${updatedPassword.userId}/change-password`,
+        updatedPassword.password
       );
       return updateUserResponse.data;
     } catch (e) {
@@ -186,6 +202,27 @@ const usersSlice = createSlice({
         state.loading = true;
       })
       .addCase(updateUser.rejected, (state) => {
+        state.error = "Cannot update user";
+      })
+      .addCase(updatePassword.fulfilled, (state, action) => {
+        if (action.payload instanceof AxiosError) {
+          state.error = action.payload.message;
+        } else {
+          const users = state.users.map((user) => {
+            if (user.id === action.payload.id) {
+              return { ...user, ...action.payload };
+            }
+            return user;
+          });
+          state.currentUser = action.payload;
+          state.users = users;
+        }
+        state.loading = false;
+      })
+      .addCase(updatePassword.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updatePassword.rejected, (state) => {
         state.error = "Cannot update user";
       })
       .addCase(login.fulfilled, (state, action) => {
