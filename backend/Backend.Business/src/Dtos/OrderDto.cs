@@ -4,6 +4,7 @@ namespace Backend.Business.src.Dtos
 {
     public class OrderReadDto
     {
+        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public string Recipient { get; set; }
         public string PhoneNumber { get; set; }
@@ -15,12 +16,11 @@ namespace Backend.Business.src.Dtos
 
     public class OrderCreateDto
     {
-        public Guid UserId { get; set; }
+        // public Guid UserId { get; set; }
         public string? Recipient { get; set; } = string.Empty;
         public string? PhoneNumber { get; set; } = string.Empty;
         public string? Email { get; set; } = string.Empty;
         public string? Address { get; set; } = string.Empty;
-        public OrderStatus? Status { get; set; } = OrderStatus.Pending;
         public List<OrderProductCreateDto> OrderProducts { get; set; } = new List<OrderProductCreateDto>();
     }
     

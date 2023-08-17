@@ -34,30 +34,27 @@ namespace Backend.Business.src.Implementations
             _orderProductRepository = orderProductRepository;
         } 
 
-        public override async Task<OrderReadDto> CreateOne(OrderCreateDto entity)
+        public async Task<OrderReadDto> CreateOrder(Guid userId, OrderCreateDto entity)
         {
-            // Get the user to check if it is available
-            var user = await _userRepository.GetOneById(entity.UserId);
+            var user = await _userRepository.GetOneById(userId);
             if (user == null)
             {
                 throw CustomException.NotFoundException("User not found");
             }
-            
-            // Convert OrderCreateDto into Order
-            var order = new Order
-            {
-                User = user,
-                Recipient = string.IsNullOrEmpty(entity.Recipient)
+
+            var order = _mapper.Map<Order>(entity);
+
+            order.Recipient = string.IsNullOrEmpty(entity.Recipient)
                     ? $"{user.FirstName} {user.LastName}"
-                    : entity.Recipient,
-                Email = string.IsNullOrEmpty(entity.Email) ? user.Email : entity.Email,
-                Address = string.IsNullOrEmpty(entity.Address) ? user.Address : entity.Address,
-                PhoneNumber = string.IsNullOrEmpty(entity.PhoneNumber)
+                    : entity.Recipient;
+            order.PhoneNumber = string.IsNullOrEmpty(entity.PhoneNumber)
                     ? user.PhoneNumber
-                    : entity.PhoneNumber,
-                Status = OrderStatus.Pending,
-                OrderProducts = new List<OrderProduct>()
-            };
+                    : entity.PhoneNumber;
+            order.Address = string.IsNullOrEmpty(entity.Address) ? user.Address : entity.Address;
+            order.Email = string.IsNullOrEmpty(entity.Email) ? user.Email : entity.Email;
+            order.OrderProducts = new List<OrderProduct>();
+            order.User = user;
+            order.Status = OrderStatus.Pending;
 
             // Insert Order into database
             var createdOrder = await _orderRepository.CreateOne(order);
@@ -74,21 +71,60 @@ namespace Backend.Business.src.Implementations
                 await _orderProductService.CreateOrderProduct(orderProductAtCurrentIndex);
             }
 
-            var orderReadDto = new OrderReadDto {
-                UserId = order.User.Id,
-                Recipient = order.Recipient,
-                PhoneNumber = order.PhoneNumber,
-                Email = order.Email,
-                Address = order.Address,
-                Status = order.Status,
-                OrderProducts = _mapper.Map<List<OrderProductReadDto>>(order.OrderProducts)
-            };
+            var orderProductDtos = _mapper.Map<List<OrderProductReadDto>>(order.OrderProducts);
+
+            var orderReadDto = _mapper.Map<OrderReadDto>(createdOrder);
+            orderReadDto.OrderProducts = orderProductDtos;
 
             return orderReadDto;
         }
 
         // Only status of order is allowed to be updated.
         public override async Task<OrderReadDto> UpdateOneById(Guid id, OrderUpdateDto orderUpdateDto) {
+            var foundOrder = await _orderRepository.GetOneById(id);
+
+            if (foundOrder == null) {
+                throw CustomException.NotFoundException("Order not found");
+            }
+            var user = foundOrder.User;
+
+            var updatedOrder = _mapper.Map<Order>(orderUpdateDto);
+
+            updatedOrder.Status = orderUpdateDto.Status;
+            updatedOrder.Recipient = string.IsNullOrEmpty(orderUpdateDto.Recipient)
+                    ? $"{user.FirstName} {user.LastName}"
+                    : orderUpdateDto.Recipient;
+            updatedOrder.PhoneNumber = string.IsNullOrEmpty(orderUpdateDto.PhoneNumber)
+                    ? user.PhoneNumber
+                    : orderUpdateDto.PhoneNumber;
+            updatedOrder.Email = string.IsNullOrEmpty(orderUpdateDto.Email) ? user.Email : orderUpdateDto.Email;
+            updatedOrder.Address = string.IsNullOrEmpty(orderUpdateDto.Address) ? user.Address : orderUpdateDto.Address;
+            updatedOrder.OrderProducts = foundOrder.OrderProducts;
+            updatedOrder.User = user;
+
+            return _mapper.Map<OrderReadDto>(await _orderRepository.UpdateOneById(updatedOrder));
+        }
+
+        public override async Task<OrderReadDto> GetOneById(Guid id)
+        {
+            var foundItem = await _orderRepository.GetOneById(id);
+            
+            if(foundItem == null) {
+                throw CustomException.NotFoundException("Item not found.");
+            }
+
+            var foundItemDto = _mapper.Map<OrderReadDto>(foundItem);
+            foundItemDto.UserId = foundItem.User.Id;
+
+            // var orderProducts = await _orderProductService.GetAllOrderProductForAnOrder(id);
+            // var orderProductDtos = _mapper.Map<List<OrderProductReadDto>>(orderProducts);
+            // foundItemDto.OrderProducts = orderProductDtos;
+
+            return foundItemDto;
+        }
+
+        public async Task<OrderReadDto> UpdateOrderAwaitingForFulfillment(Guid id, OrderUpdateDto orderUpdateDto)
+        {
             var foundOrder = await _orderRepository.GetOneById(id);
 
             if (foundOrder == null) {

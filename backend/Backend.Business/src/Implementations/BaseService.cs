@@ -29,7 +29,7 @@ namespace Backend.Business.src.Implementations
             return false;
         }
 
-        public async Task<IEnumerable<TReadDto>> GetAll(QueryOptions queryOptions)
+        public virtual async Task<IEnumerable<TReadDto>> GetAll(QueryOptions queryOptions)
         {
             return _mapper.Map<IEnumerable<TReadDto>>(await _baseRepository.GetAll(queryOptions));
         }

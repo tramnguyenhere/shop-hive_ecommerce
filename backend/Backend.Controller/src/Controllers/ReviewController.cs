@@ -28,37 +28,36 @@ namespace Backend.Controller.src.Controllers
             [FromBody] ReviewCreateDto dto
         )
         {
-
                 var userId = new Guid(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
                 var createdObject = await _reviewService.CreateOneReview(userId, dto);
                 return Ok(createdObject);
 
         }
 
-        // [Authorize]
+        [Authorize]
         public override async Task<ActionResult<ReviewReadDto>> UpdateOneById(
             [FromRoute] Guid id,
             [FromBody] ReviewUpdateDto dto
         )
         {
-            // var review = await _reviewService.GetOneById(id);
-            // var userId = review.UserId.ToString();
-            // var user = HttpContext.User;
+            var review = await _reviewService.GetOneById(id);
+            var userId = review.UserId.ToString();
+            var user = HttpContext.User;
 
-            // var authorizeOwner = await _authorizationService.AuthorizeAsync(
-            //     user,
-            //     userId,
-            //     "OwnerOnly"
-            // );
-            // if (authorizeOwner.Succeeded)
-            // {
+            var authorizeOwner = await _authorizationService.AuthorizeAsync(
+                user,
+                userId,
+                "OwnerOnly"
+            );
+            if (authorizeOwner.Succeeded)
+            {
                 var updatedObject = await _reviewService.UpdateOneById(id, dto);
                 return Ok(updatedObject);
-            // }
-            // else
-            // {
-            //     return new ForbidResult();
-            // }
+            }
+            else
+            {
+                return new ForbidResult();
+            }
         }
 
         [Authorize]

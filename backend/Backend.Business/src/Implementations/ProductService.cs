@@ -4,6 +4,7 @@ using Backend.Business.src.Dtos;
 using Backend.Business.src.Shared;
 using Backend.Domain.src.Abstractions;
 using Backend.Domain.src.Entities;
+using Backend.Domain.src.Shared;
 
 namespace Backend.Business.src.Implementations
 {
@@ -36,6 +37,14 @@ namespace Backend.Business.src.Implementations
             product.Category = category;
             var createdProduct = await _productRepository.CreateOne(product);
             return _mapper.Map<ProductReadDto>(createdProduct);
+        }
+
+        public override async Task<IEnumerable<ProductReadDto>> GetAll(QueryOptions queryOptions)
+        {
+            var products = await _productRepository.GetAll(queryOptions);
+            var productDtos = _mapper.Map<IEnumerable<ProductReadDto>>(products);
+
+            return productDtos;
         }
 
         public override async Task<ProductReadDto> UpdateOneById(

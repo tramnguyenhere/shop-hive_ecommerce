@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Backend.Business.src.Abstractions;
 using Backend.Business.src.Dtos;
 using Backend.Domain.src.Entities;
@@ -11,16 +12,26 @@ namespace Backend.Controller.src.Controllers
         : CrudController<Order, OrderReadDto, OrderCreateDto, OrderUpdateDto>
     {
         private readonly IOrderService _orderService;
+        private readonly IOrderProductService _orderProductService;
         private readonly IAuthorizationService _authorizationService;
 
         public OrderController(
             IOrderService orderService,
-            IAuthorizationService authorizationService
+            IAuthorizationService authorizationService,
+            IOrderProductService orderProductService
         )
             : base(orderService)
         {
             _orderService = orderService;
             _authorizationService = authorizationService;
+            _orderProductService = orderProductService;
+        }
+
+        public override async Task<ActionResult<OrderReadDto>> CreateOne([FromBody] OrderCreateDto dto) {
+            var userId = new Guid(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var createdObject = await _orderService.CreateOrder(userId, dto);
+            // var createdObject = await _orderService.CreateOne(dto);
+            return Ok(createdObject);
         }
 
         // Update by user and admin
@@ -92,6 +103,11 @@ namespace Backend.Controller.src.Controllers
             // {
             //     return new ForbidResult();
             // }
+        }
+
+        [HttpGet("{id:Guid}/products")]
+        public async Task<ActionResult<IEnumerable<OrderProduct>>> GetAllProductsByOrder([FromRoute] Guid id) {
+            return Ok(await _orderProductService.GetAllOrderProductForAnOrder(id));
         }
     }
 }

@@ -59,11 +59,12 @@ namespace Backend.Business.src.Implementations
                 throw CustomException.NotFoundException("Order not found");
             }
 
-            // await _orderProductRepository.GetAllOrderProductForAnOrder(order); // should add logic
-            return order.OrderProducts;
+            var orderProducts = order.OrderProducts.Where(product => product.Order.Id == orderId).ToArray();
+
+            return orderProducts;
         }
 
-        public async Task<OrderProduct> GetOrderProductByIdComposition(Guid orderId, Guid productId)
+        public async Task<OrderProductReadDto> GetOrderProductByIdComposition(Guid orderId, Guid productId)
         {
                    
             var order = await _orderRepository.GetOneById(orderId);
@@ -78,7 +79,10 @@ namespace Backend.Business.src.Implementations
                 throw CustomException.NotFoundException("OrderProduct not found");
             }
 
-            return await _orderProductRepository.GetOneByCompositionId(orderId, productId);
+            var orderProductReadDto = _mapper.Map<OrderProductReadDto>(orderProduct);
+            orderProductReadDto.ProductId = orderProduct.Product.Id;
+
+            return orderProductReadDto;
         }
 
         public async Task<OrderProduct> UpdateOrderProduct(Guid orderId, Guid productId, OrderProductUpdateDto entityDto)
