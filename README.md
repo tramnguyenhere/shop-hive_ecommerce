@@ -12,7 +12,7 @@ Shop Hive is a straightforward ecommerce site, featuring essential frontend, bac
 [https://integrify-frontend-project-ecommerce.vercel.app](https://integrify-frontend-project-ecommerce.vercel.app)
 
 ***Finished inhome fullstack can be explored here:***
-
+[https://shop-hive-ecommerce.vercel.app](https://shop-hive-ecommerce.vercel.app)
 ***
 
 ## Table of content

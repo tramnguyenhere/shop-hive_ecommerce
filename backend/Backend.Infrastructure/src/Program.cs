@@ -113,7 +113,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddCors(options =>
     {
         options.AddPolicy("CorsPolicy",
-            builder => builder.WithOrigins("http://localhost:3000")
+            builder => builder.WithOrigins("http://localhost:3000", "https://shop-hive-ecommerce.vercel.app")
             .AllowAnyMethod()
             .AllowAnyHeader());
     });
