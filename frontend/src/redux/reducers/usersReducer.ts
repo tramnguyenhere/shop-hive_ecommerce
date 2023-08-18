@@ -3,15 +3,15 @@ import {
   createAction,
   createAsyncThunk,
   createSlice,
-} from "@reduxjs/toolkit";
-import axios, { AxiosError } from "axios";
+} from '@reduxjs/toolkit';
+import axios, { AxiosError } from 'axios';
 
-import { NewUser, User } from "../../types/User";
-import { UserUpdate } from "../../types/UserUpdate";
-import { IUpdatePassword, UserCredential } from "../../types/UserCredential";
+import { NewUser, User } from '../../types/User';
+import { UserUpdate } from '../../types/UserUpdate';
+import { IUpdatePassword, UserCredential } from '../../types/UserCredential';
 
-const baseAuthUrl = "/api/v1/auth";
-const baseUserUrl = "/api/v1/users";
+const baseAuthUrl = `${process.env.REACT_APP_PROXY}/api/v1/auth`;
+const baseUserUrl = `${process.env.REACT_APP_PROXY}/api/v1/users`;
 
 interface UserReducer {
   users: User[];
@@ -23,14 +23,17 @@ interface UserReducer {
 const initialState: UserReducer = {
   users: [],
   loading: false,
-  error: "",
+  error: '',
 };
 
-export const fetchAllUsers = createAsyncThunk("fetchAllUsers", async () => {
+export const fetchAllUsers = createAsyncThunk('fetchAllUsers', async () => {
   try {
-    const result = await axios.get<User[]>(
-      baseUserUrl
-    );
+    const token = localStorage.getItem('token');
+    const result = await axios.get<User[]>(baseUserUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     return result.data;
   } catch (e) {
@@ -40,17 +43,14 @@ export const fetchAllUsers = createAsyncThunk("fetchAllUsers", async () => {
 });
 
 export const authenticate = createAsyncThunk(
-  "authenticate",
+  'authenticate',
   async (access_token: string) => {
     try {
-      const authentication = await axios.get<User>(
-        `${baseUserUrl}/profile`,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        }
-      );
+      const authentication = await axios.get<User>(`${baseUserUrl}/profile`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
       return authentication.data;
     } catch (e) {
       const error = e as AxiosError;
@@ -60,41 +60,33 @@ export const authenticate = createAsyncThunk(
 );
 
 export const login = createAsyncThunk(
-  "login",
+  'login',
   async ({ email, password }: UserCredential, { dispatch }) => {
     try {
-      const result = await axios.post(
-        baseAuthUrl,
-        { email, password }
-      );
-      localStorage.setItem("token", result.data);
+      const result = await axios.post(baseAuthUrl, { email, password });
+      localStorage.setItem('token', result.data);
       localStorage.setItem(
-        "userCredential",
+        'userCredential',
         JSON.stringify({ email: email, password: password })
       );
 
-      const authentication = await dispatch(
-        authenticate(result.data)
-      );
+      const authentication = await dispatch(authenticate(result.data));
       return authentication.payload as User;
     } catch (e) {
       const error = e as AxiosError;
-      alert("Wrong email or password. Please login again");
+      alert('Wrong email or password. Please login again');
       return error;
     }
   }
 );
 
-export const logout = createAction("logout");
+export const logout = createAction('logout');
 
 export const createNewUser = createAsyncThunk(
-  "createNewUser",
+  'createNewUser',
   async (user: NewUser) => {
     try {
-      const createUserResponse = await axios.post(
-        baseUserUrl,
-        user
-      );
+      const createUserResponse = await axios.post(baseUserUrl, user);
       return createUserResponse.data;
     } catch (e) {
       const error = e as AxiosError;
@@ -104,12 +96,18 @@ export const createNewUser = createAsyncThunk(
 );
 
 export const updateUser = createAsyncThunk(
-  "updateUser",
+  'updateUser',
   async (updatedUser: UserUpdate) => {
     try {
-      const updateUserResponse = await axios.put(
+      const token = localStorage.getItem('token');
+      const updateUserResponse = await axios.patch(
         `${baseUserUrl}/${updatedUser.id}`,
-        updatedUser.update
+        updatedUser.update,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       return updateUserResponse.data;
     } catch (e) {
@@ -120,12 +118,20 @@ export const updateUser = createAsyncThunk(
 );
 
 export const updatePassword = createAsyncThunk(
-  "updatePassword",
-  async (updatedPassword : IUpdatePassword) => {
+  'updatePassword',
+  async (updatedPassword: IUpdatePassword) => {
     try {
-      const updateUserResponse = await axios.put(
+      const requestBody = { password: updatedPassword.password };
+
+      const token = localStorage.getItem('token');
+      const updateUserResponse = await axios.patch(
         `${baseUserUrl}/${updatedPassword.userId}/change-password`,
-        updatedPassword.password
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       return updateUserResponse.data;
     } catch (e) {
@@ -136,7 +142,7 @@ export const updatePassword = createAsyncThunk(
 );
 
 const usersSlice = createSlice({
-  name: "users",
+  name: 'users',
   initialState,
   reducers: {
     createUser: (state, action: PayloadAction<User>) => {
@@ -145,8 +151,8 @@ const usersSlice = createSlice({
     emptyUsersReducer: (state) => {
       state.users = [];
     },
-    sortByEmail: (state, action: PayloadAction<"asc" | "desc">) => {
-      if (action.payload === "asc") {
+    sortByEmail: (state, action: PayloadAction<'asc' | 'desc'>) => {
+      if (action.payload === 'asc') {
         state.users.sort((a, b) => a.email.localeCompare(b.email));
       } else {
         state.users.sort((a, b) => b.email.localeCompare(a.email));
@@ -167,7 +173,7 @@ const usersSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchAllUsers.rejected, (state, action) => {
-        state.error = "Cannot fetch data";
+        state.error = 'Cannot fetch data';
       })
       .addCase(createNewUser.fulfilled, (state, action) => {
         if (action.payload instanceof AxiosError) {
@@ -181,7 +187,7 @@ const usersSlice = createSlice({
         state.loading = true;
       })
       .addCase(createNewUser.rejected, (state, action) => {
-        state.error = "Cannot create new user";
+        state.error = 'Cannot create new user';
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         if (action.payload instanceof AxiosError) {
@@ -202,7 +208,7 @@ const usersSlice = createSlice({
         state.loading = true;
       })
       .addCase(updateUser.rejected, (state) => {
-        state.error = "Cannot update user";
+        state.error = 'Cannot update user';
       })
       .addCase(updatePassword.fulfilled, (state, action) => {
         if (action.payload instanceof AxiosError) {
@@ -223,7 +229,7 @@ const usersSlice = createSlice({
         state.loading = true;
       })
       .addCase(updatePassword.rejected, (state) => {
-        state.error = "Cannot update user";
+        state.error = 'Cannot update user';
       })
       .addCase(login.fulfilled, (state, action) => {
         if (action.payload instanceof AxiosError) {
@@ -243,7 +249,7 @@ const usersSlice = createSlice({
       })
       .addCase(logout, (state) => {
         state.currentUser = undefined;
-        localStorage.removeItem("token");
+        localStorage.removeItem('token');
       });
   },
 });

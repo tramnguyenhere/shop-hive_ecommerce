@@ -53,9 +53,9 @@ const CreateCategory = ({
         <input
           type="url"
           placeholder="Image URL"
-          {...register("image", { required: true })}
+          {...register("imageUrl", { required: true })}
         />
-        {errors.image && (
+        {errors.imageUrl && (
           <span className="form--error">This field is required!</span>
         )}
       </div>

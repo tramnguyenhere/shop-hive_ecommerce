@@ -6,6 +6,7 @@ import { NewUser, User } from "../../types/User";
 import useAppSelector from "../../hooks/useAppSelector";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { createNewUser } from "../../redux/reducers/usersReducer";
+import {toast} from "react-toastify"
 
 const RegisterForm = () => {
   const {
@@ -24,7 +25,10 @@ const RegisterForm = () => {
       return;
     }
     const newUser = { ...data };
-    dispatch(createNewUser(newUser));
+    dispatch(createNewUser(newUser)).then(() => toast.success("User has been created")).catch((error) => {
+      console.error(error)
+      toast.error("Failed to create new user")
+    });
     navigate("/login");
   };
 

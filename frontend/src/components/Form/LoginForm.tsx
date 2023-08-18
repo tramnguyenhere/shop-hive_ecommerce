@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { login } from "../../redux/reducers/usersReducer";
+import { toast } from 'react-toastify';
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -10,7 +11,7 @@ const LoginForm = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(login({ email, password }));
+    dispatch(login({ email, password })).then(() => toast.success("Success log in"));
     setEmail("");
     setPassword("");
   };

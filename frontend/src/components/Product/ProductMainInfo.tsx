@@ -17,9 +17,6 @@ const ProductMainInfo = ({
   const { currentUser } = useAppSelector((state) => state.users);
   const mainImage = selectedProduct?.imageUrl;
 
-  // useEffect(() => {
-  //   setMainImage(selectedProduct?.images[0]);
-  // }, [selectedProduct]);
 
   const dispatch = useAppDispatch();
 

@@ -14,6 +14,8 @@ const UserProfile = () => {
   const [editPageVisible, setEditPageVisible] = useState(false);
   const dispatch = useAppDispatch();
 
+  console.log(currentUser)
+
   return (
     <>
        <Helmet title='User Profile'>
@@ -45,7 +47,7 @@ const UserProfile = () => {
               </button>
               <button
                 className='fit-button__secondary'
-                onClick={() =>  navigate("edit_password")}
+                onClick={() =>  navigate(`${currentUser?.id}/edit_password`)}
               >
                 Edit Password
               </button>

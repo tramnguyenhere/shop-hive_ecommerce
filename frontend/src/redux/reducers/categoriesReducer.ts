@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 import { Category } from "../../types/Category";
 import { CategoryUpdate } from "../../types/CategoryUpdate";
 
-const baseUrl = "/api/v1/categories";
+const baseUrl = `${process.env.REACT_APP_PROXY}/api/v1/categories`;
 
 const initialState: {
   categories: Category[];
@@ -37,7 +37,12 @@ export const createNewCategory = createAsyncThunk(
   "createNewCategory",
   async (category: Omit<Category, "id">) => {
     try {
-      const createCategoryResponse = await axios.post(baseUrl, category);
+      const token = localStorage.getItem('token');
+      const createCategoryResponse = await axios.post(baseUrl, category, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
       return createCategoryResponse.data;
     } catch (e) {
       const error = e as AxiosError;
@@ -96,7 +101,7 @@ const categoriesSlice = createSlice({
             {
               id: "0",
               name: "All",
-              image: "",
+              imageUrl: "",
             },
             ...action.payload,
           ];

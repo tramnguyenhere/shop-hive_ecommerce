@@ -4,4 +4,5 @@ export interface NewProduct {
   price: number;
   description: string;
   imageUrl: string;
+  inventory: number;
 }

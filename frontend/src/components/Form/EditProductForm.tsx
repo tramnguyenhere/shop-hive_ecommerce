@@ -29,6 +29,7 @@ const EditProductForm = () => {
     toBeEditedProduct?.category!.id
   );
   const [newImage, setNewImage] = useState(toBeEditedProduct?.imageUrl);
+  const [newInventory, setNewInventory] = useState(toBeEditedProduct?.inventory);
 
   const editFormHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,9 +39,10 @@ const EditProductForm = () => {
         update: {
           title: newTitle,
           price: newPrice,
-          category: categories.find((category) => category.id === newCategory),
+          categoryId: newCategory,
           imageUrl: newImage,
           description: newDescription,
+          inventory: newInventory ?? 0
         },
       };
       dispatch(updateSingleProduct(updatedProduct));
@@ -100,8 +102,17 @@ const EditProductForm = () => {
         <h3 className="user-profile--edit__section__header">Image</h3>
         <input
           placeholder="Change image"
-          value={newImage[0]}
+          value={newImage}
           onChange={(e) => setNewImage(e.target.value)}
+        />
+      </div>
+      <div className="form__group">
+        <h3 className="user-profile--edit__section__header">Inventory</h3>
+        <input
+          placeholder="Change inventory"
+          value={newInventory}
+          type="number"
+          onChange={(e) => setNewInventory(Number(e.target.value))}
         />
       </div>
       <button className="full-width-button__primary" type="submit">

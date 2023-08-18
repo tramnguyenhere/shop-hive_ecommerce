@@ -29,6 +29,7 @@ const CreateProductForm = ({
       description: data.description,
       categoryId: data.categoryId,
       imageUrl: `${data.imageUrl}`,
+      inventory: Number(data.inventory),
     };
 
     dispatch(createNewProduct(newProduct));
@@ -95,6 +96,16 @@ const CreateProductForm = ({
           {...register("imageUrl", { required: true })}
         />
         {errors.imageUrl && (
+          <span className="form--error">This field is required!</span>
+        )}
+      </div>
+      <div className="form__group">
+        <input
+          type="number"
+          placeholder="Inventory"
+          {...register("inventory", { required: true })}
+        />
+        {errors.inventory && (
           <span className="form--error">This field is required!</span>
         )}
       </div>

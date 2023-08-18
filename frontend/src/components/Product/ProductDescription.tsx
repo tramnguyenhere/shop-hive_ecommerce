@@ -23,8 +23,6 @@ const ProductDescription = ({
   useEffect(() => {
     dispatch(fetchAllReviews());
   }, [dispatch])
-  
-  console.log(reviews)
 
   return (
     <section className="product-description">
@@ -52,7 +50,7 @@ const ProductDescription = ({
         </div>
       ) : (
         <div className="product-description__tab__review">
-          {reviews.length !== 0 && (
+          {reviews.length > 0 && (
             <div className="reviews">
               {reviews.map((review: Review) => (
                 <div key={review.id}>

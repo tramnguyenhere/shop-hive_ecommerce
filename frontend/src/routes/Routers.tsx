@@ -30,7 +30,7 @@ const Routers = () => {
         path='/user'
         element={currentUser ? <UserProfile /> : <Navigate to='/login' />}
       />
-      <Route path='user/edit_password' element={<EditPasswordForm />} />
+      <Route path='user/:userId/edit_password' element={<EditPasswordForm />} />
 
       <Route
         path='/login'

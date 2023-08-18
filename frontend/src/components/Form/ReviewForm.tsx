@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
+import {toast} from "react-toastify"
 
 import { NewReview, Review } from "../../types/Review";
 import useAppDispatch from "../../hooks/useAppDispatch";
@@ -10,12 +10,16 @@ const ReviewForm = ({ productId }: { productId?: string }) => {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm<Review>();
   const dispatch = useAppDispatch();
 
   const onSubmit = (data: NewReview) => {
     const newReview = { ...data, productId };
-    dispatch(createNewReview(newReview));
+    dispatch(createNewReview(newReview)).then(() => {
+      toast.success("Review added")
+      reset()
+    });
   };
 
   return (

@@ -7,6 +7,7 @@ export interface Product {
   category?: {
     id?: string;
     name: string;
-    image: string;
+    imageUrl: string;
   };
+  inventory?: number
 }

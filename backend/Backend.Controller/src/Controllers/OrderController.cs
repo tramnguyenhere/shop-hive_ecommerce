@@ -59,50 +59,48 @@ namespace Backend.Controller.src.Controllers
             }
         }
 
-        // Update by user and admin
-        // [Authorize]
+        [Authorize]
         [HttpPatch("{id:Guid}/confirm")]
         public async Task<ActionResult<OrderReadDto>> UpdateConfirmOrder(
             [FromRoute] Guid id,
             [FromBody] OrderUpdateDto update
         )
         {
-            // var user = HttpContext.User;
-            // var order = await _orderService.GetOneById(id);
+            var user = HttpContext.User;
+            var order = await _orderService.GetOneById(id);
 
-            // var authorizeOwner = await _authorizationService.AuthorizeAsync(user, order, "OwnerOnly");
-            // if(authorizeOwner.Succeeded)
-            // {
+            var authorizeOwner = await _authorizationService.AuthorizeAsync(user, order.UserId.ToString(), "OwnerOnly");
+            if(authorizeOwner.Succeeded)
+            {
             update.Status = OrderStatus.AwaitingPayment;
             return await base.UpdateOneById(id, update);
-            // }
-            // else
-            // {
-            //     return new ForbidResult();
-            // }
+            }
+            else
+            {
+                return new ForbidResult();
+            }
         }
 
-        // Update by user and admin
-        // [Authorize]
+        [Authorize]
         [HttpPatch("{id:Guid}/payment-process")]
         public async Task<ActionResult<OrderReadDto>> UpdatePayment(
             [FromRoute] Guid id,
             [FromBody] OrderUpdateDto update
         )
         {
-            // var user = HttpContext.User;
-            // var order = await _orderService.GetOneById(id);
+            var user = HttpContext.User;
+            var order = await _orderService.GetOneById(id);
 
-            // var authorizeOwner = await _authorizationService.AuthorizeAsync(user, order, "OwnerOnly");
-            // if(authorizeOwner.Succeeded)
-            // {
-            // update.Status = OrderStatus.AwaitingFulfillment;
+            var authorizeOwner = await _authorizationService.AuthorizeAsync(user, order.UserId.ToString(), "OwnerOnly");
+            if(authorizeOwner.Succeeded)
+            {
+            update.Status = OrderStatus.AwaitingFulfillment;
             return await _orderService.UpdateOrderAwaitingForFulfillment(id, update);
-            // }
-            // else
-            // {
-            //     return new ForbidResult();
-            // }
+            }
+            else
+            {
+                return new ForbidResult();
+            }
         }
 
         [HttpGet("{id:Guid}/products")]

@@ -1,6 +1,11 @@
-import { Product } from "./Product";
-
 export interface ProductUpdate {
-  id: string;
-  update: Omit<Product, "id">;
+  id: string,
+  update: {
+    title: string;
+    price: number;
+    description: string;
+    imageUrl: string;
+    categoryId: string | undefined;
+    inventory: number
+  }
 }

@@ -13,7 +13,7 @@ import Loading from "./Loading";
 import Error from "./Error";
 
 const ProductDetail = () => {
-  const { products, filteredProducts, loading, error } = useAppSelector(
+  const { products, loading, error, selectedProduct: selectingProduct } = useAppSelector(
     (state) => state.products
   );
   const { id } = useParams();
@@ -24,7 +24,7 @@ const ProductDetail = () => {
     dispatch(fetchSingleProductById(id ?? ""));
   }, [dispatch, id]);
 
-  const selectedProduct: Product = filteredProducts && filteredProducts[0];
+  const selectedProduct: Product = selectingProduct;
   const relatedProducts = products.filter(
     (product) => product.category?.name === selectedProduct?.category?.name
   );

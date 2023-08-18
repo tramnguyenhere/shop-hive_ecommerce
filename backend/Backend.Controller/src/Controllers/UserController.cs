@@ -40,7 +40,7 @@ namespace Backend.Controller.src.Controllers
         [HttpPatch("{id:Guid}/change-password")]
         public async Task<ActionResult<UserReadDto>> UpdatePassword(
             [FromRoute] Guid id,
-            [FromBody] string newPassword
+            [FromBody] UpdatePasswordDto newPassword
         )
         {
             var user = HttpContext.User;
@@ -53,7 +53,7 @@ namespace Backend.Controller.src.Controllers
             );
             if (authorizeOwner.Succeeded)
             {
-                var updatedObject = await _userService.UpdatePassword(id, newPassword);
+                var updatedObject = await _userService.UpdatePassword(id, newPassword.Password);
                 return Ok(updatedObject);
             }
             else

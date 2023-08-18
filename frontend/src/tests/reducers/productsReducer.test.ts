@@ -39,6 +39,7 @@ describe("Test productsReducer", () => {
       description: "new pro",
       imageUrl: "image.jpg",
       categoryId: "2",
+      inventory: 100
     };
 
     await store.dispatch(fetchAllProducts());

@@ -5,15 +5,17 @@ import { Product } from "../../types/Product";
 import { ProductUpdate } from "../../types/ProductUpdate";
 import { NewProduct } from "../../types/NewProduct";
 
-const baseUrl = "/api/v1/products";
+const baseUrl = `${process.env.REACT_APP_PROXY}/api/v1/products`;
 
 const initialState: {
   products: Product[];
+  selectedProduct: any;
   filteredProducts: Product[];
   loading: boolean;
   error: string;
 } = {
   products: [],
+  selectedProduct: {},
   filteredProducts: [],
   loading: false,
   error: "",
@@ -48,7 +50,12 @@ export const createNewProduct = createAsyncThunk(
   "createNewProduct",
   async (product: NewProduct) => {
     try {
-      const createProductResponse = await axios.post(baseUrl, product);
+      const token = localStorage.getItem("token");
+      const createProductResponse = await axios.post(baseUrl, product, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
       return createProductResponse.data;
     } catch (e) {
       const error = e as AxiosError;
@@ -114,7 +121,7 @@ const productsSlice = createSlice({
         if (action.payload instanceof AxiosError) {
           state.error = action.payload.message;
         } else {
-          state.filteredProducts.push(action.payload);
+          state.selectedProduct = action.payload
         }
         state.loading = false;
       })

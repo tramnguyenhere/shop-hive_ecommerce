@@ -1,9 +1,9 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { NewReview, Review } from "../../types/Review";
 import axios, { AxiosError } from "axios";
 
-const baseUrl = "/api/v1/reviews";
+const baseUrl = `${process.env.REACT_APP_PROXY}/api/v1/reviews`;
 
 const initialState: {
   reviews: Review[],
@@ -32,7 +32,12 @@ export const createNewReview = createAsyncThunk(
   "createNewReview",
   async (review: NewReview) => {
     try {
-      const createReviewResponse = await axios.post(baseUrl, review);
+      const token = localStorage.getItem('token');
+      const createReviewResponse = await axios.post(baseUrl, review, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return createReviewResponse.data;
     } catch (e) {
       const error = e as AxiosError;

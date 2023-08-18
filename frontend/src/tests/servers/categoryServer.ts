@@ -26,7 +26,7 @@ const categoryServer = setupServer(
       ).length > 0
     ) {
       error.push("category must be unique");
-    } else if (typeof newCategory.image !== "string") {
+    } else if (typeof newCategory.imageUrl !== "string") {
       error.push("category's image url must be a string");
     } else {
       category = newCategory;

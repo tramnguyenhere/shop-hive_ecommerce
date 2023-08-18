@@ -46,11 +46,11 @@ describe("Test categoriesReducer", () => {
 
   test("Check createNewCategory", async () => {
     const expectedCategory = [
-      { id: 1, image: "", name: "Clothes" },
-      { id: 0, image: "image.jpg", name: "New category" },
+      { id: 1, imageUrl: "", name: "Clothes" },
+      { id: 0, imageUrl: "image.jpg", name: "New category" },
     ];
     await store.dispatch(
-      createNewCategory({ name: "New category", image: "image.jpg" })
+      createNewCategory({ name: "New category", imageUrl: "image.jpg" })
     );
     expect(store.getState().categoriesReducer.categories.length).toBe(2);
     expect(store.getState().categoriesReducer.categories).toStrictEqual(
@@ -64,7 +64,7 @@ describe("Test categoriesReducer", () => {
 
     // Add the category
     await store.dispatch(
-      createNewCategory({ name: "Electronic", image: "image.jpg" })
+      createNewCategory({ name: "Electronic", imageUrl: "image.jpg" })
     );
     await store.dispatch(updateSingleCategory(updateCategory));
     expect(store.getState().categoriesReducer.categories.length).toBe(2);
@@ -78,10 +78,10 @@ describe("Test categoriesReducer", () => {
 
   test("should handle errors when creating a category", async () => {
     await store.dispatch(
-      createNewCategory({ name: "New category", image: "image.jpg" })
+      createNewCategory({ name: "New category", imageUrl: "image.jpg" })
     );
     await store.dispatch(
-      createNewCategory({ name: "New category", image: "image.jpg" })
+      createNewCategory({ name: "New category", imageUrl: "image.jpg" })
     );
     expect(store.getState().categoriesReducer.error).toBe(
       "Request failed with status code 400"

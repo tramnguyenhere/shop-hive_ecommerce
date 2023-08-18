@@ -44,6 +44,7 @@ const newProduct: NewProduct = {
   description: "new product",
   imageUrl: "",
   categoryId: "3",
+  inventory: 100
 };
 
 const invalidProduct: NewProduct = {
@@ -52,6 +53,7 @@ const invalidProduct: NewProduct = {
   description: "new product",
   imageUrl: "",
   categoryId: "5",
+  inventory: 100
 };
 
 export { product1, product2, product3, product4, newProduct, invalidProduct };

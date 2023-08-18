@@ -7,7 +7,7 @@ const ProductList = ({ products }: { products: Product[] }) => {
     <div className="products">
       {products?.map((product) => (
         <ProductCard
-          key={product.id}
+          key={`product-card-${product.id}`}
           id={product.id}
           description={product.description}
           title={product.title}
