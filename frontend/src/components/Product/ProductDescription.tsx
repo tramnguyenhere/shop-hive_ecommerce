@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import SingleReview from "../SingleReview";
 import { Review } from "../../types/Review";
@@ -17,28 +17,28 @@ const ProductDescription = ({
   const reviews = useAppSelector((state) => state.reviews.reviews).filter(
     (review: Review) => review.productId === selectedProduct?.id
   );
+  const isLoggedIn = useAppSelector((state) => state.users.currentUser)
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchAllReviews());
+
   }, [dispatch])
 
   return (
     <section className="product-description">
       <nav className="product-description__tab">
         <h2
-          className={`product-description__tab__header ${
-            tab === "description" ? "tab__active" : ""
-          }`}
+          className={`product-description__tab__header ${tab === "description" ? "tab__active" : ""
+            }`}
           onClick={() => setTab("description")}
         >
           Description
         </h2>
         <h2
-          className={`product-description__tab__header ${
-            tab === "description" ? "" : "tab__active"
-          }`}
+          className={`product-description__tab__header ${tab === "description" ? "" : "tab__active"
+            }`}
           onClick={() => setTab("review")}
         >
           Review
@@ -50,20 +50,21 @@ const ProductDescription = ({
         </div>
       ) : (
         <div className="product-description__tab__review">
-          {reviews.length > 0 && (
+          {reviews.length > 0 ? (
             <div className="reviews">
-              {reviews.map((review: Review) => (
-                <div key={review.id}>
-                  <SingleReview
-                    name={review.name}
-                    email={review.email}
-                    feedback={review.feedback}
-                  />
-                </div>
-              ))}
+
+              {
+                reviews.map((review: Review) => (
+                  <div key={review.id}>
+                    <SingleReview
+                      feedback={review.feedback}
+                    />
+                  </div>
+                ))
+              }
             </div>
-          )}
-          <ReviewForm productId={selectedProduct?.id} />
+          ) : <p>No review was left for this product. Log in to leave some thoughts!</p>}
+          {isLoggedIn && <ReviewForm productId={selectedProduct?.id} />}
         </div>
       )}
     </section>

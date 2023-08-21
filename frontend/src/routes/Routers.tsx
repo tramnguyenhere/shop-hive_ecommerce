@@ -25,7 +25,6 @@ const Routers = () => {
       <Route path='/products/:id' element={<ProductDetail />} />
       <Route path='/cart' element={<Cart />} />
       <Route path='/register' element={<Registration />} />
-      <Route path='/checkout' element={<Checkout />} />
       <Route
         path='/user'
         element={currentUser ? <UserProfile /> : <Navigate to='/login' />}

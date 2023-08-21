@@ -19,11 +19,7 @@ const navigation_link = [
   {
     display: "Cart",
     path: "/cart",
-  },
-  {
-    display: "Checkout",
-    path: "/checkout",
-  },
+  }
 ];
 
 const Header = () => {

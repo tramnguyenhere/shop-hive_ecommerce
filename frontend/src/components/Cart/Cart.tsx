@@ -17,6 +17,8 @@ const Cart = () => {
   const { items, totalAmount, totalQuantity }: CartType = useAppSelector(
     (state) => state.cart
   );
+
+
   const dispatch = useAppDispatch();
 
   const toggleCart = () => {
