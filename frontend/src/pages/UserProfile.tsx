@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import useAppSelector from '../hooks/useAppSelector';
 import useAppDispatch from '../hooks/useAppDispatch';
@@ -13,8 +13,6 @@ const UserProfile = () => {
 
   const [editPageVisible, setEditPageVisible] = useState(false);
   const dispatch = useAppDispatch();
-
-  console.log(currentUser)
 
   return (
     <>
@@ -47,7 +45,7 @@ const UserProfile = () => {
               </button>
               <button
                 className='fit-button__secondary'
-                onClick={() =>  navigate(`${currentUser?.id}/edit_password`)}
+                onClick={() =>  navigate(`${currentUser?.id}/edit-password`)}
               >
                 Edit Password
               </button>

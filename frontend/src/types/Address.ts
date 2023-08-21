@@ -1,10 +1,6 @@
 export interface AddressType {
-  id: string;
-  name: string;
+  recipient: string;
   email: string;
   phone: string;
-  street: string;
-  city: string;
-  postalCode: string;
-  country: string;
+  address: string
 }

@@ -1,5 +1,4 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { CartType } from "../types/Cart";
 import useAppSelector from "../hooks/useAppSelector";
@@ -10,8 +9,11 @@ import {
   checkoutCart,
   removeItemFromCart,
 } from "../redux/reducers/cartReducer";
+import { createNewOrder } from "../redux/reducers/orderReducer";
 
 const Cart = () => {
+  const navigate = useNavigate()
+
   const { items, totalAmount, totalQuantity }: CartType = useAppSelector(
     (state) => state.cart
   );
@@ -20,6 +22,11 @@ const Cart = () => {
 
   const checkoutHandler = () => {
     dispatch(checkoutCart());
+    dispatch(createNewOrder({
+      orderedItems: items
+    }))
+    localStorage.removeItem("itemsInCart")
+    navigate('/checkout')
   };
 
   return (
@@ -83,14 +90,14 @@ const Cart = () => {
             >
               Continue Shopping
             </Link>
-            <Link
-              to="/checkout"
+            <button
+              disabled={items.length === 0}
               onClick={checkoutHandler}
               className="cart__button"
               id="checkout"
             >
               Proceed to Checkout
-            </Link>
+            </button>
           </div>
         </div>
       ) : (

@@ -1,19 +1,18 @@
-import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import Home from '../pages/Home';
 import Products from '../pages/Products';
+import useAppSelector from '../hooks/useAppSelector';
 import ProductDetail from '../pages/ProductDetail';
 import Cart from '../pages/Cart';
 import Registration from '../pages/Registration';
-import Checkout from '../pages/Checkout';
 import Login from '../pages/Login';
-import useAppSelector from '../hooks/useAppSelector';
 import UserProfile from '../pages/UserProfile';
 import Dashboard from '../pages/Admin/Dashboard';
-import EditProductForm from '../components/Form/EditProductForm';
 import CategoryManagement from '../pages/Admin/CategoryManagement';
+import EditProductForm from '../components/Form/EditProductForm';
 import EditPasswordForm from '../components/Form/EditPasswordForm';
+import Checkout from '../pages/Checkout';
 
 const Routers = () => {
   const currentUser = useAppSelector((state) => state.users.currentUser);
@@ -29,12 +28,12 @@ const Routers = () => {
         path='/user'
         element={currentUser ? <UserProfile /> : <Navigate to='/login' />}
       />
-      <Route path='user/:userId/edit_password' element={<EditPasswordForm />} />
-
+      <Route path='user/:userId/edit-password' element={<EditPasswordForm />} />
       <Route
         path='/login'
         element={currentUser ? <Navigate to='/user' /> : <Login />}
       />
+      <Route path='/checkout' element={<Checkout />} />
       <Route
         path='/dashboard'
         element={
@@ -55,7 +54,6 @@ const Routers = () => {
           )
         }
       />
-
       <Route
         path='/dashboard/category-management'
         element={

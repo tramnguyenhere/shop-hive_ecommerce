@@ -68,10 +68,14 @@ export const updateSingleProduct = createAsyncThunk(
   "updateSingleProduct",
   async (updatedProduct: ProductUpdate) => {
     try {
-      const result = await axios.put(
+      const token = localStorage.getItem("token");
+      const result = await axios.patch(
         `${baseUrl}/${updatedProduct.id}`,
-        updatedProduct.update
-      );
+        updatedProduct.update, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
       return result.data;
     } catch (e) {
       const error = e as AxiosError;
@@ -84,7 +88,12 @@ export const deleteSingleProduct = createAsyncThunk(
   "deleteSingleProduct",
   async (productId: string) => {
     try {
-      const result = await axios.delete(`${baseUrl}/${productId}`);
+      const token = localStorage.getItem("token");
+      const result = await axios.delete(`${baseUrl}/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
       return { response: result.data, id: productId };
     } catch (e) {
       const error = e as AxiosError;

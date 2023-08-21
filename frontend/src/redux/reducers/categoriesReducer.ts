@@ -55,9 +55,14 @@ export const updateSingleCategory = createAsyncThunk(
   "updateSingleCategory",
   async (updatedCategory: CategoryUpdate) => {
     try {
+      const token = localStorage.getItem('token');
       const result = await axios.put(
         `${baseUrl}/${updatedCategory.id}`,
-        updatedCategory.update
+        updatedCategory.update, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       return result.data;
     } catch (e) {
@@ -71,7 +76,12 @@ export const deleteSingleCategory = createAsyncThunk(
   "deleteSingleCategory",
   async (categoryId: string) => {
     try {
-      const result = await axios.delete(`${baseUrl}/${categoryId}`);
+      const token = localStorage.getItem('token');
+      const result = await axios.delete(`${baseUrl}/${categoryId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
       return { response: result.data, id: categoryId };
     } catch (e) {
       const error = e as AxiosError;
