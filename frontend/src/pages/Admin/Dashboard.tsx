@@ -20,6 +20,12 @@ const Dashboard = () => {
           >
             Category management
           </Link>
+          <Link
+            className="fit-button__primary"
+            to="/dashboard/order-management"
+          >
+            Order management
+          </Link>
         </nav>
       </div>
     </Helmet>

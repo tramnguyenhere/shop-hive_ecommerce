@@ -2,12 +2,12 @@ using System.Security.Claims;
 using Backend.Business.src.Abstractions;
 using Backend.Business.src.Dtos;
 using Backend.Domain.src.Entities;
+using Backend.Domain.src.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controller.src.Controllers
 {
-    // [Authorize]
     public class OrderController
         : CrudController<Order, OrderReadDto, OrderCreateDto, OrderUpdateDto>
     {
@@ -27,6 +27,12 @@ namespace Backend.Controller.src.Controllers
             _orderProductService = orderProductService;
         }
 
+        [Authorize(Policy = "AdminRole")]
+        public override async Task<ActionResult<IEnumerable<OrderReadDto>>> GetAll([FromQuery] QueryOptions queryOptions) {
+            return Ok(await _orderService.GetAll(queryOptions));
+        }
+
+        [Authorize]
         public override async Task<ActionResult<OrderReadDto>> CreateOne([FromBody] OrderCreateDto dto) {
             var userId = new Guid(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var createdObject = await _orderService.CreateOrder(userId, dto);
@@ -34,7 +40,6 @@ namespace Backend.Controller.src.Controllers
             return Ok(createdObject);
         }
 
-        // Update by user and admin
         [Authorize]
         public override async Task<ActionResult<OrderReadDto>> UpdateOneById(
             [FromRoute] Guid id,

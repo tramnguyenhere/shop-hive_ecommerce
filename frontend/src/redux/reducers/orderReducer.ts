@@ -14,11 +14,16 @@ const initialState: {
   error: ""
 };
 
-export const fetchAllorders = createAsyncThunk(
+export const fetchAllOrders = createAsyncThunk(
   "fetchAllOrders",
   async () => {
     try {
-      const result = await axios.get<Order[]>(baseUrl);
+      const token = localStorage.getItem('token');
+      const result = await axios.get<Order[]>(baseUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
       return result.data;
     } catch (e) {
       const error = e as AxiosError;
@@ -84,7 +89,7 @@ const ordersSlice = createSlice({
   },
   extraReducers: (build) => {
     build
-      .addCase(fetchAllorders.fulfilled, (state, action) => {
+      .addCase(fetchAllOrders.fulfilled, (state, action) => {
         if (action.payload instanceof AxiosError) {
           state.error = action.payload.message;
         } else {
@@ -92,10 +97,10 @@ const ordersSlice = createSlice({
         }
         state.loading = false;
       })
-      .addCase(fetchAllorders.pending, (state) => {
+      .addCase(fetchAllOrders.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchAllorders.rejected, (state) => {
+      .addCase(fetchAllOrders.rejected, (state) => {
         state.error = "Cannot fetch data";
       })
       .addCase(createNewOrder.fulfilled, (state, action) => {

@@ -13,6 +13,7 @@ import CategoryManagement from '../pages/Admin/CategoryManagement';
 import EditProductForm from '../components/Form/EditProductForm';
 import EditPasswordForm from '../components/Form/EditPasswordForm';
 import Checkout from '../pages/Checkout';
+import OrderManagement from '../pages/Admin/OrderManagement';
 
 const Routers = () => {
   const currentUser = useAppSelector((state) => state.users.currentUser);
@@ -49,6 +50,16 @@ const Routers = () => {
         element={
           currentUser?.role === 'Admin' ? (
             <Products />
+          ) : (
+            <Navigate to='/login' />
+          )
+        }
+      />
+      <Route
+        path='/dashboard/order-management'
+        element={
+          currentUser?.role === 'Admin' ? (
+            <OrderManagement />
           ) : (
             <Navigate to='/login' />
           )
