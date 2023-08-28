@@ -60,7 +60,6 @@ builder.Services
     .AddScoped<IOrderProductService, OrderProductService>();
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -107,11 +106,6 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminRole", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
     options.AddPolicy("OwnerOnly", policy => policy.Requirements.Add(new OwnerOnlyRequirement()));
-    options.AddPolicy("OwnerOrAdmin", policy =>
-    {
-        policy.RequireClaim(ClaimTypes.Role, "Admin")
-              .Requirements.Add(new OwnerOnlyRequirement());
-    });
 });
 
 builder.Services.AddCors(options =>

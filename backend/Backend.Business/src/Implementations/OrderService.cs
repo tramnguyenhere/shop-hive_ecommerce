@@ -109,30 +109,14 @@ namespace Backend.Business.src.Implementations
             return orderDto;
         }
 
-        public async Task<OrderReadDto> UpdateOrderAwaitingForFulfillment(Guid id, OrderUpdateDto orderUpdateDto)
+        public async Task<IEnumerable<OrderReadDto>> GetAllOrdersByUserId(Guid userId)
         {
-            var foundOrder = await _orderRepository.GetOneById(id);
-
-            if (foundOrder == null) {
-                throw CustomException.NotFoundException("Order not found");
+            var user = await _userRepository.GetOneById(userId);
+            if (user == null)
+            {
+                throw CustomException.NotFoundException("User not found");
             }
-            var user = foundOrder.User;
-
-            var updatedOrder = _mapper.Map<Order>(orderUpdateDto);
-
-            updatedOrder.Status = OrderStatus.AwaitingFulfillment;
-            updatedOrder.Recipient = string.IsNullOrEmpty(orderUpdateDto.Recipient)
-                    ? $"{user.FirstName} {user.LastName}"
-                    : orderUpdateDto.Recipient;
-            updatedOrder.PhoneNumber = string.IsNullOrEmpty(orderUpdateDto.PhoneNumber)
-                    ? user.PhoneNumber
-                    : orderUpdateDto.PhoneNumber;
-            updatedOrder.Email = string.IsNullOrEmpty(orderUpdateDto.Email) ? user.Email : orderUpdateDto.Email;
-            updatedOrder.Address = string.IsNullOrEmpty(orderUpdateDto.Address) ? user.Address : orderUpdateDto.Address;
-            updatedOrder.OrderProducts = foundOrder.OrderProducts;
-            updatedOrder.User = user;
-
-            return _mapper.Map<OrderReadDto>(await _orderRepository.UpdateOneById(updatedOrder));
+            return _mapper.Map<IEnumerable<OrderReadDto>>(await _orderRepository.GetAllOrdersByUserId(userId));
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Backend.Controller.src.Controllers
             return Ok(await _userService.GetAll(queryOptions));
         }
 
-        // [Authorize(Policy = "AdminRole")]
+        [Authorize(Policy = "AdminRole")]
         [HttpPost("admin")]
         public async Task<ActionResult<UserReadDto>> CreateAdmin([FromBody] UserCreateDto dto) {
             var createdObject = await _userService.CreateAdmin(dto);
@@ -59,7 +59,6 @@ namespace Backend.Controller.src.Controllers
             else
             {
                 return new ForbidResult();
-                // throw new Exception($"{id}, {HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value}");
             }
         }
 
@@ -68,6 +67,37 @@ namespace Backend.Controller.src.Controllers
         public async Task<ActionResult<UserReadDto>> GetUserByEmail(string email)
         { 
             return Ok(await _userService.FindOneByEmail(email));
+        }
+
+        [Authorize(Policy = "AdminRole")]
+        public override async Task<ActionResult<IEnumerable<UserReadDto>>> GetOneById([FromRoute] Guid id) {
+            return Ok(await _userService.GetOneById(id));
+        }
+
+        [Authorize]
+        public override async Task<ActionResult<UserReadDto>> UpdateOneById ([FromRoute] Guid id, [FromBody] UserUpdateDto update) {
+            var user = HttpContext.User;
+            var userId = id.ToString();
+
+            var authorizeOwner = await _authorizationService.AuthorizeAsync(
+                user,
+                userId,
+                "OwnerOnly"
+            );
+            if (authorizeOwner.Succeeded)
+            {
+                var updatedObject = await _userService.UpdateOneById(id, update);
+            return Ok(updatedObject);
+            }
+            else
+            {
+                return new ForbidResult();
+            }
+        }
+
+        [Authorize(Policy = "AdminRole")]
+        public override async Task<ActionResult<bool>> DeleteOneById([FromRoute] Guid id) {
+            return await base.DeleteOneById(id);
         }
     }
 }

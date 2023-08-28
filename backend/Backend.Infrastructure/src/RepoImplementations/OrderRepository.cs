@@ -1,4 +1,3 @@
-using System.Transactions;
 using Backend.Business.src.Shared;
 using Backend.Domain.src.Abstractions;
 using Backend.Domain.src.Entities;
@@ -22,14 +21,20 @@ namespace Backend.Infrastructure.src.RepoImplementations
 
         public override async Task<Order> CreateOne(Order entity)
         {
-            using (
-                var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled)
-            )
+            using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                await _orders.AddAsync(entity);
-                await _dbContext.SaveChangesAsync();
+                try
+                {
+                    await _orders.AddAsync(entity);
+                    await _dbContext.SaveChangesAsync();
 
-                transactionScope.Complete(); // Commit the transaction
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
             }
 
             return entity;
@@ -106,6 +111,12 @@ namespace Backend.Infrastructure.src.RepoImplementations
                 .Include(r => r.User)
                 .Include(r => r.OrderProducts)
                 .FirstOrDefaultAsync(r => r.Id == id);
+        }
+
+        public async Task<IEnumerable<Order>> GetAllOrdersByUserId(Guid userId)
+        {
+            IQueryable<Order> query = _orders;
+            return await query.Include(r => r.User).Include(r => r.OrderProducts).Where(o=>o.User.Id == userId).ToArrayAsync();
         }
     }
 }

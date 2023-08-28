@@ -36,8 +36,19 @@ namespace Backend.Controller.src.Controllers
         }
 
         [Authorize(Policy = "AdminRole")]
-        public override async Task<ActionResult<IEnumerable<OrderReadDto>>> GetOneById([FromRoute] Guid id) {
+        public override async Task<ActionResult<IEnumerable<OrderReadDto>>> GetOneById(
+            [FromRoute] Guid id
+        )
+        {
             return Ok(await _orderService.GetOneById(id));
+        }
+
+        [Authorize]
+        [HttpGet("private")]
+        public async Task<ActionResult<IEnumerable<OrderReadDto>>> GetAllOrdersByUserId()
+        {
+            var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return Ok(await _orderService.GetAllOrdersByUserId(new Guid(id)));
         }
 
         [Authorize(Policy = "AdminRole")]
@@ -58,7 +69,7 @@ namespace Backend.Controller.src.Controllers
         {
             var userId = new Guid(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var createdObject = await _orderService.CreateOrder(userId, dto);
-            return Ok(createdObject);
+            return CreatedAtAction(nameof(CreateOne), createdObject);
         }
 
         [Authorize]
@@ -129,7 +140,7 @@ namespace Backend.Controller.src.Controllers
             if (authorizeOwner.Succeeded)
             {
                 update.Status = OrderStatus.AwaitingFulfillment;
-                return await _orderService.UpdateOrderAwaitingForFulfillment(id, update);
+                return await _orderService.UpdateOneById(id, update);
             }
             else
             {
@@ -137,5 +148,9 @@ namespace Backend.Controller.src.Controllers
             }
         }
 
+        [Authorize(Policy = "AdminRole")]
+        public override async Task<ActionResult<bool>> DeleteOneById([FromRoute] Guid id) {
+            return StatusCode(204, await _orderService.DeleteOneById(id));
+        }
     }
 }
