@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Security.Claims;
 using System.Text;
 using Backend.Business.src.Abstractions;
@@ -108,6 +107,11 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminRole", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
     options.AddPolicy("OwnerOnly", policy => policy.Requirements.Add(new OwnerOnlyRequirement()));
+    options.AddPolicy("OwnerOrAdmin", policy =>
+    {
+        policy.RequireClaim(ClaimTypes.Role, "Admin")
+              .Requirements.Add(new OwnerOnlyRequirement());
+    });
 });
 
 builder.Services.AddCors(options =>

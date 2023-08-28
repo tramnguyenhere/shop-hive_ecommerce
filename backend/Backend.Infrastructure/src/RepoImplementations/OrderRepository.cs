@@ -1,3 +1,4 @@
+using System.Transactions;
 using Backend.Business.src.Shared;
 using Backend.Domain.src.Abstractions;
 using Backend.Domain.src.Entities;
@@ -21,8 +22,16 @@ namespace Backend.Infrastructure.src.RepoImplementations
 
         public override async Task<Order> CreateOne(Order entity)
         {
-            await _orders.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
+            using (
+                var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled)
+            )
+            {
+                await _orders.AddAsync(entity);
+                await _dbContext.SaveChangesAsync();
+
+                transactionScope.Complete(); // Commit the transaction
+            }
+
             return entity;
         }
 
@@ -39,15 +48,17 @@ namespace Backend.Infrastructure.src.RepoImplementations
 
             if (!string.IsNullOrWhiteSpace(queryOptions.Search))
             {
-                query = query.Include(q=>q.OrderProducts).Where(
-                    order =>
-                        order.OrderProducts.Any(
-                            orderProduct =>
-                                orderProduct.Product.Title
-                                    .ToLower()
-                                    .Contains(queryOptions.Search.ToLower())
-                        )
-                );
+                query = query
+                    .Include(q => q.OrderProducts)
+                    .Where(
+                        order =>
+                            order.OrderProducts.Any(
+                                orderProduct =>
+                                    orderProduct.Product.Title
+                                        .ToLower()
+                                        .Contains(queryOptions.Search.ToLower())
+                            )
+                    );
             }
 
             if (queryOptions.OrderByAscending && queryOptions.OrderByDescending)
@@ -86,12 +97,15 @@ namespace Backend.Infrastructure.src.RepoImplementations
                     .Take(queryOptions.ItemPerPage);
             }
 
-            return await query.Include(r=>r.User).Include(r=>r.OrderProducts).ToArrayAsync();
+            return await query.Include(r => r.User).Include(r => r.OrderProducts).ToArrayAsync();
         }
 
         public override async Task<Order> GetOneById(Guid id)
         {
-            return await _orders.Include(r=>r.User).Include(r=>r.OrderProducts).FirstOrDefaultAsync(r=>r.Id==id); 
+            return await _orders
+                .Include(r => r.User)
+                .Include(r => r.OrderProducts)
+                .FirstOrDefaultAsync(r => r.Id == id);
         }
     }
 }

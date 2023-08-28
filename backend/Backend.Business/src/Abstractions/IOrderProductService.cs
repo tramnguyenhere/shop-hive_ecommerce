@@ -9,7 +9,7 @@ namespace Backend.Business.src.Abstractions
         Task<OrderProduct> CreateOrderProduct(OrderProduct entity);
         Task<OrderProduct> UpdateOrderProduct(Guid orderId, Guid productId, OrderProductUpdateDto entityDto);
         Task<bool> DeleteOrderProduct(Guid orderId, Guid productId);
-        Task<IEnumerable<OrderProduct>> GetAllOrderProductForAnOrder(Guid orderId);
+        Task<IEnumerable<OrderProductReadDto>> GetAllOrderProductForAnOrder(Guid orderId);
         Task<OrderProductReadDto> GetOrderProductByIdComposition(Guid orderId, Guid productId);
     }
 }

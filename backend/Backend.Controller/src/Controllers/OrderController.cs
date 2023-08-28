@@ -28,15 +28,36 @@ namespace Backend.Controller.src.Controllers
         }
 
         [Authorize(Policy = "AdminRole")]
-        public override async Task<ActionResult<IEnumerable<OrderReadDto>>> GetAll([FromQuery] QueryOptions queryOptions) {
+        public override async Task<ActionResult<IEnumerable<OrderReadDto>>> GetAll(
+            [FromQuery] QueryOptions queryOptions
+        )
+        {
             return Ok(await _orderService.GetAll(queryOptions));
         }
 
+        [Authorize(Policy = "AdminRole")]
+        public override async Task<ActionResult<IEnumerable<OrderReadDto>>> GetOneById([FromRoute] Guid id) {
+            return Ok(await _orderService.GetOneById(id));
+        }
+
+        [Authorize(Policy = "AdminRole")]
+        [HttpGet("{id:Guid}/products")]
+        public async Task<ActionResult<IEnumerable<OrderProductReadDto>>> GetAllProductsByOrder(
+            [FromRoute] Guid id
+        )
+        {
+            var orderProducts = await _orderProductService.GetAllOrderProductForAnOrder(id);
+
+            return Ok(orderProducts);
+        }
+
         [Authorize]
-        public override async Task<ActionResult<OrderReadDto>> CreateOne([FromBody] OrderCreateDto dto) {
+        public override async Task<ActionResult<OrderReadDto>> CreateOne(
+            [FromBody] OrderCreateDto dto
+        )
+        {
             var userId = new Guid(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var createdObject = await _orderService.CreateOrder(userId, dto);
-            // var createdObject = await _orderService.CreateOne(dto);
             return Ok(createdObject);
         }
 
@@ -65,7 +86,7 @@ namespace Backend.Controller.src.Controllers
         }
 
         [Authorize]
-        [HttpPatch("{id:Guid}/confirm")]
+        [HttpPatch("{id:Guid}/order-confirmation")]
         public async Task<ActionResult<OrderReadDto>> UpdateConfirmOrder(
             [FromRoute] Guid id,
             [FromBody] OrderUpdateDto update
@@ -74,11 +95,15 @@ namespace Backend.Controller.src.Controllers
             var user = HttpContext.User;
             var order = await _orderService.GetOneById(id);
 
-            var authorizeOwner = await _authorizationService.AuthorizeAsync(user, order.UserId.ToString(), "OwnerOnly");
-            if(authorizeOwner.Succeeded)
+            var authorizeOwner = await _authorizationService.AuthorizeAsync(
+                user,
+                order.UserId.ToString(),
+                "OwnerOnly"
+            );
+            if (authorizeOwner.Succeeded)
             {
-            update.Status = OrderStatus.AwaitingPayment;
-            return await base.UpdateOneById(id, update);
+                update.Status = OrderStatus.AwaitingPayment;
+                return await base.UpdateOneById(id, update);
             }
             else
             {
@@ -96,11 +121,15 @@ namespace Backend.Controller.src.Controllers
             var user = HttpContext.User;
             var order = await _orderService.GetOneById(id);
 
-            var authorizeOwner = await _authorizationService.AuthorizeAsync(user, order.UserId.ToString(), "OwnerOnly");
-            if(authorizeOwner.Succeeded)
+            var authorizeOwner = await _authorizationService.AuthorizeAsync(
+                user,
+                order.UserId.ToString(),
+                "OwnerOnly"
+            );
+            if (authorizeOwner.Succeeded)
             {
-            update.Status = OrderStatus.AwaitingFulfillment;
-            return await _orderService.UpdateOrderAwaitingForFulfillment(id, update);
+                update.Status = OrderStatus.AwaitingFulfillment;
+                return await _orderService.UpdateOrderAwaitingForFulfillment(id, update);
             }
             else
             {
@@ -108,9 +137,5 @@ namespace Backend.Controller.src.Controllers
             }
         }
 
-        [HttpGet("{id:Guid}/products")]
-        public async Task<ActionResult<IEnumerable<OrderProduct>>> GetAllProductsByOrder([FromRoute] Guid id) {
-            return Ok(await _orderProductService.GetAllOrderProductForAnOrder(id));
-        }
     }
 }

@@ -22,7 +22,7 @@ namespace Backend.Infrastructure.src.Configuration
 
             CreateMap<OrderProductCreateDto, OrderProduct>();
             CreateMap<OrderProductUpdateDto, OrderProduct>();
-            CreateMap<OrderProduct, OrderProductReadDto>();
+            CreateMap<OrderProduct, OrderProductReadDto>().ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Product.Id));
 
             CreateMap<Review, ReviewReadDto>();
             CreateMap<ReviewUpdateDto, Review>();

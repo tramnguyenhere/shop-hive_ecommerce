@@ -1,8 +1,5 @@
-using System.Drawing;
-using Backend.Business.src.Shared;
 using Backend.Domain.src.Abstractions;
 using Backend.Domain.src.Entities;
-using Backend.Domain.src.Shared;
 using Backend.Infrastructure.src.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,7 +28,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
 
         public async Task<IEnumerable<OrderProduct>> GetAllOrderProductForAnOrder(Guid orderId)
         {
-            return await _orderProducts.Where(orderProduct => orderProduct.Order.Id == orderId).ToArrayAsync();
+            return await _orderProducts.Include(r=>r.Product).Where(orderProduct => orderProduct.Order.Id == orderId).ToArrayAsync();
         }
 
         public async Task<OrderProduct> GetOneByCompositionId(Guid orderId, Guid productId)

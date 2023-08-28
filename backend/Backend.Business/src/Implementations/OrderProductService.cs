@@ -51,7 +51,7 @@ namespace Backend.Business.src.Implementations
             return await _orderProductRepository.DeleteOneById(foundOrderProduct); 
         }
 
-        public async Task<IEnumerable<OrderProduct>> GetAllOrderProductForAnOrder(Guid orderId)
+        public async Task<IEnumerable<OrderProductReadDto>> GetAllOrderProductForAnOrder(Guid orderId)
         {
             var order = await _orderRepository.GetOneById(orderId);
 
@@ -60,8 +60,8 @@ namespace Backend.Business.src.Implementations
             }
 
             var orderProducts = await _orderProductRepository.GetAllOrderProductForAnOrder(orderId);
-
-            return orderProducts;
+            
+            return _mapper.Map<IEnumerable<OrderProductReadDto>>(orderProducts);
         }
 
         public async Task<OrderProductReadDto> GetOrderProductByIdComposition(Guid orderId, Guid productId)

@@ -38,19 +38,13 @@ namespace Backend.Infrastructure.src.RepoImplementations
                 query = query.OrderByDescending(product => product.Title);
             }
 
-            if(queryOptions.Order == "Latest") {
-                query = query.OrderByDescending(product => product.UpdatedAt);
-            } else if (queryOptions.Order == "Earliest") {
-                query = query.OrderBy(product => product.UpdatedAt);
-            }
-
             if(queryOptions.PageNumber == 0) {
                 return query;
             } else {
                 query = query.Skip((queryOptions.PageNumber - 1) * queryOptions.ItemPerPage).Take(queryOptions.ItemPerPage);
             }
 
-            return await query.Include(r=>r.Category).Include(q=>q.Category).ToArrayAsync();
+            return await query.Include(r=>r.Category).ToArrayAsync();
         }
 
         public override async Task<Product> GetOneById(Guid id)

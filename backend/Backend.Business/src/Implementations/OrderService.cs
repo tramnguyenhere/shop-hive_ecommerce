@@ -55,13 +55,10 @@ namespace Backend.Business.src.Implementations
             order.OrderProducts = new List<OrderProduct>();
             order.User = user;
 
-            // Insert Order into database
             var createdOrder = await _orderRepository.CreateOne(order);
 
-            // Convert OrderProductCreateDto into OrderProduct
             var orderProducts = _mapper.Map<List<OrderProduct>>(entity.OrderProducts);
 
-            // Map possible nullable property from previous convert
             for(int i = 0; i < orderProducts.Count(); i++ ) {
                 var orderProductAtCurrentIndex = orderProducts.ElementAt(i);
                 orderProductAtCurrentIndex.Order = createdOrder;
@@ -70,10 +67,7 @@ namespace Backend.Business.src.Implementations
                 await _orderProductService.CreateOrderProduct(orderProductAtCurrentIndex);
             }
 
-            var orderProductDtos = _mapper.Map<List<OrderProductReadDto>>(order.OrderProducts);
-
             var orderReadDto = _mapper.Map<OrderReadDto>(createdOrder);
-            // orderReadDto.OrderProducts = orderProductDtos;
 
             return orderReadDto;
         }
@@ -98,11 +92,6 @@ namespace Backend.Business.src.Implementations
             updatedOrder.Email = string.IsNullOrEmpty(orderUpdateDto.Email) ? user.Email : orderUpdateDto.Email;
             updatedOrder.Address = string.IsNullOrEmpty(orderUpdateDto.Address) ? user.Address : orderUpdateDto.Address;
             updatedOrder.User = foundOrder.User;
-
-            var updatedOrderDto = _mapper.Map<OrderReadDto>(await _orderRepository.UpdateOneById(updatedOrder));
-            
-            var orderProductDtos = _mapper.Map<List<OrderProductReadDto>>(foundOrder.OrderProducts);
-            // updatedOrderDto.OrderProducts = orderProductDtos;
 
             return _mapper.Map<OrderReadDto>(await _orderRepository.UpdateOneById(updatedOrder));
         }

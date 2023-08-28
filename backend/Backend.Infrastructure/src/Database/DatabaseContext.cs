@@ -28,17 +28,6 @@ namespace Backend.Infrastructure.src.Database
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            // var builder = new NpgsqlDataSourceBuilder(
-            //     _configuration.GetConnectionString("Default")
-            // );
-            // builder.MapEnum<UserRole>();
-            // builder.MapEnum<OrderStatus>();
-            // optionsBuilder.AddInterceptors(new TimeStampInterceptor());
-            // optionsBuilder.UseNpgsql(builder.Build()).UseSnakeCaseNamingConvention();
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasPostgresEnum<UserRole>();
