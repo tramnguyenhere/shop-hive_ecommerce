@@ -45,15 +45,6 @@ namespace Backend.Infrastructure.src.RepoImplementations
                 query = query.OrderByDescending(user => user.FirstName);
             }
 
-            if (queryOptions.Order == "Latest")
-            {
-                query = query.OrderByDescending(user => user.UpdatedAt);
-            }
-            else if (queryOptions.Order == "Earliest")
-            {
-                query = query.OrderBy(user => user.UpdatedAt);
-            }
-
             if (queryOptions.PageNumber == 0)
             {
                 return query;

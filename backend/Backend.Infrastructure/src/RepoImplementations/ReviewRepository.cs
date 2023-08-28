@@ -50,15 +50,6 @@ namespace Backend.Infrastructure.src.RepoImplementations
                 query = query.OrderByDescending(review => review.CreatedAt);
             }
 
-            if (queryOptions.Order == "Latest")
-            {
-                query = query.OrderByDescending(review => review.UpdatedAt);
-            }
-            else if (queryOptions.Order == "Earliest")
-            {
-                query = query.OrderBy(review => review.UpdatedAt);
-            }
-
             if (queryOptions.PageNumber == 0)
             {
                 return query;
