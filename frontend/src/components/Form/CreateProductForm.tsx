@@ -63,9 +63,9 @@ const CreateProductForm = ({
       <div className="form__group">
         <input
           type="text"
-          maxLength={100}
+          maxLength={1000}
           placeholder="Description"
-          {...register("description", { required: true, maxLength: 100 })}
+          {...register("description", { required: true, maxLength: 1000 })}
         />
         {errors.description && (
           <span className="form--error">This field is required!</span>
