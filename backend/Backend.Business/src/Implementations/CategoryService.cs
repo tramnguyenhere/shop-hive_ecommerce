@@ -22,9 +22,8 @@ namespace Backend.Business.src.Implementations
             if(foundCategory != null) {
                 foundCategory.Name = updatedDto.Name;
                 foundCategory.ImageUrl = updatedDto.ImageUrl;
-                return _mapper.Map<CategoryReadDto>(await _categoryRepository.UpdateOneById(foundCategory));
+                return _mapper.Map<CategoryReadDto>(await _categoryRepository.UpdateOne(foundCategory));
             } else {
-                await _categoryRepository.DeleteOneById(foundCategory);
                 throw CustomException.NotFoundException("Category not found.");
             }
         }

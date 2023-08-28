@@ -40,7 +40,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
             return entity;
         }
 
-        public override async Task<Order> UpdateOneById(Order updatedEntity)
+        public override async Task<Order> UpdateOne(Order updatedEntity)
         {
             _orders.Update(updatedEntity);
             await _dbContext.SaveChangesAsync();

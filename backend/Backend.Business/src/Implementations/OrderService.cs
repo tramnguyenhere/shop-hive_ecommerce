@@ -93,7 +93,7 @@ namespace Backend.Business.src.Implementations
             updatedOrder.Address = string.IsNullOrEmpty(orderUpdateDto.Address) ? user.Address : orderUpdateDto.Address;
             updatedOrder.User = foundOrder.User;
 
-            return _mapper.Map<OrderReadDto>(await _orderRepository.UpdateOneById(updatedOrder));
+            return _mapper.Map<OrderReadDto>(await _orderRepository.UpdateOne(updatedOrder));
         }
 
         public override async Task<OrderReadDto> GetOneById(Guid id)

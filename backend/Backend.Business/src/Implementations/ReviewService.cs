@@ -28,29 +28,6 @@ namespace Backend.Business.src.Implementations
             _userRepository = userRepo;
         }
 
-        // public override async Task<ReviewReadDto> GetOneById(Guid id)
-        // {
-        //     var foundItem = await _reviewRepository.GetOneById(id);
-
-        //     if (foundItem == null)
-        //     {
-        //         throw CustomException.NotFoundException("Review not found!");
-        //     }
-
-        //     var product = await _productRepository.GetOneById(foundItem.Product.Id);
-        //     var user = await _userRepository.GetOneById(foundItem.User.Id);
-
-        //     var foundItemDto = new ReviewReadDto
-        //     {
-        //         Id = foundItem.Id,
-        //         ProductId = product.Id,
-        //         UserId = user.Id,
-        //         Feedback = foundItem.Feedback,
-        //     };
-
-        //     return foundItemDto;
-        // }
-
         public async Task<ReviewReadDto> CreateOneReview(Guid userId, ReviewCreateDto dto)
         {
             var reviewedProduct = await _productRepository.GetOneById(dto.ProductId);
@@ -84,17 +61,8 @@ namespace Backend.Business.src.Implementations
             {
                 foundReview.Feedback = updatedDto.Feedback;
                 var updatedReview = _mapper.Map<ReviewReadDto>(
-                    await _reviewRepository.UpdateOneById(foundReview)
+                    await _reviewRepository.UpdateOne(foundReview)
                 );
-            //     if (foundReview.Product != null)
-            //     {
-            //         updatedReview.ProductId = foundReview.Product.Id;
-            //     }
-
-            //     if (foundReview.User != null)
-            //     {
-            //         updatedReview.UserId = foundReview.User.Id;
-            //     }
                 return updatedReview;
             }
             else

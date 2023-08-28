@@ -33,7 +33,7 @@ namespace Backend.Business.src.Implementations
 
             product.Inventory -= entity.Quantity;
 
-            await _productRepository.UpdateOneById(product);
+            await _productRepository.UpdateOne(product);
 
             var createdOrderProduct = await _orderProductRepository.CreateOne(entity);
             
@@ -48,7 +48,7 @@ namespace Backend.Business.src.Implementations
                 throw CustomException.NotFoundException("Order Product not found");
             }
 
-            return await _orderProductRepository.DeleteOneById(foundOrderProduct); 
+            return await _orderProductRepository.DeleteOne(foundOrderProduct); 
         }
 
         public async Task<IEnumerable<OrderProductReadDto>> GetAllOrderProductForAnOrder(Guid orderId)
@@ -80,7 +80,6 @@ namespace Backend.Business.src.Implementations
             }
 
             var orderProductReadDto = _mapper.Map<OrderProductReadDto>(orderProduct);
-            // orderProductReadDto.ProductId = orderProduct.Product.Id;
 
             return orderProductReadDto;
         }
@@ -98,7 +97,7 @@ namespace Backend.Business.src.Implementations
             updatedOrderProduct.Order = await _orderRepository.GetOneById(orderId);
             updatedOrderProduct.Quantity = entityDto.Quantity;
 
-            return await _orderProductRepository.UpdateOneById(updatedOrderProduct);
+            return await _orderProductRepository.UpdateOne(updatedOrderProduct);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
             return entity;
         }
 
-        public async Task<bool> DeleteOneById(T entity)
+        public async Task<bool> DeleteOne(T entity)
         {
             _dbSet.Remove(entity);
             await _context.SaveChangesAsync();
@@ -40,7 +40,7 @@ namespace Backend.Infrastructure.src.RepoImplementations
             return await _dbSet.FindAsync(id); 
         }
 
-        public virtual async Task<T> UpdateOneById(T updatedEntity)
+        public virtual async Task<T> UpdateOne(T updatedEntity)
         {
             _dbSet.Update(updatedEntity);
             await _context.SaveChangesAsync();

@@ -23,7 +23,7 @@ namespace Backend.Business.src.Implementations
             var foundItem = await _baseRepository.GetOneById(id);
             if (foundItem != null)
             {
-                await _baseRepository.DeleteOneById(foundItem);
+                await _baseRepository.DeleteOne(foundItem);
                 return true;
             }
             return false;
@@ -48,7 +48,7 @@ namespace Backend.Business.src.Implementations
             var foundItem = await _baseRepository.GetOneById(id);
             if (foundItem != null)
             {
-                var updatedEntity = _baseRepository.UpdateOneById(_mapper.Map<T>(updatedDto));
+                var updatedEntity = _baseRepository.UpdateOne(_mapper.Map<T>(updatedDto));
                 return _mapper.Map<TReadDto>(updatedEntity);
             }
             else

@@ -73,9 +73,8 @@ namespace Backend.Business.src.Implementations
                 foundItem.Address = updatedDto.Address;
                 foundItem.PhoneNumber = updatedDto.PhoneNumber;
 
-                return _mapper.Map<UserReadDto>(await _userRepository.UpdateOneById(foundItem));
+                return _mapper.Map<UserReadDto>(await _userRepository.UpdateOne(foundItem));
             } else {
-                await _userRepository.DeleteOneById(foundItem);
                 throw CustomException.NotFoundException("Item not found.");
             }
         }

@@ -69,11 +69,10 @@ namespace Backend.Business.src.Implementations
                 foundItem.ImageUrl = updatedDto.ImageUrl;
                 foundItem.Title = updatedDto.Title;
 
-                return _mapper.Map<ProductReadDto>(await _productRepository.UpdateOneById(foundItem));
+                return _mapper.Map<ProductReadDto>(await _productRepository.UpdateOne(foundItem));
             }
             else
             {
-                await _productRepository.DeleteOneById(foundItem);
                 throw CustomException.NotFoundException("Item not found.");
             }
         }

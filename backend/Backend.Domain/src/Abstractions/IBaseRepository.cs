@@ -7,7 +7,7 @@ namespace Backend.Domain.src.Abstractions
         Task<IEnumerable<T>> GetAll(QueryOptions queryOptions);
         Task<T> GetOneById(Guid id);
         Task<T> CreateOne(T entity); 
-        Task<T> UpdateOneById(T updatedEntity);
-        Task<bool> DeleteOneById(T entity);
+        Task<T> UpdateOne(T updatedEntity);
+        Task<bool> DeleteOne(T entity);
     }
 }

@@ -58,7 +58,7 @@ Shop Hive is a straightforward ecommerce site, featuring essential frontend, bac
 ![Backend](/erd.png)
 
 **- Diagram of HTTP methods**
-![Backend](/shophive-application.drawio.png)
+![Backend](/shophive-presenter.png)
 
 ***
 <a name="getting-started"></a>
