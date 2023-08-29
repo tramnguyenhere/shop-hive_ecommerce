@@ -118,5 +118,33 @@ namespace Backend.Business.src.Implementations
             }
             return _mapper.Map<IEnumerable<OrderReadDto>>(await _orderRepository.GetAllOrdersByUserId(userId));
         }
+
+        public async Task<bool> UpdateOrderConfirmation(Guid orderId)
+        {
+            var order = await _orderRepository.GetOneById(orderId);
+
+            if(order == null) {
+                return false;
+                throw CustomException.NotFoundException("Order not found");
+            }
+
+            order.Status = OrderStatus.AwaitingPayment;
+            await _orderRepository.UpdateOne(order);
+            return true;
+        }
+
+        public async Task<bool> UpdateOrderPayment(Guid orderId)
+        {
+            var order = await _orderRepository.GetOneById(orderId);
+
+            if(order == null) {
+                return false;
+                throw CustomException.NotFoundException("Order not found");
+            }
+
+            order.Status = OrderStatus.AwaitingFulfillment;
+            await _orderRepository.UpdateOne(order);
+            return true;
+        }
     }
 }

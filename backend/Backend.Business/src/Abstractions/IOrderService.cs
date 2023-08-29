@@ -7,5 +7,7 @@ namespace Backend.Business.src.Abstractions
     {
         Task<OrderReadDto> CreateOrder(Guid userId, OrderCreateDto entity);
         Task<IEnumerable<OrderReadDto>> GetAllOrdersByUserId(Guid userId);
+        Task<bool> UpdateOrderConfirmation(Guid orderId);
+        Task<bool> UpdateOrderPayment(Guid orderId);
     }
 }

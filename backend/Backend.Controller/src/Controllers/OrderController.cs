@@ -98,9 +98,8 @@ namespace Backend.Controller.src.Controllers
 
         [Authorize]
         [HttpPatch("{id:Guid}/order-confirmation")]
-        public async Task<ActionResult<OrderReadDto>> UpdateConfirmOrder(
-            [FromRoute] Guid id,
-            [FromBody] OrderUpdateDto update
+        public async Task<ActionResult<bool>> UpdateConfirmOrder(
+            [FromRoute] Guid id
         )
         {
             var user = HttpContext.User;
@@ -113,8 +112,7 @@ namespace Backend.Controller.src.Controllers
             );
             if (authorizeOwner.Succeeded)
             {
-                update.Status = OrderStatus.AwaitingPayment;
-                return await base.UpdateOneById(id, update);
+                return await _orderService.UpdateOrderConfirmation(id);
             }
             else
             {
@@ -124,9 +122,8 @@ namespace Backend.Controller.src.Controllers
 
         [Authorize]
         [HttpPatch("{id:Guid}/payment-process")]
-        public async Task<ActionResult<OrderReadDto>> UpdatePayment(
-            [FromRoute] Guid id,
-            [FromBody] OrderUpdateDto update
+        public async Task<ActionResult<bool>> UpdatePayment(
+            [FromRoute] Guid id
         )
         {
             var user = HttpContext.User;
@@ -139,8 +136,7 @@ namespace Backend.Controller.src.Controllers
             );
             if (authorizeOwner.Succeeded)
             {
-                update.Status = OrderStatus.AwaitingFulfillment;
-                return await _orderService.UpdateOneById(id, update);
+                return await _orderService.UpdateOrderPayment(id);
             }
             else
             {
