@@ -42,8 +42,8 @@ namespace Backend.Business.src.Shared
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             };
-            var secretKey = _configuration["AppSettings:SecretKey"];
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("my-secret-key-is-here-abcde111111111111111"));
+            var secretKey = _configuration["ConnectionStrings:SecretKey"];
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
             var securityTokenDescriptor = new SecurityTokenDescriptor {
                 Issuer = "ecommerce-backend",
