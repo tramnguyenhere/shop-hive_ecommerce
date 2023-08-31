@@ -72,7 +72,9 @@ builder.Services.AddSwaggerGen(options =>
         {
             Description = "Bearer token authentication",
             Name = "Authentication",
-            In = ParameterLocation.Header
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer"
         }
     );
     //Show the authorization required in ui
